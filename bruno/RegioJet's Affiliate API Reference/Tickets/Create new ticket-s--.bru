@@ -1,0 +1,17 @@
+meta {
+  name: Create new ticket-s--
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/tickets/create
+  body: none
+  auth: none
+}
+
+headers {
+  ~X-Application-Origin: 
+  ~X-Lang: 
+  ~X-Currency: 
+}

@@ -1,0 +1,21 @@
+meta {
+  name: Get ticket by ID-
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/tickets/:accountCode/:ticketId
+  body: none
+  auth: none
+}
+
+params:path {
+  accountCode: 
+  ticketId: 
+}
+
+headers {
+  ~X-Application-Origin: 
+  ~X-Lang: 
+}

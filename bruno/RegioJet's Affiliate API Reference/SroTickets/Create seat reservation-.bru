@@ -1,0 +1,18 @@
+meta {
+  name: Create seat reservation-
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/tickets/RJ_SRO/unregistered
+  body: none
+  auth: none
+}
+
+headers {
+  X-TxToken: 
+  ~X-Application-Origin: 
+  ~X-Lang: 
+  ~X-Currency: 
+}

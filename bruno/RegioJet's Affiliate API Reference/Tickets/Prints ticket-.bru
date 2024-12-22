@@ -1,0 +1,21 @@
+meta {
+  name: Prints ticket-
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/tickets/:accountCode/:ticketId/print
+  body: none
+  auth: none
+}
+
+params:path {
+  accountCode: 
+  ticketId: 
+}
+
+headers {
+  ~X-Application-Origin: 
+  ~X-Lang: 
+}

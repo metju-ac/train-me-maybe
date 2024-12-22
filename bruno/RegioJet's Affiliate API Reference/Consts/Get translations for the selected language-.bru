@@ -1,0 +1,19 @@
+meta {
+  name: Get translations for the selected language-
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/consts/translations/:language
+  body: none
+  auth: none
+}
+
+params:path {
+  language: 
+}
+
+headers {
+  ~X-Application-Origin: 
+}

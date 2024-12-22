@@ -1,0 +1,30 @@
+meta {
+  name: Search for available routes-
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/routes/:connection/:fromLocation/:toLocation/:ticketType
+  body: none
+  auth: none
+}
+
+params:query {
+  departure: 
+  ~seatClass: 
+  ~numberOfPassengers: 
+}
+
+params:path {
+  connection: 
+  fromLocation: 
+  toLocation: 
+  ticketType: 
+}
+
+headers {
+  ~X-Application-Origin: 
+  ~X-Currency: 
+  ~X-Lang: 
+}

@@ -1,0 +1,21 @@
+meta {
+  name: paySroBooking
+  type: http
+  seq: 2
+}
+
+put {
+  url: {{baseUrl}}/payments/RJ_SRO/:bookingToken/pay
+  body: none
+  auth: none
+}
+
+params:path {
+  bookingToken: 
+}
+
+headers {
+  X-TxToken: 
+  ~X-Application-Origin: 
+  ~X-Lang: 
+}

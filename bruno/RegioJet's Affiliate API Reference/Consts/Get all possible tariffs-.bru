@@ -1,0 +1,16 @@
+meta {
+  name: Get all possible tariffs-
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/consts/tariffs
+  body: none
+  auth: none
+}
+
+headers {
+  ~X-Application-Origin: 
+  ~X-Lang: 
+}

@@ -1,0 +1,21 @@
+meta {
+  name: Cancel seat reservation only ticket by txToken-
+  type: http
+  seq: 3
+}
+
+delete {
+  url: {{baseUrl}}/tickets/RJ_SRO/:txToken
+  body: none
+  auth: none
+}
+
+params:path {
+  txToken: 
+}
+
+headers {
+  X-TxToken: 
+  ~X-Application-Origin: 
+  ~X-Lang: 
+}

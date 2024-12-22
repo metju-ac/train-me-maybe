@@ -1,0 +1,29 @@
+meta {
+  name: Get mandatory passengers data-
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/routes/:routeId/passengersData/RJ_SRO?fromStationId=3088864001&toStationId=372825000
+  body: none
+  auth: none
+}
+
+params:query {
+  fromStationId: 3088864001
+  toStationId: 372825000
+  ~departureDate: 2025-01-21
+  ~seatClass: 
+  ~numberOfPassengers: 
+}
+
+params:path {
+  routeId: 7471783692
+}
+
+headers {
+  ~X-Application-Origin: 
+  ~X-Currency: 
+  ~X-Lang: 
+}

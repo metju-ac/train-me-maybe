@@ -1,0 +1,18 @@
+meta {
+  name: Login with kreditová jízdenka
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/users/login/registeredAccount
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "accountCode": "{{accountCode}}",
+    "password": "{{password}}"
+  }
+}

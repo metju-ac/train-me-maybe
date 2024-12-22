@@ -1,0 +1,30 @@
+meta {
+  name: Search for routes that satisfy specified search criteria-
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/routes/search/simple?fromLocationId=10202002&fromLocationType=CITY&toLocationId=10202003&toLocationType=CITY
+  body: none
+  auth: none
+}
+
+params:query {
+  fromLocationId: 10202002
+  fromLocationType: CITY
+  toLocationId: 10202003
+  toLocationType: CITY
+  ~departureDate: 2025-01-21
+  ~tariffs: CZECH_STUDENT_PASS_26
+  ~actionPrice: 
+  ~move: 
+}
+
+headers {
+  ~X-Application-Origin: 
+  ~X-Lang: 
+  ~X-Currency: 
+  ~X-Used-DepartureFromDateTime: 
+  ~X-Used-DepartureToDateTime: 
+}

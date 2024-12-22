@@ -1,0 +1,16 @@
+meta {
+  name: Get all existing vehicle standards-
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/consts/vehicleStandards
+  body: none
+  auth: none
+}
+
+headers {
+  ~X-Application-Origin: 
+  ~X-Lang: 
+}

@@ -1,0 +1,21 @@
+meta {
+  name: Get QR code image for ticket-
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/tickets/:accountCode/:ticketId/qrcode/png
+  body: none
+  auth: none
+}
+
+params:path {
+  accountCode: 
+  ticketId: 
+}
+
+headers {
+  ~X-Application-Origin: 
+  ~X-Lang: 
+}

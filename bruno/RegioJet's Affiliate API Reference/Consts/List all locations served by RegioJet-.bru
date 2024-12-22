@@ -1,0 +1,20 @@
+meta {
+  name: List all locations served by RegioJet-
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/consts/locations
+  body: none
+  auth: none
+}
+
+params:query {
+  ~stationType: 
+}
+
+headers {
+  ~X-Application-Origin: 
+  ~X-Lang: 
+}

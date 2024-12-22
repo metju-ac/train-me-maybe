@@ -1,0 +1,29 @@
+meta {
+  name: Get route detail-
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/routes/:routeId/prices/RJ_SRO?fromStationId=3088864001&toStationId=372825000&departureDate=2025-01-21&seatClass=TRAIN_LOW_COST&numberOfPassengers=1
+  body: none
+  auth: none
+}
+
+params:query {
+  fromStationId: 3088864001
+  toStationId: 372825000
+  departureDate: 2025-01-21
+  seatClass: TRAIN_LOW_COST
+  numberOfPassengers: 1
+}
+
+params:path {
+  routeId: 7471783692
+}
+
+headers {
+  ~X-Application-Origin: 
+  ~X-Currency: 
+  ~X-Lang: 
+}

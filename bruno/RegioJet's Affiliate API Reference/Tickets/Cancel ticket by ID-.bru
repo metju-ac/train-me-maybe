@@ -1,0 +1,21 @@
+meta {
+  name: Cancel ticket by ID-
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{baseUrl}}/tickets/:accountCode/:ticketId/cancel
+  body: none
+  auth: none
+}
+
+params:path {
+  accountCode: 
+  ticketId: 
+}
+
+headers {
+  ~X-Application-Origin: 
+  ~X-Lang: 
+}

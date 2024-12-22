@@ -1,0 +1,17 @@
+meta {
+  name: Get route tandem free seats grouped by vehicles-
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{baseUrl}}/routes/freeSeats
+  body: none
+  auth: none
+}
+
+headers {
+  ~X-Application-Origin: 
+  ~X-Lang: 
+  ~X-Occupied: 
+}

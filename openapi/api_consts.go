@@ -1,7 +1,7 @@
 /*
 RegioJet's Affiliate API Reference
 
-The RegioJet\\'s Affiliate API is a set of endpoints that help your application integrate with RegioJet.  The API is organized arount [REST](https://en.wikipedia.org/wiki/Representational_state_transfer). Our API uses standard HTTP methods, authentication, and status codes.  # Authentication Authentication to the API is performed via [HTTP Basic Auth](https://en.wikipedia.org/wiki/Basic_access_authentication) for all endpoints listed in this documentation with the exception of `/users/authenticate`, which uses bearer token.  API requests without authentication will fail.  All API requests must be made over [HTTPS](https://en.wikipedia.org/wiki/HTTPS).  # Errors  RegioJet uses conventional HTTP status codes in responses to indicate the success or failure of an API request.  In general:   * `2xx` codes indicate success;   * `4xx` codes indicate an error that failed given the information provided in request.   * `5xx` codes indicate an error with RegioJet's servers. 
+The RegioJet\\'s Affiliate API is a set of endpoints that help your application integrate with RegioJet.  The API is organized arount [REST](https://en.wikipedia.org/wiki/Representational_state_transfer). Our API uses standard HTTP methods, authentication, and status codes.  # Authentication Authentication to the API is performed via [HTTP Basic Auth](https://en.wikipedia.org/wiki/Basic_access_authentication) for all endpoints listed in this documentation with the exception of `/users/authenticate`, which uses bearer token.  API requests without authentication will fail.  All API requests must be made over [HTTPS](https://en.wikipedia.org/wiki/HTTPS).  # Errors  RegioJet uses conventional HTTP status codes in responses to indicate the success or failure of an API request.  In general:   * `2xx` codes indicate success;   * `4xx` codes indicate an error that failed given the information provided in request.   * `5xx` codes indicate an error with RegioJet's servers.
 
 API version: 1.1.0
 Contact: developers@studentagency.cz
@@ -20,16 +20,15 @@ import (
 	"strings"
 )
 
-
 // ConstsAPIService ConstsAPI service
 type ConstsAPIService service
 
 type ApiGetActionPricesRequest struct {
-	ctx context.Context
-	ApiService *ConstsAPIService
+	ctx                context.Context
+	ApiService         *ConstsAPIService
 	xApplicationOrigin *string
-	xLang *string
-	activeOnly *bool
+	xLang              *string
+	activeOnly         *bool
 }
 
 // Application origin - APP - Mobile application (Android / Apple) - AFF - Affiliate application which is managed by third party - CAT - Web application used to sell catering - DEV - Only for development and testing - DOT - Check-in application for ticket sales on a train or bus - NOT - Unknown application type
@@ -38,7 +37,7 @@ func (r ApiGetActionPricesRequest) XApplicationOrigin(xApplicationOrigin string)
 	return r
 }
 
-// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             | 
+// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             |
 func (r ApiGetActionPricesRequest) XLang(xLang string) ApiGetActionPricesRequest {
 	r.xLang = &xLang
 	return r
@@ -57,24 +56,25 @@ func (r ApiGetActionPricesRequest) Execute() ([]ActionPrice, *http.Response, err
 /*
 GetActionPrices Returns list of action prices.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetActionPricesRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetActionPricesRequest
 */
 func (a *ConstsAPIService) GetActionPrices(ctx context.Context) ApiGetActionPricesRequest {
 	return ApiGetActionPricesRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []ActionPrice
+//
+//	@return []ActionPrice
 func (a *ConstsAPIService) GetActionPricesExecute(r ApiGetActionPricesRequest) ([]ActionPrice, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []ActionPrice
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []ActionPrice
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConstsAPIService.GetActionPrices")
@@ -146,8 +146,8 @@ func (a *ConstsAPIService) GetActionPricesExecute(r ApiGetActionPricesRequest) (
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -157,8 +157,8 @@ func (a *ConstsAPIService) GetActionPricesExecute(r ApiGetActionPricesRequest) (
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -176,9 +176,9 @@ func (a *ConstsAPIService) GetActionPricesExecute(r ApiGetActionPricesRequest) (
 }
 
 type ApiGetLanguageDictionaryRequest struct {
-	ctx context.Context
-	ApiService *ConstsAPIService
-	language string
+	ctx                context.Context
+	ApiService         *ConstsAPIService
+	language           string
 	xApplicationOrigin *string
 }
 
@@ -197,26 +197,27 @@ GetLanguageDictionary Get translations for the selected language.
 
 Returns a dictionary of all translation keys with corresponding translation strings in selected language.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param language A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Very similar to X-Lang header of other endpoints, but its value is taken from the path instead of a header.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             | 
- @return ApiGetLanguageDictionaryRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param language A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Very similar to X-Lang header of other endpoints, but its value is taken from the path instead of a header.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             |
+	@return ApiGetLanguageDictionaryRequest
 */
 func (a *ConstsAPIService) GetLanguageDictionary(ctx context.Context, language string) ApiGetLanguageDictionaryRequest {
 	return ApiGetLanguageDictionaryRequest{
 		ApiService: a,
-		ctx: ctx,
-		language: language,
+		ctx:        ctx,
+		language:   language,
 	}
 }
 
 // Execute executes the request
-//  @return map[string]string
+//
+//	@return map[string]string
 func (a *ConstsAPIService) GetLanguageDictionaryExecute(r ApiGetLanguageDictionaryRequest) (map[string]string, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  map[string]string
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue map[string]string
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConstsAPIService.GetLanguageDictionary")
@@ -280,8 +281,8 @@ func (a *ConstsAPIService) GetLanguageDictionaryExecute(r ApiGetLanguageDictiona
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -291,8 +292,8 @@ func (a *ConstsAPIService) GetLanguageDictionaryExecute(r ApiGetLanguageDictiona
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -310,11 +311,11 @@ func (a *ConstsAPIService) GetLanguageDictionaryExecute(r ApiGetLanguageDictiona
 }
 
 type ApiGetLocationsRequest struct {
-	ctx context.Context
-	ApiService *ConstsAPIService
+	ctx                context.Context
+	ApiService         *ConstsAPIService
 	xApplicationOrigin *string
-	xLang *string
-	stationType *string
+	xLang              *string
+	stationType        *string
 }
 
 // Application origin - APP - Mobile application (Android / Apple) - AFF - Affiliate application which is managed by third party - CAT - Web application used to sell catering - DEV - Only for development and testing - DOT - Check-in application for ticket sales on a train or bus - NOT - Unknown application type
@@ -323,7 +324,7 @@ func (r ApiGetLocationsRequest) XApplicationOrigin(xApplicationOrigin string) Ap
 	return r
 }
 
-// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             | 
+// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             |
 func (r ApiGetLocationsRequest) XLang(xLang string) ApiGetLocationsRequest {
 	r.xLang = &xLang
 	return r
@@ -344,24 +345,25 @@ GetLocations List all locations served by RegioJet.
 
 Returns detailed information about all locations served by RegioJet.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetLocationsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetLocationsRequest
 */
 func (a *ConstsAPIService) GetLocations(ctx context.Context) ApiGetLocationsRequest {
 	return ApiGetLocationsRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []Country
+//
+//	@return []Country
 func (a *ConstsAPIService) GetLocationsExecute(r ApiGetLocationsRequest) ([]Country, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []Country
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []Country
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConstsAPIService.GetLocations")
@@ -430,8 +432,8 @@ func (a *ConstsAPIService) GetLocationsExecute(r ApiGetLocationsRequest) ([]Coun
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -441,8 +443,8 @@ func (a *ConstsAPIService) GetLocationsExecute(r ApiGetLocationsRequest) ([]Coun
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -460,10 +462,10 @@ func (a *ConstsAPIService) GetLocationsExecute(r ApiGetLocationsRequest) ([]Coun
 }
 
 type ApiGetSeatClassesRequest struct {
-	ctx context.Context
-	ApiService *ConstsAPIService
+	ctx                context.Context
+	ApiService         *ConstsAPIService
 	xApplicationOrigin *string
-	xLang *string
+	xLang              *string
 }
 
 // Application origin - APP - Mobile application (Android / Apple) - AFF - Affiliate application which is managed by third party - CAT - Web application used to sell catering - DEV - Only for development and testing - DOT - Check-in application for ticket sales on a train or bus - NOT - Unknown application type
@@ -472,7 +474,7 @@ func (r ApiGetSeatClassesRequest) XApplicationOrigin(xApplicationOrigin string) 
 	return r
 }
 
-// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             | 
+// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             |
 func (r ApiGetSeatClassesRequest) XLang(xLang string) ApiGetSeatClassesRequest {
 	r.xLang = &xLang
 	return r
@@ -487,24 +489,25 @@ GetSeatClasses List all seat classes provided by RegioJet.
 
 Returns detailed information about all possible seat classes provided by RegioJet.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetSeatClassesRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetSeatClassesRequest
 */
 func (a *ConstsAPIService) GetSeatClasses(ctx context.Context) ApiGetSeatClassesRequest {
 	return ApiGetSeatClassesRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []SeatClass
+//
+//	@return []SeatClass
 func (a *ConstsAPIService) GetSeatClassesExecute(r ApiGetSeatClassesRequest) ([]SeatClass, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []SeatClass
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []SeatClass
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConstsAPIService.GetSeatClasses")
@@ -570,8 +573,8 @@ func (a *ConstsAPIService) GetSeatClassesExecute(r ApiGetSeatClassesRequest) ([]
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -581,8 +584,8 @@ func (a *ConstsAPIService) GetSeatClassesExecute(r ApiGetSeatClassesRequest) ([]
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -600,10 +603,10 @@ func (a *ConstsAPIService) GetSeatClassesExecute(r ApiGetSeatClassesRequest) ([]
 }
 
 type ApiGetStandardsRequest struct {
-	ctx context.Context
-	ApiService *ConstsAPIService
+	ctx                context.Context
+	ApiService         *ConstsAPIService
 	xApplicationOrigin *string
-	xLang *string
+	xLang              *string
 }
 
 // Application origin - APP - Mobile application (Android / Apple) - AFF - Affiliate application which is managed by third party - CAT - Web application used to sell catering - DEV - Only for development and testing - DOT - Check-in application for ticket sales on a train or bus - NOT - Unknown application type
@@ -612,7 +615,7 @@ func (r ApiGetStandardsRequest) XApplicationOrigin(xApplicationOrigin string) Ap
 	return r
 }
 
-// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             | 
+// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             |
 func (r ApiGetStandardsRequest) XLang(xLang string) ApiGetStandardsRequest {
 	r.xLang = &xLang
 	return r
@@ -627,24 +630,25 @@ GetStandards Get all existing vehicle standards.
 
 Returns detailed data about each vehicle standard.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetStandardsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetStandardsRequest
 */
 func (a *ConstsAPIService) GetStandards(ctx context.Context) ApiGetStandardsRequest {
 	return ApiGetStandardsRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []VehicleStandard
+//
+//	@return []VehicleStandard
 func (a *ConstsAPIService) GetStandardsExecute(r ApiGetStandardsRequest) ([]VehicleStandard, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []VehicleStandard
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []VehicleStandard
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConstsAPIService.GetStandards")
@@ -710,8 +714,8 @@ func (a *ConstsAPIService) GetStandardsExecute(r ApiGetStandardsRequest) ([]Vehi
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -721,8 +725,8 @@ func (a *ConstsAPIService) GetStandardsExecute(r ApiGetStandardsRequest) ([]Vehi
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -740,10 +744,10 @@ func (a *ConstsAPIService) GetStandardsExecute(r ApiGetStandardsRequest) ([]Vehi
 }
 
 type ApiGetTariffsRequest struct {
-	ctx context.Context
-	ApiService *ConstsAPIService
+	ctx                context.Context
+	ApiService         *ConstsAPIService
 	xApplicationOrigin *string
-	xLang *string
+	xLang              *string
 }
 
 // Application origin - APP - Mobile application (Android / Apple) - AFF - Affiliate application which is managed by third party - CAT - Web application used to sell catering - DEV - Only for development and testing - DOT - Check-in application for ticket sales on a train or bus - NOT - Unknown application type
@@ -752,7 +756,7 @@ func (r ApiGetTariffsRequest) XApplicationOrigin(xApplicationOrigin string) ApiG
 	return r
 }
 
-// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             | 
+// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             |
 func (r ApiGetTariffsRequest) XLang(xLang string) ApiGetTariffsRequest {
 	r.xLang = &xLang
 	return r
@@ -767,24 +771,25 @@ GetTariffs Get all possible tariffs.
 
 Returns detailed data about each tariff.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetTariffsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetTariffsRequest
 */
 func (a *ConstsAPIService) GetTariffs(ctx context.Context) ApiGetTariffsRequest {
 	return ApiGetTariffsRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []Tariff
+//
+//	@return []Tariff
 func (a *ConstsAPIService) GetTariffsExecute(r ApiGetTariffsRequest) ([]Tariff, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []Tariff
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []Tariff
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConstsAPIService.GetTariffs")
@@ -850,8 +855,8 @@ func (a *ConstsAPIService) GetTariffsExecute(r ApiGetTariffsRequest) ([]Tariff, 
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -861,8 +866,8 @@ func (a *ConstsAPIService) GetTariffsExecute(r ApiGetTariffsRequest) ([]Tariff, 
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

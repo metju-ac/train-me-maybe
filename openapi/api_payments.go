@@ -1,7 +1,7 @@
 /*
 RegioJet's Affiliate API Reference
 
-The RegioJet\\'s Affiliate API is a set of endpoints that help your application integrate with RegioJet.  The API is organized arount [REST](https://en.wikipedia.org/wiki/Representational_state_transfer). Our API uses standard HTTP methods, authentication, and status codes.  # Authentication Authentication to the API is performed via [HTTP Basic Auth](https://en.wikipedia.org/wiki/Basic_access_authentication) for all endpoints listed in this documentation with the exception of `/users/authenticate`, which uses bearer token.  API requests without authentication will fail.  All API requests must be made over [HTTPS](https://en.wikipedia.org/wiki/HTTPS).  # Errors  RegioJet uses conventional HTTP status codes in responses to indicate the success or failure of an API request.  In general:   * `2xx` codes indicate success;   * `4xx` codes indicate an error that failed given the information provided in request.   * `5xx` codes indicate an error with RegioJet's servers. 
+The RegioJet\\'s Affiliate API is a set of endpoints that help your application integrate with RegioJet.  The API is organized arount [REST](https://en.wikipedia.org/wiki/Representational_state_transfer). Our API uses standard HTTP methods, authentication, and status codes.  # Authentication Authentication to the API is performed via [HTTP Basic Auth](https://en.wikipedia.org/wiki/Basic_access_authentication) for all endpoints listed in this documentation with the exception of `/users/authenticate`, which uses bearer token.  API requests without authentication will fail.  All API requests must be made over [HTTPS](https://en.wikipedia.org/wiki/HTTPS).  # Errors  RegioJet uses conventional HTTP status codes in responses to indicate the success or failure of an API request.  In general:   * `2xx` codes indicate success;   * `4xx` codes indicate an error that failed given the information provided in request.   * `5xx` codes indicate an error with RegioJet's servers.
 
 API version: 1.1.0
 Contact: developers@studentagency.cz
@@ -20,17 +20,16 @@ import (
 	"strings"
 )
 
-
 // PaymentsAPIService PaymentsAPI service
 type PaymentsAPIService service
 
 type ApiPaySroBookingRequest struct {
-	ctx context.Context
-	ApiService *PaymentsAPIService
-	bookingToken string
-	xTxToken *string
+	ctx                context.Context
+	ApiService         *PaymentsAPIService
+	bookingToken       string
+	xTxToken           *string
 	xApplicationOrigin *string
-	xLang *string
+	xLang              *string
 }
 
 // Internal ID of the operation - used for check status 204.
@@ -45,7 +44,7 @@ func (r ApiPaySroBookingRequest) XApplicationOrigin(xApplicationOrigin string) A
 	return r
 }
 
-// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             | 
+// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             |
 func (r ApiPaySroBookingRequest) XLang(xLang string) ApiPaySroBookingRequest {
 	r.xLang = &xLang
 	return r
@@ -60,26 +59,27 @@ PaySroBooking Method for PaySroBooking
 
 Marks a tickets as paid for given booking token.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param bookingToken Internal ID of the soft booking operation that will be paid.
- @return ApiPaySroBookingRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param bookingToken Internal ID of the soft booking operation that will be paid.
+	@return ApiPaySroBookingRequest
 */
 func (a *PaymentsAPIService) PaySroBooking(ctx context.Context, bookingToken string) ApiPaySroBookingRequest {
 	return ApiPaySroBookingRequest{
-		ApiService: a,
-		ctx: ctx,
+		ApiService:   a,
+		ctx:          ctx,
 		bookingToken: bookingToken,
 	}
 }
 
 // Execute executes the request
-//  @return SuccessResponse
+//
+//	@return SuccessResponse
 func (a *PaymentsAPIService) PaySroBookingExecute(r ApiPaySroBookingRequest) (*SuccessResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPut
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *SuccessResponse
+		localVarHTTPMethod  = http.MethodPut
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *SuccessResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PaymentsAPIService.PaySroBooking")
@@ -162,8 +162,8 @@ func (a *PaymentsAPIService) PaySroBookingExecute(r ApiPaySroBookingRequest) (*S
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -173,8 +173,8 @@ func (a *PaymentsAPIService) PaySroBookingExecute(r ApiPaySroBookingRequest) (*S
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -192,11 +192,11 @@ func (a *PaymentsAPIService) PaySroBookingExecute(r ApiPaySroBookingRequest) (*S
 }
 
 type ApiPayTicketRequest struct {
-	ctx context.Context
-	ApiService *PaymentsAPIService
-	ticketId int64
+	ctx                context.Context
+	ApiService         *PaymentsAPIService
+	ticketId           int64
 	xApplicationOrigin *string
-	xLang *string
+	xLang              *string
 }
 
 // Application origin - APP - Mobile application (Android / Apple) - AFF - Affiliate application which is managed by third party - CAT - Web application used to sell catering - DEV - Only for development and testing - DOT - Check-in application for ticket sales on a train or bus - NOT - Unknown application type
@@ -205,7 +205,7 @@ func (r ApiPayTicketRequest) XApplicationOrigin(xApplicationOrigin string) ApiPa
 	return r
 }
 
-// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             | 
+// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             |
 func (r ApiPayTicketRequest) XLang(xLang string) ApiPayTicketRequest {
 	r.xLang = &xLang
 	return r
@@ -220,24 +220,24 @@ PayTicket Method for PayTicket
 
 Pays a ticket.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param ticketId Unique identifier for the ticket.
- @return ApiPayTicketRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param ticketId Unique identifier for the ticket.
+	@return ApiPayTicketRequest
 */
 func (a *PaymentsAPIService) PayTicket(ctx context.Context, ticketId int64) ApiPayTicketRequest {
 	return ApiPayTicketRequest{
 		ApiService: a,
-		ctx: ctx,
-		ticketId: ticketId,
+		ctx:        ctx,
+		ticketId:   ticketId,
 	}
 }
 
 // Execute executes the request
 func (a *PaymentsAPIService) PayTicketExecute(r ApiPayTicketRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPut
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPut
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PaymentsAPIService.PayTicket")
@@ -304,8 +304,8 @@ func (a *PaymentsAPIService) PayTicketExecute(r ApiPayTicketRequest) (*http.Resp
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -315,8 +315,8 @@ func (a *PaymentsAPIService) PayTicketExecute(r ApiPayTicketRequest) (*http.Resp
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}

@@ -1,7 +1,7 @@
 /*
 RegioJet's Affiliate API Reference
 
-The RegioJet\\'s Affiliate API is a set of endpoints that help your application integrate with RegioJet.  The API is organized arount [REST](https://en.wikipedia.org/wiki/Representational_state_transfer). Our API uses standard HTTP methods, authentication, and status codes.  # Authentication Authentication to the API is performed via [HTTP Basic Auth](https://en.wikipedia.org/wiki/Basic_access_authentication) for all endpoints listed in this documentation with the exception of `/users/authenticate`, which uses bearer token.  API requests without authentication will fail.  All API requests must be made over [HTTPS](https://en.wikipedia.org/wiki/HTTPS).  # Errors  RegioJet uses conventional HTTP status codes in responses to indicate the success or failure of an API request.  In general:   * `2xx` codes indicate success;   * `4xx` codes indicate an error that failed given the information provided in request.   * `5xx` codes indicate an error with RegioJet's servers. 
+The RegioJet\\'s Affiliate API is a set of endpoints that help your application integrate with RegioJet.  The API is organized arount [REST](https://en.wikipedia.org/wiki/Representational_state_transfer). Our API uses standard HTTP methods, authentication, and status codes.  # Authentication Authentication to the API is performed via [HTTP Basic Auth](https://en.wikipedia.org/wiki/Basic_access_authentication) for all endpoints listed in this documentation with the exception of `/users/authenticate`, which uses bearer token.  API requests without authentication will fail.  All API requests must be made over [HTTPS](https://en.wikipedia.org/wiki/HTTPS).  # Errors  RegioJet uses conventional HTTP status codes in responses to indicate the success or failure of an API request.  In general:   * `2xx` codes indicate success;   * `4xx` codes indicate an error that failed given the information provided in request.   * `5xx` codes indicate an error with RegioJet's servers.
 
 API version: 1.1.0
 Contact: developers@studentagency.cz
@@ -17,22 +17,21 @@ import (
 	"io"
 	"net/http"
 	"net/url"
-	"strings"
 	"os"
+	"strings"
 )
-
 
 // TicketsAPIService TicketsAPI service
 type TicketsAPIService service
 
 type ApiCancelTicketRequest struct {
-	ctx context.Context
-	ApiService *TicketsAPIService
-	accountCode string
-	ticketId int64
-	request *CancelTicketRequest
+	ctx                context.Context
+	ApiService         *TicketsAPIService
+	accountCode        string
+	ticketId           int64
+	request            *CancelTicketRequest
 	xApplicationOrigin *string
-	xLang *string
+	xLang              *string
 }
 
 func (r ApiCancelTicketRequest) Request(request CancelTicketRequest) ApiCancelTicketRequest {
@@ -46,7 +45,7 @@ func (r ApiCancelTicketRequest) XApplicationOrigin(xApplicationOrigin string) Ap
 	return r
 }
 
-// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             | 
+// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             |
 func (r ApiCancelTicketRequest) XLang(xLang string) ApiCancelTicketRequest {
 	r.xLang = &xLang
 	return r
@@ -59,28 +58,29 @@ func (r ApiCancelTicketRequest) Execute() (*SuccessResponse, *http.Response, err
 /*
 CancelTicket Cancel ticket by ID.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param accountCode Unique code for the customer's account.  To obtain account code you should go through these two steps:   1. Create new ticket using endpoint `tickets/create`. This endpoint will return `token` in response, which you should use in the step 2.   2. Authenticate user's token using endpoint `users/authenticate`, which will return `accountCode` in response. 
- @param ticketId Unique identifier for the ticket.
- @return ApiCancelTicketRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param accountCode Unique code for the customer's account.  To obtain account code you should go through these two steps:   1. Create new ticket using endpoint `tickets/create`. This endpoint will return `token` in response, which you should use in the step 2.   2. Authenticate user's token using endpoint `users/authenticate`, which will return `accountCode` in response.
+	@param ticketId Unique identifier for the ticket.
+	@return ApiCancelTicketRequest
 */
 func (a *TicketsAPIService) CancelTicket(ctx context.Context, accountCode string, ticketId int64) ApiCancelTicketRequest {
 	return ApiCancelTicketRequest{
-		ApiService: a,
-		ctx: ctx,
+		ApiService:  a,
+		ctx:         ctx,
 		accountCode: accountCode,
-		ticketId: ticketId,
+		ticketId:    ticketId,
 	}
 }
 
 // Execute executes the request
-//  @return SuccessResponse
+//
+//	@return SuccessResponse
 func (a *TicketsAPIService) CancelTicketExecute(r ApiCancelTicketRequest) (*SuccessResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPut
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *SuccessResponse
+		localVarHTTPMethod  = http.MethodPut
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *SuccessResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TicketsAPIService.CancelTicket")
@@ -153,8 +153,8 @@ func (a *TicketsAPIService) CancelTicketExecute(r ApiCancelTicketRequest) (*Succ
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -164,8 +164,8 @@ func (a *TicketsAPIService) CancelTicketExecute(r ApiCancelTicketRequest) (*Succ
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -175,8 +175,8 @@ func (a *TicketsAPIService) CancelTicketExecute(r ApiCancelTicketRequest) (*Succ
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -194,12 +194,12 @@ func (a *TicketsAPIService) CancelTicketExecute(r ApiCancelTicketRequest) (*Succ
 }
 
 type ApiCreateTicketsRequest struct {
-	ctx context.Context
-	ApiService *TicketsAPIService
-	ticketsRequest *CreateUnregisteredTicketRequest
+	ctx                context.Context
+	ApiService         *TicketsAPIService
+	ticketsRequest     *CreateUnregisteredTicketRequest
 	xApplicationOrigin *string
-	xLang *string
-	xCurrency *string
+	xLang              *string
+	xCurrency          *string
 }
 
 // Ticket(s) to create.
@@ -214,13 +214,13 @@ func (r ApiCreateTicketsRequest) XApplicationOrigin(xApplicationOrigin string) A
 	return r
 }
 
-// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             | 
+// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             |
 func (r ApiCreateTicketsRequest) XLang(xLang string) ApiCreateTicketsRequest {
 	r.xLang = &xLang
 	return r
 }
 
-// A three-letter currency code from [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217). Defines monetary unit to be used in respons.  Currently supported currencies:  | Currency     | ISO 4217 code | |--------------|---------------| | Czech koruna | CZK           | | Euro         | EUR           | 
+// A three-letter currency code from [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217). Defines monetary unit to be used in respons.  Currently supported currencies:  | Currency     | ISO 4217 code | |--------------|---------------| | Czech koruna | CZK           | | Euro         | EUR           |
 func (r ApiCreateTicketsRequest) XCurrency(xCurrency string) ApiCreateTicketsRequest {
 	r.xCurrency = &xCurrency
 	return r
@@ -233,24 +233,25 @@ func (r ApiCreateTicketsRequest) Execute() (*CreateTicketResponseUnregistered, *
 /*
 CreateTickets Create new ticket(s).
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiCreateTicketsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiCreateTicketsRequest
 */
 func (a *TicketsAPIService) CreateTickets(ctx context.Context) ApiCreateTicketsRequest {
 	return ApiCreateTicketsRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CreateTicketResponseUnregistered
+//
+//	@return CreateTicketResponseUnregistered
 func (a *TicketsAPIService) CreateTicketsExecute(r ApiCreateTicketsRequest) (*CreateTicketResponseUnregistered, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CreateTicketResponseUnregistered
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CreateTicketResponseUnregistered
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TicketsAPIService.CreateTickets")
@@ -324,8 +325,8 @@ func (a *TicketsAPIService) CreateTicketsExecute(r ApiCreateTicketsRequest) (*Cr
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -335,8 +336,8 @@ func (a *TicketsAPIService) CreateTicketsExecute(r ApiCreateTicketsRequest) (*Cr
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -354,12 +355,12 @@ func (a *TicketsAPIService) CreateTicketsExecute(r ApiCreateTicketsRequest) (*Cr
 }
 
 type ApiGetTicketByIdRequest struct {
-	ctx context.Context
-	ApiService *TicketsAPIService
-	accountCode string
-	ticketId int64
+	ctx                context.Context
+	ApiService         *TicketsAPIService
+	accountCode        string
+	ticketId           int64
 	xApplicationOrigin *string
-	xLang *string
+	xLang              *string
 }
 
 // Application origin - APP - Mobile application (Android / Apple) - AFF - Affiliate application which is managed by third party - CAT - Web application used to sell catering - DEV - Only for development and testing - DOT - Check-in application for ticket sales on a train or bus - NOT - Unknown application type
@@ -368,7 +369,7 @@ func (r ApiGetTicketByIdRequest) XApplicationOrigin(xApplicationOrigin string) A
 	return r
 }
 
-// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             | 
+// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             |
 func (r ApiGetTicketByIdRequest) XLang(xLang string) ApiGetTicketByIdRequest {
 	r.xLang = &xLang
 	return r
@@ -383,28 +384,29 @@ GetTicketById Get ticket by ID.
 
 Returns detailed ticket data.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param accountCode Unique code for the customer's account.  To obtain account code you should go through these two steps:   1. Create new ticket using endpoint `tickets/create`. This endpoint will return `token` in response, which you should use in the step 2.   2. Authenticate user's token using endpoint `users/authenticate`, which will return `accountCode` in response. 
- @param ticketId Unique identifier for the ticket.
- @return ApiGetTicketByIdRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param accountCode Unique code for the customer's account.  To obtain account code you should go through these two steps:   1. Create new ticket using endpoint `tickets/create`. This endpoint will return `token` in response, which you should use in the step 2.   2. Authenticate user's token using endpoint `users/authenticate`, which will return `accountCode` in response.
+	@param ticketId Unique identifier for the ticket.
+	@return ApiGetTicketByIdRequest
 */
 func (a *TicketsAPIService) GetTicketById(ctx context.Context, accountCode string, ticketId int64) ApiGetTicketByIdRequest {
 	return ApiGetTicketByIdRequest{
-		ApiService: a,
-		ctx: ctx,
+		ApiService:  a,
+		ctx:         ctx,
 		accountCode: accountCode,
-		ticketId: ticketId,
+		ticketId:    ticketId,
 	}
 }
 
 // Execute executes the request
-//  @return Ticket
+//
+//	@return Ticket
 func (a *TicketsAPIService) GetTicketByIdExecute(r ApiGetTicketByIdRequest) (*Ticket, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *Ticket
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *Ticket
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TicketsAPIService.GetTicketById")
@@ -472,8 +474,8 @@ func (a *TicketsAPIService) GetTicketByIdExecute(r ApiGetTicketByIdRequest) (*Ti
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -483,8 +485,8 @@ func (a *TicketsAPIService) GetTicketByIdExecute(r ApiGetTicketByIdRequest) (*Ti
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -502,12 +504,12 @@ func (a *TicketsAPIService) GetTicketByIdExecute(r ApiGetTicketByIdRequest) (*Ti
 }
 
 type ApiGetTicketQrCodeRequest struct {
-	ctx context.Context
-	ApiService *TicketsAPIService
-	accountCode string
-	ticketId int64
+	ctx                context.Context
+	ApiService         *TicketsAPIService
+	accountCode        string
+	ticketId           int64
 	xApplicationOrigin *string
-	xLang *string
+	xLang              *string
 }
 
 // Application origin - APP - Mobile application (Android / Apple) - AFF - Affiliate application which is managed by third party - CAT - Web application used to sell catering - DEV - Only for development and testing - DOT - Check-in application for ticket sales on a train or bus - NOT - Unknown application type
@@ -516,7 +518,7 @@ func (r ApiGetTicketQrCodeRequest) XApplicationOrigin(xApplicationOrigin string)
 	return r
 }
 
-// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             | 
+// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             |
 func (r ApiGetTicketQrCodeRequest) XLang(xLang string) ApiGetTicketQrCodeRequest {
 	r.xLang = &xLang
 	return r
@@ -531,28 +533,29 @@ GetTicketQrCode Get tickets' QR code.
 
 Get QR code content in CSV format (European CSV/DSV). Fields are separated by the semicolon character.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param accountCode Unique code for the customer's account.  To obtain account code you should go through these two steps:   1. Create new ticket using endpoint `tickets/create`. This endpoint will return `token` in response, which you should use in the step 2.   2. Authenticate user's token using endpoint `users/authenticate`, which will return `accountCode` in response. 
- @param ticketId Unique identifier for the ticket.
- @return ApiGetTicketQrCodeRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param accountCode Unique code for the customer's account.  To obtain account code you should go through these two steps:   1. Create new ticket using endpoint `tickets/create`. This endpoint will return `token` in response, which you should use in the step 2.   2. Authenticate user's token using endpoint `users/authenticate`, which will return `accountCode` in response.
+	@param ticketId Unique identifier for the ticket.
+	@return ApiGetTicketQrCodeRequest
 */
 func (a *TicketsAPIService) GetTicketQrCode(ctx context.Context, accountCode string, ticketId int64) ApiGetTicketQrCodeRequest {
 	return ApiGetTicketQrCodeRequest{
-		ApiService: a,
-		ctx: ctx,
+		ApiService:  a,
+		ctx:         ctx,
 		accountCode: accountCode,
-		ticketId: ticketId,
+		ticketId:    ticketId,
 	}
 }
 
 // Execute executes the request
-//  @return QrCodeTicket
+//
+//	@return QrCodeTicket
 func (a *TicketsAPIService) GetTicketQrCodeExecute(r ApiGetTicketQrCodeRequest) (*QrCodeTicket, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *QrCodeTicket
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *QrCodeTicket
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TicketsAPIService.GetTicketQrCode")
@@ -620,8 +623,8 @@ func (a *TicketsAPIService) GetTicketQrCodeExecute(r ApiGetTicketQrCodeRequest) 
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -631,8 +634,8 @@ func (a *TicketsAPIService) GetTicketQrCodeExecute(r ApiGetTicketQrCodeRequest) 
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -642,8 +645,8 @@ func (a *TicketsAPIService) GetTicketQrCodeExecute(r ApiGetTicketQrCodeRequest) 
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -661,12 +664,12 @@ func (a *TicketsAPIService) GetTicketQrCodeExecute(r ApiGetTicketQrCodeRequest) 
 }
 
 type ApiGetTicketQrCodePngRequest struct {
-	ctx context.Context
-	ApiService *TicketsAPIService
-	accountCode string
-	ticketId int64
+	ctx                context.Context
+	ApiService         *TicketsAPIService
+	accountCode        string
+	ticketId           int64
 	xApplicationOrigin *string
-	xLang *string
+	xLang              *string
 }
 
 // Application origin - APP - Mobile application (Android / Apple) - AFF - Affiliate application which is managed by third party - CAT - Web application used to sell catering - DEV - Only for development and testing - DOT - Check-in application for ticket sales on a train or bus - NOT - Unknown application type
@@ -675,7 +678,7 @@ func (r ApiGetTicketQrCodePngRequest) XApplicationOrigin(xApplicationOrigin stri
 	return r
 }
 
-// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             | 
+// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             |
 func (r ApiGetTicketQrCodePngRequest) XLang(xLang string) ApiGetTicketQrCodePngRequest {
 	r.xLang = &xLang
 	return r
@@ -690,28 +693,29 @@ GetTicketQrCodePng Get QR code image for ticket.
 
 Get QR code as a PNG image.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param accountCode Unique code for the customer's account.  To obtain account code you should go through these two steps:   1. Create new ticket using endpoint `tickets/create`. This endpoint will return `token` in response, which you should use in the step 2.   2. Authenticate user's token using endpoint `users/authenticate`, which will return `accountCode` in response. 
- @param ticketId Unique identifier for the ticket.
- @return ApiGetTicketQrCodePngRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param accountCode Unique code for the customer's account.  To obtain account code you should go through these two steps:   1. Create new ticket using endpoint `tickets/create`. This endpoint will return `token` in response, which you should use in the step 2.   2. Authenticate user's token using endpoint `users/authenticate`, which will return `accountCode` in response.
+	@param ticketId Unique identifier for the ticket.
+	@return ApiGetTicketQrCodePngRequest
 */
 func (a *TicketsAPIService) GetTicketQrCodePng(ctx context.Context, accountCode string, ticketId int64) ApiGetTicketQrCodePngRequest {
 	return ApiGetTicketQrCodePngRequest{
-		ApiService: a,
-		ctx: ctx,
+		ApiService:  a,
+		ctx:         ctx,
 		accountCode: accountCode,
-		ticketId: ticketId,
+		ticketId:    ticketId,
 	}
 }
 
 // Execute executes the request
-//  @return *os.File
+//
+//	@return *os.File
 func (a *TicketsAPIService) GetTicketQrCodePngExecute(r ApiGetTicketQrCodePngRequest) (*os.File, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *os.File
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *os.File
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TicketsAPIService.GetTicketQrCodePng")
@@ -779,8 +783,8 @@ func (a *TicketsAPIService) GetTicketQrCodePngExecute(r ApiGetTicketQrCodePngReq
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -790,8 +794,8 @@ func (a *TicketsAPIService) GetTicketQrCodePngExecute(r ApiGetTicketQrCodePngReq
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -801,8 +805,8 @@ func (a *TicketsAPIService) GetTicketQrCodePngExecute(r ApiGetTicketQrCodePngReq
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -820,12 +824,12 @@ func (a *TicketsAPIService) GetTicketQrCodePngExecute(r ApiGetTicketQrCodePngReq
 }
 
 type ApiPrintRequest struct {
-	ctx context.Context
-	ApiService *TicketsAPIService
-	accountCode string
-	ticketId int64
+	ctx                context.Context
+	ApiService         *TicketsAPIService
+	accountCode        string
+	ticketId           int64
 	xApplicationOrigin *string
-	xLang *string
+	xLang              *string
 }
 
 // Application origin - APP - Mobile application (Android / Apple) - AFF - Affiliate application which is managed by third party - CAT - Web application used to sell catering - DEV - Only for development and testing - DOT - Check-in application for ticket sales on a train or bus - NOT - Unknown application type
@@ -834,7 +838,7 @@ func (r ApiPrintRequest) XApplicationOrigin(xApplicationOrigin string) ApiPrintR
 	return r
 }
 
-// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             | 
+// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             |
 func (r ApiPrintRequest) XLang(xLang string) ApiPrintRequest {
 	r.xLang = &xLang
 	return r
@@ -849,28 +853,29 @@ Print Prints ticket.
 
 Outputs ticket in HTML format.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param accountCode Unique code for the customer's account.  To obtain account code you should go through these two steps:   1. Create new ticket using endpoint `tickets/create`. This endpoint will return `token` in response, which you should use in the step 2.   2. Authenticate user's token using endpoint `users/authenticate`, which will return `accountCode` in response. 
- @param ticketId Unique identifier for the ticket.
- @return ApiPrintRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param accountCode Unique code for the customer's account.  To obtain account code you should go through these two steps:   1. Create new ticket using endpoint `tickets/create`. This endpoint will return `token` in response, which you should use in the step 2.   2. Authenticate user's token using endpoint `users/authenticate`, which will return `accountCode` in response.
+	@param ticketId Unique identifier for the ticket.
+	@return ApiPrintRequest
 */
 func (a *TicketsAPIService) Print(ctx context.Context, accountCode string, ticketId int64) ApiPrintRequest {
 	return ApiPrintRequest{
-		ApiService: a,
-		ctx: ctx,
+		ApiService:  a,
+		ctx:         ctx,
 		accountCode: accountCode,
-		ticketId: ticketId,
+		ticketId:    ticketId,
 	}
 }
 
 // Execute executes the request
-//  @return string
+//
+//	@return string
 func (a *TicketsAPIService) PrintExecute(r ApiPrintRequest) (string, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  string
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue string
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TicketsAPIService.Print")
@@ -938,8 +943,8 @@ func (a *TicketsAPIService) PrintExecute(r ApiPrintRequest) (string, *http.Respo
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -949,8 +954,8 @@ func (a *TicketsAPIService) PrintExecute(r ApiPrintRequest) (string, *http.Respo
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -960,8 +965,8 @@ func (a *TicketsAPIService) PrintExecute(r ApiPrintRequest) (string, *http.Respo
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

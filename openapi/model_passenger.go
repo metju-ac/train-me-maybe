@@ -1,7 +1,7 @@
 /*
 RegioJet's Affiliate API Reference
 
-The RegioJet\\'s Affiliate API is a set of endpoints that help your application integrate with RegioJet.  The API is organized arount [REST](https://en.wikipedia.org/wiki/Representational_state_transfer). Our API uses standard HTTP methods, authentication, and status codes.  # Authentication Authentication to the API is performed via [HTTP Basic Auth](https://en.wikipedia.org/wiki/Basic_access_authentication) for all endpoints listed in this documentation with the exception of `/users/authenticate`, which uses bearer token.  API requests without authentication will fail.  All API requests must be made over [HTTPS](https://en.wikipedia.org/wiki/HTTPS).  # Errors  RegioJet uses conventional HTTP status codes in responses to indicate the success or failure of an API request.  In general:   * `2xx` codes indicate success;   * `4xx` codes indicate an error that failed given the information provided in request.   * `5xx` codes indicate an error with RegioJet's servers. 
+The RegioJet\\'s Affiliate API is a set of endpoints that help your application integrate with RegioJet.  The API is organized arount [REST](https://en.wikipedia.org/wiki/Representational_state_transfer). Our API uses standard HTTP methods, authentication, and status codes.  # Authentication Authentication to the API is performed via [HTTP Basic Auth](https://en.wikipedia.org/wiki/Basic_access_authentication) for all endpoints listed in this documentation with the exception of `/users/authenticate`, which uses bearer token.  API requests without authentication will fail.  All API requests must be made over [HTTPS](https://en.wikipedia.org/wiki/HTTPS).  # Errors  RegioJet uses conventional HTTP status codes in responses to indicate the success or failure of an API request.  In general:   * `2xx` codes indicate success;   * `4xx` codes indicate an error that failed given the information provided in request.   * `5xx` codes indicate an error with RegioJet's servers.
 
 API version: 1.1.0
 Contact: developers@studentagency.cz
@@ -12,8 +12,8 @@ Contact: developers@studentagency.cz
 package openapi
 
 import (
-	"encoding/json"
 	"bytes"
+	"encoding/json"
 	"fmt"
 )
 
@@ -27,11 +27,11 @@ type Passenger struct {
 	FirstName *string `json:"firstName,omitempty"`
 	// Surname
 	Surname *string `json:"surname,omitempty"`
-	Phone *string `json:"phone,omitempty"`
+	Phone   *string `json:"phone,omitempty"`
 	// Email are always required after first passenger if not pre-filled in user account (or customer isnt logged in)
-	Email *string `json:"email,omitempty"`
+	Email       *string `json:"email,omitempty"`
 	DateOfBirth *string `json:"dateOfBirth,omitempty"`
-	Tariff string `json:"tariff"`
+	Tariff      string  `json:"tariff"`
 	// Basic price (ticket purchase) for tariff set on ticket with ticket currency (doesnt count with discounts)
 	Amount *float32 `json:"amount,omitempty"`
 	// Final amount for passenger which will be refunded if canceled.
@@ -339,7 +339,7 @@ func (o *Passenger) SetMoneyBack(v float32) {
 }
 
 func (o Passenger) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -389,10 +389,10 @@ func (o *Passenger) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -448,5 +448,3 @@ func (v *NullablePassenger) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

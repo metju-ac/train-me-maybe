@@ -1,7 +1,7 @@
 /*
 RegioJet's Affiliate API Reference
 
-The RegioJet\\'s Affiliate API is a set of endpoints that help your application integrate with RegioJet.  The API is organized arount [REST](https://en.wikipedia.org/wiki/Representational_state_transfer). Our API uses standard HTTP methods, authentication, and status codes.  # Authentication Authentication to the API is performed via [HTTP Basic Auth](https://en.wikipedia.org/wiki/Basic_access_authentication) for all endpoints listed in this documentation with the exception of `/users/authenticate`, which uses bearer token.  API requests without authentication will fail.  All API requests must be made over [HTTPS](https://en.wikipedia.org/wiki/HTTPS).  # Errors  RegioJet uses conventional HTTP status codes in responses to indicate the success or failure of an API request.  In general:   * `2xx` codes indicate success;   * `4xx` codes indicate an error that failed given the information provided in request.   * `5xx` codes indicate an error with RegioJet's servers. 
+The RegioJet\\'s Affiliate API is a set of endpoints that help your application integrate with RegioJet.  The API is organized arount [REST](https://en.wikipedia.org/wiki/Representational_state_transfer). Our API uses standard HTTP methods, authentication, and status codes.  # Authentication Authentication to the API is performed via [HTTP Basic Auth](https://en.wikipedia.org/wiki/Basic_access_authentication) for all endpoints listed in this documentation with the exception of `/users/authenticate`, which uses bearer token.  API requests without authentication will fail.  All API requests must be made over [HTTPS](https://en.wikipedia.org/wiki/HTTPS).  # Errors  RegioJet uses conventional HTTP status codes in responses to indicate the success or failure of an API request.  In general:   * `2xx` codes indicate success;   * `4xx` codes indicate an error that failed given the information provided in request.   * `5xx` codes indicate an error with RegioJet's servers.
 
 API version: 1.1.0
 Contact: developers@studentagency.cz
@@ -12,10 +12,10 @@ Contact: developers@studentagency.cz
 package openapi
 
 import (
-	"encoding/json"
-	"time"
 	"bytes"
+	"encoding/json"
 	"fmt"
+	"time"
 )
 
 // checks if the RouteShort type satisfies the MappedNullable interface at compile time
@@ -26,28 +26,28 @@ type RouteShort struct {
 	// Unique identifier of a route. Consists of unique sections identifiers separated by commas.
 	Id string `json:"id"`
 	// Main section of the route. Only for this section can customer select seat class or vehicle standard.
-	MainSectionId int64 `json:"mainSectionId"`
-	DepartureStationId int64 `json:"departureStationId"`
-	DepartureStationName *string `json:"departureStationName,omitempty"`
-	DepartureCityId int64 `json:"departureCityId"`
-	DepartureCityName *string `json:"departureCityName,omitempty"`
-	DepartureTime time.Time `json:"departureTime"`
-	ArrivalStationId int64 `json:"arrivalStationId"`
-	ArrivalStationName *string `json:"arrivalStationName,omitempty"`
-	ArrivalCityId int64 `json:"arrivalCityId"`
-	ArrivalCityName *string `json:"arrivalCityName,omitempty"`
-	ArrivalTime time.Time `json:"arrivalTime"`
+	MainSectionId        int64     `json:"mainSectionId"`
+	DepartureStationId   int64     `json:"departureStationId"`
+	DepartureStationName *string   `json:"departureStationName,omitempty"`
+	DepartureCityId      int64     `json:"departureCityId"`
+	DepartureCityName    *string   `json:"departureCityName,omitempty"`
+	DepartureTime        time.Time `json:"departureTime"`
+	ArrivalStationId     int64     `json:"arrivalStationId"`
+	ArrivalStationName   *string   `json:"arrivalStationName,omitempty"`
+	ArrivalCityId        int64     `json:"arrivalCityId"`
+	ArrivalCityName      *string   `json:"arrivalCityName,omitempty"`
+	ArrivalTime          time.Time `json:"arrivalTime"`
 	// Number of available free seats through all sections.
-	FreeSeatsCount int32 `json:"freeSeatsCount"`
-	PriceFrom *float32 `json:"priceFrom,omitempty"`
-	PriceTo *float32 `json:"priceTo,omitempty"`
-	CreditPriceFrom *float32 `json:"creditPriceFrom,omitempty"`
-	CreditPriceTo *float32 `json:"creditPriceTo,omitempty"`
-	VehicleTypes []VehicleType `json:"vehicleTypes,omitempty"`
-	Surcharge *Surcharge `json:"surcharge,omitempty"`
-	Sections []Section `json:"sections"`
+	FreeSeatsCount  int32         `json:"freeSeatsCount"`
+	PriceFrom       *float32      `json:"priceFrom,omitempty"`
+	PriceTo         *float32      `json:"priceTo,omitempty"`
+	CreditPriceFrom *float32      `json:"creditPriceFrom,omitempty"`
+	CreditPriceTo   *float32      `json:"creditPriceTo,omitempty"`
+	VehicleTypes    []VehicleType `json:"vehicleTypes,omitempty"`
+	Surcharge       *Surcharge    `json:"surcharge,omitempty"`
+	Sections        []Section     `json:"sections"`
 	// Notice of any extraordinarily events on route / traffic limitation
-	Notices *bool `json:"notices,omitempty"`
+	Notices       *bool          `json:"notices,omitempty"`
 	TransfersInfo *TransfersInfo `json:"transfersInfo,omitempty"`
 	// TRUE => national, FALSE => international
 	NationalTrip *bool `json:"nationalTrip,omitempty"`
@@ -834,7 +834,7 @@ func (o *RouteShort) SetTravelTime(v string) {
 }
 
 func (o RouteShort) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -925,10 +925,10 @@ func (o *RouteShort) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -984,5 +984,3 @@ func (v *NullableRouteShort) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

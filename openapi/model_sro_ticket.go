@@ -1,7 +1,7 @@
 /*
 RegioJet's Affiliate API Reference
 
-The RegioJet\\'s Affiliate API is a set of endpoints that help your application integrate with RegioJet.  The API is organized arount [REST](https://en.wikipedia.org/wiki/Representational_state_transfer). Our API uses standard HTTP methods, authentication, and status codes.  # Authentication Authentication to the API is performed via [HTTP Basic Auth](https://en.wikipedia.org/wiki/Basic_access_authentication) for all endpoints listed in this documentation with the exception of `/users/authenticate`, which uses bearer token.  API requests without authentication will fail.  All API requests must be made over [HTTPS](https://en.wikipedia.org/wiki/HTTPS).  # Errors  RegioJet uses conventional HTTP status codes in responses to indicate the success or failure of an API request.  In general:   * `2xx` codes indicate success;   * `4xx` codes indicate an error that failed given the information provided in request.   * `5xx` codes indicate an error with RegioJet's servers. 
+The RegioJet\\'s Affiliate API is a set of endpoints that help your application integrate with RegioJet.  The API is organized arount [REST](https://en.wikipedia.org/wiki/Representational_state_transfer). Our API uses standard HTTP methods, authentication, and status codes.  # Authentication Authentication to the API is performed via [HTTP Basic Auth](https://en.wikipedia.org/wiki/Basic_access_authentication) for all endpoints listed in this documentation with the exception of `/users/authenticate`, which uses bearer token.  API requests without authentication will fail.  All API requests must be made over [HTTPS](https://en.wikipedia.org/wiki/HTTPS).  # Errors  RegioJet uses conventional HTTP status codes in responses to indicate the success or failure of an API request.  In general:   * `2xx` codes indicate success;   * `4xx` codes indicate an error that failed given the information provided in request.   * `5xx` codes indicate an error with RegioJet's servers.
 
 API version: 1.1.0
 Contact: developers@studentagency.cz
@@ -12,10 +12,10 @@ Contact: developers@studentagency.cz
 package openapi
 
 import (
-	"encoding/json"
-	"time"
 	"bytes"
+	"encoding/json"
 	"fmt"
+	"time"
 )
 
 // checks if the SroTicket type satisfies the MappedNullable interface at compile time
@@ -27,20 +27,20 @@ type SroTicket struct {
 	// Final price for ticket, addons etc.
 	Price float32 `json:"price"`
 	// Final price to be paid
-	Unpaid float32 `json:"unpaid"`
-	Currency Currency `json:"currency"`
-	State TicketState `json:"state"`
-	SeatClassKey string `json:"seatClassKey"`
-	Conditions SroConditions `json:"conditions"`
-	CustomerActions CustomerActions `json:"customerActions"`
-	RouteSections []TicketSection `json:"routeSections"`
-	PaymentId int64 `json:"paymentId"`
-	Bills []TicketBill `json:"bills"`
-	PassengersInfo SroPassengersInfo `json:"passengersInfo"`
+	Unpaid          float32           `json:"unpaid"`
+	Currency        Currency          `json:"currency"`
+	State           TicketState       `json:"state"`
+	SeatClassKey    string            `json:"seatClassKey"`
+	Conditions      SroConditions     `json:"conditions"`
+	CustomerActions CustomerActions   `json:"customerActions"`
+	RouteSections   []TicketSection   `json:"routeSections"`
+	PaymentId       int64             `json:"paymentId"`
+	Bills           []TicketBill      `json:"bills"`
+	PassengersInfo  SroPassengersInfo `json:"passengersInfo"`
 	// Textual information about the first delay on the route.
 	Delay string `json:"delay"`
 	// Textual information about the travel time on a given section.
-	TravelTime string `json:"travelTime"`
+	TravelTime           string    `json:"travelTime"`
 	EstimatedArrivalTime time.Time `json:"estimatedArrivalTime"`
 	// Was the ticket created by an affiliate partner?
 	AffiliateTicket bool `json:"affiliateTicket"`
@@ -468,7 +468,7 @@ func (o *SroTicket) SetAffiliateTicket(v bool) {
 }
 
 func (o SroTicket) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -524,10 +524,10 @@ func (o *SroTicket) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -583,5 +583,3 @@ func (v *NullableSroTicket) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

@@ -1,7 +1,7 @@
 /*
 RegioJet's Affiliate API Reference
 
-The RegioJet\\'s Affiliate API is a set of endpoints that help your application integrate with RegioJet.  The API is organized arount [REST](https://en.wikipedia.org/wiki/Representational_state_transfer). Our API uses standard HTTP methods, authentication, and status codes.  # Authentication Authentication to the API is performed via [HTTP Basic Auth](https://en.wikipedia.org/wiki/Basic_access_authentication) for all endpoints listed in this documentation with the exception of `/users/authenticate`, which uses bearer token.  API requests without authentication will fail.  All API requests must be made over [HTTPS](https://en.wikipedia.org/wiki/HTTPS).  # Errors  RegioJet uses conventional HTTP status codes in responses to indicate the success or failure of an API request.  In general:   * `2xx` codes indicate success;   * `4xx` codes indicate an error that failed given the information provided in request.   * `5xx` codes indicate an error with RegioJet's servers. 
+The RegioJet\\'s Affiliate API is a set of endpoints that help your application integrate with RegioJet.  The API is organized arount [REST](https://en.wikipedia.org/wiki/Representational_state_transfer). Our API uses standard HTTP methods, authentication, and status codes.  # Authentication Authentication to the API is performed via [HTTP Basic Auth](https://en.wikipedia.org/wiki/Basic_access_authentication) for all endpoints listed in this documentation with the exception of `/users/authenticate`, which uses bearer token.  API requests without authentication will fail.  All API requests must be made over [HTTPS](https://en.wikipedia.org/wiki/HTTPS).  # Errors  RegioJet uses conventional HTTP status codes in responses to indicate the success or failure of an API request.  In general:   * `2xx` codes indicate success;   * `4xx` codes indicate an error that failed given the information provided in request.   * `5xx` codes indicate an error with RegioJet's servers.
 
 API version: 1.1.0
 Contact: developers@studentagency.cz
@@ -12,8 +12,8 @@ Contact: developers@studentagency.cz
 package openapi
 
 import (
-	"encoding/json"
 	"bytes"
+	"encoding/json"
 	"fmt"
 )
 
@@ -24,20 +24,20 @@ var _ MappedNullable = &Vehicle110{}
 type Vehicle110 struct {
 	VehicleId int64 `json:"vehicleId"`
 	// Vehicle code tag (BUS => SPZ, VAGON => code)
-	Code *string `json:"code,omitempty"`
-	LayoutURL *string `json:"layoutURL,omitempty"`
-	HorizontalLayoutURL *string `json:"horizontalLayoutURL,omitempty"`
-	Type *VehicleType `json:"type,omitempty"`
+	Code                *string      `json:"code,omitempty"`
+	LayoutURL           *string      `json:"layoutURL,omitempty"`
+	HorizontalLayoutURL *string      `json:"horizontalLayoutURL,omitempty"`
+	Type                *VehicleType `json:"type,omitempty"`
 	// Vehicle standard code tag
 	VehicleStandardKey string `json:"vehicleStandardKey"`
 	// Supported services icons (wifi, etc.)
-	Services []string `json:"services,omitempty"`
-	VehicleNumber int32 `json:"vehicleNumber"`
+	Services      []string `json:"services,omitempty"`
+	VehicleNumber int32    `json:"vehicleNumber"`
 	// Available classes in this vehicle
 	SeatClasses []string `json:"seatClasses"`
 	// Additional informations relating to whole vehicle. These informations are visible, but wont requiring confirmation.
 	Notifications []string `json:"notifications,omitempty"`
-	FreeSeats []Seat `json:"freeSeats"`
+	FreeSeats     []Seat   `json:"freeSeats"`
 }
 
 type _Vehicle110 Vehicle110
@@ -377,7 +377,7 @@ func (o *Vehicle110) SetFreeSeats(v []Seat) {
 }
 
 func (o Vehicle110) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -429,10 +429,10 @@ func (o *Vehicle110) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -488,5 +488,3 @@ func (v *NullableVehicle110) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

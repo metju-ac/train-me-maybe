@@ -1,7 +1,7 @@
 /*
 RegioJet's Affiliate API Reference
 
-The RegioJet\\'s Affiliate API is a set of endpoints that help your application integrate with RegioJet.  The API is organized arount [REST](https://en.wikipedia.org/wiki/Representational_state_transfer). Our API uses standard HTTP methods, authentication, and status codes.  # Authentication Authentication to the API is performed via [HTTP Basic Auth](https://en.wikipedia.org/wiki/Basic_access_authentication) for all endpoints listed in this documentation with the exception of `/users/authenticate`, which uses bearer token.  API requests without authentication will fail.  All API requests must be made over [HTTPS](https://en.wikipedia.org/wiki/HTTPS).  # Errors  RegioJet uses conventional HTTP status codes in responses to indicate the success or failure of an API request.  In general:   * `2xx` codes indicate success;   * `4xx` codes indicate an error that failed given the information provided in request.   * `5xx` codes indicate an error with RegioJet's servers. 
+The RegioJet\\'s Affiliate API is a set of endpoints that help your application integrate with RegioJet.  The API is organized arount [REST](https://en.wikipedia.org/wiki/Representational_state_transfer). Our API uses standard HTTP methods, authentication, and status codes.  # Authentication Authentication to the API is performed via [HTTP Basic Auth](https://en.wikipedia.org/wiki/Basic_access_authentication) for all endpoints listed in this documentation with the exception of `/users/authenticate`, which uses bearer token.  API requests without authentication will fail.  All API requests must be made over [HTTPS](https://en.wikipedia.org/wiki/HTTPS).  # Errors  RegioJet uses conventional HTTP status codes in responses to indicate the success or failure of an API request.  In general:   * `2xx` codes indicate success;   * `4xx` codes indicate an error that failed given the information provided in request.   * `5xx` codes indicate an error with RegioJet's servers.
 
 API version: 1.1.0
 Contact: developers@studentagency.cz
@@ -23,22 +23,22 @@ type User struct {
 	Id *int64 `json:"id,omitempty"`
 	// Used as account ID for login
 	AccountCode *string `json:"accountCode,omitempty"`
-	FirstName *string `json:"firstName,omitempty"`
-	Surname *string `json:"surname,omitempty"`
+	FirstName   *string `json:"firstName,omitempty"`
+	Surname     *string `json:"surname,omitempty"`
 	PhoneNumber *string `json:"phoneNumber,omitempty"`
 	// Restrict phone number for work with sms.
-	RestrictPhoneNumbers *bool `json:"restrictPhoneNumbers,omitempty"`
-	Email *string `json:"email,omitempty"`
+	RestrictPhoneNumbers *bool   `json:"restrictPhoneNumbers,omitempty"`
+	Email                *string `json:"email,omitempty"`
 	// Account balance
 	Credit *float32 `json:"credit,omitempty"`
 	// Difference between registered credit account with price advantage and regular unregistered open account
-	CreditPrice *bool `json:"creditPrice,omitempty"`
-	Currency *Currency `json:"currency,omitempty"`
+	CreditPrice *bool     `json:"creditPrice,omitempty"`
+	Currency    *Currency `json:"currency,omitempty"`
 	// Set tariff which would be pre-filled after login
-	DefaultTariffKey *string `json:"defaultTariffKey,omitempty"`
-	Notifications *Notifications `json:"notifications,omitempty"`
-	CompanyInformation *bool `json:"companyInformation,omitempty"`
-	Company *Company `json:"company,omitempty"`
+	DefaultTariffKey   *string        `json:"defaultTariffKey,omitempty"`
+	Notifications      *Notifications `json:"notifications,omitempty"`
+	CompanyInformation *bool          `json:"companyInformation,omitempty"`
+	Company            *Company       `json:"company,omitempty"`
 	// Acceptance of transport conditions and personal data protection
 	ConditionsAcceptance *bool `json:"conditionsAcceptance,omitempty"`
 	// NULL for normal customer, internal number for Regiojet employee
@@ -595,7 +595,7 @@ func (o *User) SetEmployeeNumber(v int32) {
 }
 
 func (o User) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -690,5 +690,3 @@ func (v *NullableUser) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

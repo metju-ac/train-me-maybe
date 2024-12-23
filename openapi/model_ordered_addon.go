@@ -1,7 +1,7 @@
 /*
 RegioJet's Affiliate API Reference
 
-The RegioJet\\'s Affiliate API is a set of endpoints that help your application integrate with RegioJet.  The API is organized arount [REST](https://en.wikipedia.org/wiki/Representational_state_transfer). Our API uses standard HTTP methods, authentication, and status codes.  # Authentication Authentication to the API is performed via [HTTP Basic Auth](https://en.wikipedia.org/wiki/Basic_access_authentication) for all endpoints listed in this documentation with the exception of `/users/authenticate`, which uses bearer token.  API requests without authentication will fail.  All API requests must be made over [HTTPS](https://en.wikipedia.org/wiki/HTTPS).  # Errors  RegioJet uses conventional HTTP status codes in responses to indicate the success or failure of an API request.  In general:   * `2xx` codes indicate success;   * `4xx` codes indicate an error that failed given the information provided in request.   * `5xx` codes indicate an error with RegioJet's servers. 
+The RegioJet\\'s Affiliate API is a set of endpoints that help your application integrate with RegioJet.  The API is organized arount [REST](https://en.wikipedia.org/wiki/Representational_state_transfer). Our API uses standard HTTP methods, authentication, and status codes.  # Authentication Authentication to the API is performed via [HTTP Basic Auth](https://en.wikipedia.org/wiki/Basic_access_authentication) for all endpoints listed in this documentation with the exception of `/users/authenticate`, which uses bearer token.  API requests without authentication will fail.  All API requests must be made over [HTTPS](https://en.wikipedia.org/wiki/HTTPS).  # Errors  RegioJet uses conventional HTTP status codes in responses to indicate the success or failure of an API request.  In general:   * `2xx` codes indicate success;   * `4xx` codes indicate an error that failed given the information provided in request.   * `5xx` codes indicate an error with RegioJet's servers.
 
 API version: 1.1.0
 Contact: developers@studentagency.cz
@@ -12,8 +12,8 @@ Contact: developers@studentagency.cz
 package openapi
 
 import (
-	"encoding/json"
 	"bytes"
+	"encoding/json"
 	"fmt"
 )
 
@@ -22,15 +22,15 @@ var _ MappedNullable = &OrderedAddon{}
 
 // OrderedAddon struct for OrderedAddon
 type OrderedAddon struct {
-	Id int64 `json:"id"`
-	Name string `json:"name"`
-	Description string `json:"description"`
-	IconUrl string `json:"iconUrl"`
-	InfoUrl *string `json:"infoUrl,omitempty"`
-	InfoUrlLabel *string `json:"infoUrlLabel,omitempty"`
-	Price float32 `json:"price"`
-	Currency Currency `json:"currency"`
-	Conditions PriceConditions `json:"conditions"`
+	Id           int64           `json:"id"`
+	Name         string          `json:"name"`
+	Description  string          `json:"description"`
+	IconUrl      string          `json:"iconUrl"`
+	InfoUrl      *string         `json:"infoUrl,omitempty"`
+	InfoUrlLabel *string         `json:"infoUrlLabel,omitempty"`
+	Price        float32         `json:"price"`
+	Currency     Currency        `json:"currency"`
+	Conditions   PriceConditions `json:"conditions"`
 }
 
 type _OrderedAddon OrderedAddon
@@ -294,7 +294,7 @@ func (o *OrderedAddon) SetConditions(v PriceConditions) {
 }
 
 func (o OrderedAddon) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -338,10 +338,10 @@ func (o *OrderedAddon) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -397,5 +397,3 @@ func (v *NullableOrderedAddon) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

@@ -1,7 +1,7 @@
 /*
 RegioJet's Affiliate API Reference
 
-The RegioJet\\'s Affiliate API is a set of endpoints that help your application integrate with RegioJet.  The API is organized arount [REST](https://en.wikipedia.org/wiki/Representational_state_transfer). Our API uses standard HTTP methods, authentication, and status codes.  # Authentication Authentication to the API is performed via [HTTP Basic Auth](https://en.wikipedia.org/wiki/Basic_access_authentication) for all endpoints listed in this documentation with the exception of `/users/authenticate`, which uses bearer token.  API requests without authentication will fail.  All API requests must be made over [HTTPS](https://en.wikipedia.org/wiki/HTTPS).  # Errors  RegioJet uses conventional HTTP status codes in responses to indicate the success or failure of an API request.  In general:   * `2xx` codes indicate success;   * `4xx` codes indicate an error that failed given the information provided in request.   * `5xx` codes indicate an error with RegioJet's servers. 
+The RegioJet\\'s Affiliate API is a set of endpoints that help your application integrate with RegioJet.  The API is organized arount [REST](https://en.wikipedia.org/wiki/Representational_state_transfer). Our API uses standard HTTP methods, authentication, and status codes.  # Authentication Authentication to the API is performed via [HTTP Basic Auth](https://en.wikipedia.org/wiki/Basic_access_authentication) for all endpoints listed in this documentation with the exception of `/users/authenticate`, which uses bearer token.  API requests without authentication will fail.  All API requests must be made over [HTTPS](https://en.wikipedia.org/wiki/HTTPS).  # Errors  RegioJet uses conventional HTTP status codes in responses to indicate the success or failure of an API request.  In general:   * `2xx` codes indicate success;   * `4xx` codes indicate an error that failed given the information provided in request.   * `5xx` codes indicate an error with RegioJet's servers.
 
 API version: 1.1.0
 Contact: developers@studentagency.cz
@@ -17,23 +17,22 @@ import (
 	"io"
 	"net/http"
 	"net/url"
-	"strings"
 	"reflect"
+	"strings"
 	"time"
 )
-
 
 // RoutesAPIService RoutesAPI service
 type RoutesAPIService service
 
 type ApiGetPassengersDataRequest struct {
-	ctx context.Context
-	ApiService *RoutesAPIService
-	routeId string
-	filter *PassengersDataRequest
+	ctx                context.Context
+	ApiService         *RoutesAPIService
+	routeId            string
+	filter             *PassengersDataRequest
 	xApplicationOrigin *string
-	xLang *string
-	xCurrency *string
+	xLang              *string
+	xCurrency          *string
 }
 
 func (r ApiGetPassengersDataRequest) Filter(filter PassengersDataRequest) ApiGetPassengersDataRequest {
@@ -47,13 +46,13 @@ func (r ApiGetPassengersDataRequest) XApplicationOrigin(xApplicationOrigin strin
 	return r
 }
 
-// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             | 
+// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             |
 func (r ApiGetPassengersDataRequest) XLang(xLang string) ApiGetPassengersDataRequest {
 	r.xLang = &xLang
 	return r
 }
 
-// A three-letter currency code from [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217). Defines monetary unit to be used in respons.  Currently supported currencies:  | Currency     | ISO 4217 code | |--------------|---------------| | Czech koruna | CZK           | | Euro         | EUR           | 
+// A three-letter currency code from [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217). Defines monetary unit to be used in respons.  Currently supported currencies:  | Currency     | ISO 4217 code | |--------------|---------------| | Czech koruna | CZK           | | Euro         | EUR           |
 func (r ApiGetPassengersDataRequest) XCurrency(xCurrency string) ApiGetPassengersDataRequest {
 	r.xCurrency = &xCurrency
 	return r
@@ -68,26 +67,27 @@ GetPassengersData Get mandatory passengers data.
 
 Retuns separately data of the first passenger and data of other passengers for the given route.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param routeId Unique identifier for the route. It consists of route section identifiers separed by commas (e.g. `section0.id,section1.id,section2.id`).
- @return ApiGetPassengersDataRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param routeId Unique identifier for the route. It consists of route section identifiers separed by commas (e.g. `section0.id,section1.id,section2.id`).
+	@return ApiGetPassengersDataRequest
 */
 func (a *RoutesAPIService) GetPassengersData(ctx context.Context, routeId string) ApiGetPassengersDataRequest {
 	return ApiGetPassengersDataRequest{
 		ApiService: a,
-		ctx: ctx,
-		routeId: routeId,
+		ctx:        ctx,
+		routeId:    routeId,
 	}
 }
 
 // Execute executes the request
-//  @return PassengersDataResponse
+//
+//	@return PassengersDataResponse
 func (a *RoutesAPIService) GetPassengersDataExecute(r ApiGetPassengersDataRequest) (*PassengersDataResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *PassengersDataResponse
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *PassengersDataResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RoutesAPIService.GetPassengersData")
@@ -162,8 +162,8 @@ func (a *RoutesAPIService) GetPassengersDataExecute(r ApiGetPassengersDataReques
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -173,8 +173,8 @@ func (a *RoutesAPIService) GetPassengersDataExecute(r ApiGetPassengersDataReques
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -192,12 +192,12 @@ func (a *RoutesAPIService) GetPassengersDataExecute(r ApiGetPassengersDataReques
 }
 
 type ApiGetRouteFreeSeatsRequest struct {
-	ctx context.Context
-	ApiService *RoutesAPIService
-	request *RouteSeatsRequest
+	ctx                context.Context
+	ApiService         *RoutesAPIService
+	request            *RouteSeatsRequest
 	xApplicationOrigin *string
-	xLang *string
-	xOccupied *bool
+	xLang              *string
+	xOccupied          *bool
 }
 
 // Descriptions of the Route detail
@@ -212,7 +212,7 @@ func (r ApiGetRouteFreeSeatsRequest) XApplicationOrigin(xApplicationOrigin strin
 	return r
 }
 
-// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             | 
+// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             |
 func (r ApiGetRouteFreeSeatsRequest) XLang(xLang string) ApiGetRouteFreeSeatsRequest {
 	r.xLang = &xLang
 	return r
@@ -231,24 +231,25 @@ func (r ApiGetRouteFreeSeatsRequest) Execute() (*RouteSeatsResponse, *http.Respo
 /*
 GetRouteFreeSeats Get route tandem free seats grouped by vehicles.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetRouteFreeSeatsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetRouteFreeSeatsRequest
 */
 func (a *RoutesAPIService) GetRouteFreeSeats(ctx context.Context) ApiGetRouteFreeSeatsRequest {
 	return ApiGetRouteFreeSeatsRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return RouteSeatsResponse
+//
+//	@return RouteSeatsResponse
 func (a *RoutesAPIService) GetRouteFreeSeatsExecute(r ApiGetRouteFreeSeatsRequest) (*RouteSeatsResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *RouteSeatsResponse
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *RouteSeatsResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RoutesAPIService.GetRouteFreeSeats")
@@ -322,8 +323,8 @@ func (a *RoutesAPIService) GetRouteFreeSeatsExecute(r ApiGetRouteFreeSeatsReques
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -333,8 +334,8 @@ func (a *RoutesAPIService) GetRouteFreeSeatsExecute(r ApiGetRouteFreeSeatsReques
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -352,12 +353,12 @@ func (a *RoutesAPIService) GetRouteFreeSeatsExecute(r ApiGetRouteFreeSeatsReques
 }
 
 type ApiGetRouteFreeSeats110Request struct {
-	ctx context.Context
-	ApiService *RoutesAPIService
-	routeId string
-	request *RouteSeatsRequest
+	ctx                context.Context
+	ApiService         *RoutesAPIService
+	routeId            string
+	request            *RouteSeatsRequest
 	xApplicationOrigin *string
-	xLang *string
+	xLang              *string
 }
 
 // Route section details.
@@ -372,7 +373,7 @@ func (r ApiGetRouteFreeSeats110Request) XApplicationOrigin(xApplicationOrigin st
 	return r
 }
 
-// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             | 
+// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             |
 func (r ApiGetRouteFreeSeats110Request) XLang(xLang string) ApiGetRouteFreeSeats110Request {
 	r.xLang = &xLang
 	return r
@@ -387,29 +388,31 @@ GetRouteFreeSeats110 Get list of free seats.
 
 Returns detailed data about all free seats available for reservation. Free seats are grouped by vehicle.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param routeId Unique identifier for the route. It consists of route section identifiers separed by commas (e.g. `section0.id,section1.id,section2.id`).
- @return ApiGetRouteFreeSeats110Request
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param routeId Unique identifier for the route. It consists of route section identifiers separed by commas (e.g. `section0.id,section1.id,section2.id`).
+	@return ApiGetRouteFreeSeats110Request
 
 Deprecated
 */
 func (a *RoutesAPIService) GetRouteFreeSeats110(ctx context.Context, routeId string) ApiGetRouteFreeSeats110Request {
 	return ApiGetRouteFreeSeats110Request{
 		ApiService: a,
-		ctx: ctx,
-		routeId: routeId,
+		ctx:        ctx,
+		routeId:    routeId,
 	}
 }
 
 // Execute executes the request
-//  @return RouteSeatsResponse110
+//
+//	@return RouteSeatsResponse110
+//
 // Deprecated
 func (a *RoutesAPIService) GetRouteFreeSeats110Execute(r ApiGetRouteFreeSeats110Request) (*RouteSeatsResponse110, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *RouteSeatsResponse110
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *RouteSeatsResponse110
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RoutesAPIService.GetRouteFreeSeats110")
@@ -481,8 +484,8 @@ func (a *RoutesAPIService) GetRouteFreeSeats110Execute(r ApiGetRouteFreeSeats110
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -492,8 +495,8 @@ func (a *RoutesAPIService) GetRouteFreeSeats110Execute(r ApiGetRouteFreeSeats110
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -511,15 +514,15 @@ func (a *RoutesAPIService) GetRouteFreeSeats110Execute(r ApiGetRouteFreeSeats110
 }
 
 type ApiGetSimpleRouteDetailRequest struct {
-	ctx context.Context
-	ApiService *RoutesAPIService
-	routeId string
-	fromStationId *int64
-	toStationId *int64
+	ctx                context.Context
+	ApiService         *RoutesAPIService
+	routeId            string
+	fromStationId      *int64
+	toStationId        *int64
 	xApplicationOrigin *string
-	xLang *string
-	xCurrency *string
-	tariffs *[]string
+	xLang              *string
+	xCurrency          *string
+	tariffs            *[]string
 }
 
 // Unique identifier for &#x60;from&#x60; station. Detailed data for identifier can be obtained from &#x60;/consts/locations&#x60; endpoint.
@@ -540,13 +543,13 @@ func (r ApiGetSimpleRouteDetailRequest) XApplicationOrigin(xApplicationOrigin st
 	return r
 }
 
-// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             | 
+// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             |
 func (r ApiGetSimpleRouteDetailRequest) XLang(xLang string) ApiGetSimpleRouteDetailRequest {
 	r.xLang = &xLang
 	return r
 }
 
-// A three-letter currency code from [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217). Defines monetary unit to be used in respons.  Currently supported currencies:  | Currency     | ISO 4217 code | |--------------|---------------| | Czech koruna | CZK           | | Euro         | EUR           | 
+// A three-letter currency code from [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217). Defines monetary unit to be used in respons.  Currently supported currencies:  | Currency     | ISO 4217 code | |--------------|---------------| | Czech koruna | CZK           | | Euro         | EUR           |
 func (r ApiGetSimpleRouteDetailRequest) XCurrency(xCurrency string) ApiGetSimpleRouteDetailRequest {
 	r.xCurrency = &xCurrency
 	return r
@@ -567,26 +570,27 @@ GetSimpleRouteDetail Get details of the given route.
 
 Returns detailed data for the given route.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param routeId Unique identifier for the route. It consists of route section identifiers separed by commas (e.g. `section0.id,section1.id,section2.id`).
- @return ApiGetSimpleRouteDetailRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param routeId Unique identifier for the route. It consists of route section identifiers separed by commas (e.g. `section0.id,section1.id,section2.id`).
+	@return ApiGetSimpleRouteDetailRequest
 */
 func (a *RoutesAPIService) GetSimpleRouteDetail(ctx context.Context, routeId string) ApiGetSimpleRouteDetailRequest {
 	return ApiGetSimpleRouteDetailRequest{
 		ApiService: a,
-		ctx: ctx,
-		routeId: routeId,
+		ctx:        ctx,
+		routeId:    routeId,
 	}
 }
 
 // Execute executes the request
-//  @return Route
+//
+//	@return Route
 func (a *RoutesAPIService) GetSimpleRouteDetailExecute(r ApiGetSimpleRouteDetailRequest) (*Route, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *Route
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *Route
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RoutesAPIService.GetSimpleRouteDetail")
@@ -675,8 +679,8 @@ func (a *RoutesAPIService) GetSimpleRouteDetailExecute(r ApiGetSimpleRouteDetail
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -686,8 +690,8 @@ func (a *RoutesAPIService) GetSimpleRouteDetailExecute(r ApiGetSimpleRouteDetail
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -705,16 +709,16 @@ func (a *RoutesAPIService) GetSimpleRouteDetailExecute(r ApiGetSimpleRouteDetail
 }
 
 type ApiGetSroPassengersDataRequest struct {
-	ctx context.Context
-	ApiService *RoutesAPIService
-	routeId string
-	fromStationId *int64
-	toStationId *int64
+	ctx                context.Context
+	ApiService         *RoutesAPIService
+	routeId            string
+	fromStationId      *int64
+	toStationId        *int64
 	xApplicationOrigin *string
-	xCurrency *string
-	xLang *string
-	departureDate *time.Time
-	seatClass *int32
+	xCurrency          *string
+	xLang              *string
+	departureDate      *time.Time
+	seatClass          *int32
 	numberOfPassengers *int32
 }
 
@@ -736,13 +740,13 @@ func (r ApiGetSroPassengersDataRequest) XApplicationOrigin(xApplicationOrigin st
 	return r
 }
 
-// A three-letter currency code from [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217). Defines monetary unit to be used in respons.  Currently supported currencies:  | Currency     | ISO 4217 code | |--------------|---------------| | Czech koruna | CZK           | | Euro         | EUR           | 
+// A three-letter currency code from [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217). Defines monetary unit to be used in respons.  Currently supported currencies:  | Currency     | ISO 4217 code | |--------------|---------------| | Czech koruna | CZK           | | Euro         | EUR           |
 func (r ApiGetSroPassengersDataRequest) XCurrency(xCurrency string) ApiGetSroPassengersDataRequest {
 	r.xCurrency = &xCurrency
 	return r
 }
 
-// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             | 
+// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             |
 func (r ApiGetSroPassengersDataRequest) XLang(xLang string) ApiGetSroPassengersDataRequest {
 	r.xLang = &xLang
 	return r
@@ -775,26 +779,27 @@ GetSroPassengersData Get mandatory passengers data.
 
 Get mandatory passenger data for the given route and available seat reservations.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param routeId Unique identifier for the route. It consists of route section identifiers separed by commas (e.g. `section0.id,section1.id,section2.id`).
- @return ApiGetSroPassengersDataRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param routeId Unique identifier for the route. It consists of route section identifiers separed by commas (e.g. `section0.id,section1.id,section2.id`).
+	@return ApiGetSroPassengersDataRequest
 */
 func (a *RoutesAPIService) GetSroPassengersData(ctx context.Context, routeId string) ApiGetSroPassengersDataRequest {
 	return ApiGetSroPassengersDataRequest{
 		ApiService: a,
-		ctx: ctx,
-		routeId: routeId,
+		ctx:        ctx,
+		routeId:    routeId,
 	}
 }
 
 // Execute executes the request
-//  @return SroPassengersDataResponse
+//
+//	@return SroPassengersDataResponse
 func (a *RoutesAPIService) GetSroPassengersDataExecute(r ApiGetSroPassengersDataRequest) (*SroPassengersDataResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *SroPassengersDataResponse
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *SroPassengersDataResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RoutesAPIService.GetSroPassengersData")
@@ -896,16 +901,16 @@ func (a *RoutesAPIService) GetSroPassengersDataExecute(r ApiGetSroPassengersData
 }
 
 type ApiGetSroRoutePricesRequest struct {
-	ctx context.Context
-	ApiService *RoutesAPIService
-	routeId string
-	fromStationId *int64
-	toStationId *int64
+	ctx                context.Context
+	ApiService         *RoutesAPIService
+	routeId            string
+	fromStationId      *int64
+	toStationId        *int64
 	xApplicationOrigin *string
-	xCurrency *string
-	xLang *string
-	departureDate *time.Time
-	seatClass *int32
+	xCurrency          *string
+	xLang              *string
+	departureDate      *time.Time
+	seatClass          *int32
 	numberOfPassengers *int32
 }
 
@@ -927,13 +932,13 @@ func (r ApiGetSroRoutePricesRequest) XApplicationOrigin(xApplicationOrigin strin
 	return r
 }
 
-// A three-letter currency code from [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217). Defines monetary unit to be used in respons.  Currently supported currencies:  | Currency     | ISO 4217 code | |--------------|---------------| | Czech koruna | CZK           | | Euro         | EUR           | 
+// A three-letter currency code from [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217). Defines monetary unit to be used in respons.  Currently supported currencies:  | Currency     | ISO 4217 code | |--------------|---------------| | Czech koruna | CZK           | | Euro         | EUR           |
 func (r ApiGetSroRoutePricesRequest) XCurrency(xCurrency string) ApiGetSroRoutePricesRequest {
 	r.xCurrency = &xCurrency
 	return r
 }
 
-// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             | 
+// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             |
 func (r ApiGetSroRoutePricesRequest) XLang(xLang string) ApiGetSroRoutePricesRequest {
 	r.xLang = &xLang
 	return r
@@ -966,26 +971,27 @@ GetSroRoutePrices Get route detail.
 
 Get available prices for the given route and type.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param routeId Unique identifier for the route. It consists of route section identifiers separed by commas (e.g. `section0.id,section1.id,section2.id`).
- @return ApiGetSroRoutePricesRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param routeId Unique identifier for the route. It consists of route section identifiers separed by commas (e.g. `section0.id,section1.id,section2.id`).
+	@return ApiGetSroRoutePricesRequest
 */
 func (a *RoutesAPIService) GetSroRoutePrices(ctx context.Context, routeId string) ApiGetSroRoutePricesRequest {
 	return ApiGetSroRoutePricesRequest{
 		ApiService: a,
-		ctx: ctx,
-		routeId: routeId,
+		ctx:        ctx,
+		routeId:    routeId,
 	}
 }
 
 // Execute executes the request
-//  @return SroRouteDetail
+//
+//	@return SroRouteDetail
 func (a *RoutesAPIService) GetSroRoutePricesExecute(r ApiGetSroRoutePricesRequest) (*SroRouteDetail, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *SroRouteDetail
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *SroRouteDetail
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RoutesAPIService.GetSroRoutePrices")
@@ -1078,8 +1084,8 @@ func (a *RoutesAPIService) GetSroRoutePricesExecute(r ApiGetSroRoutePricesReques
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -1089,8 +1095,8 @@ func (a *RoutesAPIService) GetSroRoutePricesExecute(r ApiGetSroRoutePricesReques
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -1100,8 +1106,8 @@ func (a *RoutesAPIService) GetSroRoutePricesExecute(r ApiGetSroRoutePricesReques
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1119,18 +1125,18 @@ func (a *RoutesAPIService) GetSroRoutePricesExecute(r ApiGetSroRoutePricesReques
 }
 
 type ApiSearchRoutesRequest struct {
-	ctx context.Context
-	ApiService *RoutesAPIService
-	fromLocationId *int64
-	fromLocationType *string
-	toLocationId *int64
-	toLocationType *string
+	ctx                context.Context
+	ApiService         *RoutesAPIService
+	fromLocationId     *int64
+	fromLocationType   *string
+	toLocationId       *int64
+	toLocationType     *string
 	xApplicationOrigin *string
-	xLang *string
-	xCurrency *string
-	departureTime *time.Time
-	tariffs *[]string
-	actionPrice *string
+	xLang              *string
+	xCurrency          *string
+	departureTime      *time.Time
+	tariffs            *[]string
+	actionPrice        *string
 }
 
 func (r ApiSearchRoutesRequest) FromLocationId(fromLocationId int64) ApiSearchRoutesRequest {
@@ -1159,13 +1165,13 @@ func (r ApiSearchRoutesRequest) XApplicationOrigin(xApplicationOrigin string) Ap
 	return r
 }
 
-// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             | 
+// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             |
 func (r ApiSearchRoutesRequest) XLang(xLang string) ApiSearchRoutesRequest {
 	r.xLang = &xLang
 	return r
 }
 
-// A three-letter currency code from [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217). Defines monetary unit to be used in respons.  Currently supported currencies:  | Currency     | ISO 4217 code | |--------------|---------------| | Czech koruna | CZK           | | Euro         | EUR           | 
+// A three-letter currency code from [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217). Defines monetary unit to be used in respons.  Currently supported currencies:  | Currency     | ISO 4217 code | |--------------|---------------| | Czech koruna | CZK           | | Euro         | EUR           |
 func (r ApiSearchRoutesRequest) XCurrency(xCurrency string) ApiSearchRoutesRequest {
 	r.xCurrency = &xCurrency
 	return r
@@ -1198,24 +1204,25 @@ SearchRoutes Get collection of all routes that satisfy specified search criteria
 
 Authorization not required (filtres info bubbles)
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiSearchRoutesRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiSearchRoutesRequest
 */
 func (a *RoutesAPIService) SearchRoutes(ctx context.Context) ApiSearchRoutesRequest {
 	return ApiSearchRoutesRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return SearchResult
+//
+//	@return SearchResult
 func (a *RoutesAPIService) SearchRoutesExecute(r ApiSearchRoutesRequest) (*SearchResult, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *SearchResult
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *SearchResult
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RoutesAPIService.SearchRoutes")
@@ -1317,8 +1324,8 @@ func (a *RoutesAPIService) SearchRoutesExecute(r ApiSearchRoutesRequest) (*Searc
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1336,17 +1343,17 @@ func (a *RoutesAPIService) SearchRoutesExecute(r ApiSearchRoutesRequest) (*Searc
 }
 
 type ApiSearchSR70RoutesRequest struct {
-	ctx context.Context
-	ApiService *RoutesAPIService
-	departure *time.Time
-	connection int64
-	fromLocation int64
-	toLocation string
-	ticketType string
+	ctx                context.Context
+	ApiService         *RoutesAPIService
+	departure          *time.Time
+	connection         int64
+	fromLocation       int64
+	toLocation         string
+	ticketType         string
 	xApplicationOrigin *string
-	xCurrency *string
-	xLang *string
-	seatClass *int32
+	xCurrency          *string
+	xLang              *string
+	seatClass          *int32
 	numberOfPassengers *int32
 }
 
@@ -1362,13 +1369,13 @@ func (r ApiSearchSR70RoutesRequest) XApplicationOrigin(xApplicationOrigin string
 	return r
 }
 
-// A three-letter currency code from [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217). Defines monetary unit to be used in respons.  Currently supported currencies:  | Currency     | ISO 4217 code | |--------------|---------------| | Czech koruna | CZK           | | Euro         | EUR           | 
+// A three-letter currency code from [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217). Defines monetary unit to be used in respons.  Currently supported currencies:  | Currency     | ISO 4217 code | |--------------|---------------| | Czech koruna | CZK           | | Euro         | EUR           |
 func (r ApiSearchSR70RoutesRequest) XCurrency(xCurrency string) ApiSearchSR70RoutesRequest {
 	r.xCurrency = &xCurrency
 	return r
 }
 
-// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             | 
+// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             |
 func (r ApiSearchSR70RoutesRequest) XLang(xLang string) ApiSearchSR70RoutesRequest {
 	r.xLang = &xLang
 	return r
@@ -1395,32 +1402,33 @@ SearchSR70Routes Search for available routes.
 
 Search available routes with free seat reservations.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param connection CIS connection identifier.
- @param fromLocation Departure station numeric identifier in the SR70 format.
- @param toLocation Arrival station numeric identifier in the SR70 format.
- @param ticketType Ticket type.
- @return ApiSearchSR70RoutesRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param connection CIS connection identifier.
+	@param fromLocation Departure station numeric identifier in the SR70 format.
+	@param toLocation Arrival station numeric identifier in the SR70 format.
+	@param ticketType Ticket type.
+	@return ApiSearchSR70RoutesRequest
 */
 func (a *RoutesAPIService) SearchSR70Routes(ctx context.Context, connection int64, fromLocation int64, toLocation string, ticketType string) ApiSearchSR70RoutesRequest {
 	return ApiSearchSR70RoutesRequest{
-		ApiService: a,
-		ctx: ctx,
-		connection: connection,
+		ApiService:   a,
+		ctx:          ctx,
+		connection:   connection,
 		fromLocation: fromLocation,
-		toLocation: toLocation,
-		ticketType: ticketType,
+		toLocation:   toLocation,
+		ticketType:   ticketType,
 	}
 }
 
 // Execute executes the request
-//  @return []SroRoute
+//
+//	@return []SroRoute
 func (a *RoutesAPIService) SearchSR70RoutesExecute(r ApiSearchSR70RoutesRequest) ([]SroRoute, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []SroRoute
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []SroRoute
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RoutesAPIService.SearchSR70Routes")
@@ -1509,8 +1517,8 @@ func (a *RoutesAPIService) SearchSR70RoutesExecute(r ApiSearchSR70RoutesRequest)
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -1520,8 +1528,8 @@ func (a *RoutesAPIService) SearchSR70RoutesExecute(r ApiSearchSR70RoutesRequest)
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -1531,8 +1539,8 @@ func (a *RoutesAPIService) SearchSR70RoutesExecute(r ApiSearchSR70RoutesRequest)
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1550,21 +1558,21 @@ func (a *RoutesAPIService) SearchSR70RoutesExecute(r ApiSearchSR70RoutesRequest)
 }
 
 type ApiSimpleSearchRoutesRequest struct {
-	ctx context.Context
-	ApiService *RoutesAPIService
-	fromLocationId *int64
-	fromLocationType *string
-	toLocationId *int64
-	toLocationType *string
-	xApplicationOrigin *string
-	xLang *string
-	xCurrency *string
+	ctx                        context.Context
+	ApiService                 *RoutesAPIService
+	fromLocationId             *int64
+	fromLocationType           *string
+	toLocationId               *int64
+	toLocationType             *string
+	xApplicationOrigin         *string
+	xLang                      *string
+	xCurrency                  *string
 	xUsedDepartureFromDateTime *time.Time
-	xUsedDepartureToDateTime *time.Time
-	departureDate *string
-	tariffs *[]string
-	actionPrice *string
-	move *string
+	xUsedDepartureToDateTime   *time.Time
+	departureDate              *string
+	tariffs                    *[]string
+	actionPrice                *string
+	move                       *string
 }
 
 // Unique identifier for &#x60;from&#x60; location. This identifier can be obtained from &#x60;/consts/locations&#x60; endpoint. Unique identifier of either city, or station, can be used.
@@ -1597,13 +1605,13 @@ func (r ApiSimpleSearchRoutesRequest) XApplicationOrigin(xApplicationOrigin stri
 	return r
 }
 
-// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             | 
+// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             |
 func (r ApiSimpleSearchRoutesRequest) XLang(xLang string) ApiSimpleSearchRoutesRequest {
 	r.xLang = &xLang
 	return r
 }
 
-// A three-letter currency code from [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217). Defines monetary unit to be used in respons.  Currently supported currencies:  | Currency     | ISO 4217 code | |--------------|---------------| | Czech koruna | CZK           | | Euro         | EUR           | 
+// A three-letter currency code from [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217). Defines monetary unit to be used in respons.  Currently supported currencies:  | Currency     | ISO 4217 code | |--------------|---------------| | Czech koruna | CZK           | | Euro         | EUR           |
 func (r ApiSimpleSearchRoutesRequest) XCurrency(xCurrency string) ApiSimpleSearchRoutesRequest {
 	r.xCurrency = &xCurrency
 	return r
@@ -1654,24 +1662,25 @@ SimpleSearchRoutes Search for routes that satisfy specified search criteria.
 
 Get collection of all routes that satisfy specified search criteria for the route.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiSimpleSearchRoutesRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiSimpleSearchRoutesRequest
 */
 func (a *RoutesAPIService) SimpleSearchRoutes(ctx context.Context) ApiSimpleSearchRoutesRequest {
 	return ApiSimpleSearchRoutesRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return SimpleRouteSearchResult
+//
+//	@return SimpleRouteSearchResult
 func (a *RoutesAPIService) SimpleSearchRoutesExecute(r ApiSimpleSearchRoutesRequest) (*SimpleRouteSearchResult, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *SimpleRouteSearchResult
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *SimpleRouteSearchResult
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RoutesAPIService.SimpleSearchRoutes")
@@ -1782,8 +1791,8 @@ func (a *RoutesAPIService) SimpleSearchRoutesExecute(r ApiSimpleSearchRoutesRequ
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -1793,8 +1802,8 @@ func (a *RoutesAPIService) SimpleSearchRoutesExecute(r ApiSimpleSearchRoutesRequ
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

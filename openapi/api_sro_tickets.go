@@ -1,7 +1,7 @@
 /*
 RegioJet's Affiliate API Reference
 
-The RegioJet\\'s Affiliate API is a set of endpoints that help your application integrate with RegioJet.  The API is organized arount [REST](https://en.wikipedia.org/wiki/Representational_state_transfer). Our API uses standard HTTP methods, authentication, and status codes.  # Authentication Authentication to the API is performed via [HTTP Basic Auth](https://en.wikipedia.org/wiki/Basic_access_authentication) for all endpoints listed in this documentation with the exception of `/users/authenticate`, which uses bearer token.  API requests without authentication will fail.  All API requests must be made over [HTTPS](https://en.wikipedia.org/wiki/HTTPS).  # Errors  RegioJet uses conventional HTTP status codes in responses to indicate the success or failure of an API request.  In general:   * `2xx` codes indicate success;   * `4xx` codes indicate an error that failed given the information provided in request.   * `5xx` codes indicate an error with RegioJet's servers. 
+The RegioJet\\'s Affiliate API is a set of endpoints that help your application integrate with RegioJet.  The API is organized arount [REST](https://en.wikipedia.org/wiki/Representational_state_transfer). Our API uses standard HTTP methods, authentication, and status codes.  # Authentication Authentication to the API is performed via [HTTP Basic Auth](https://en.wikipedia.org/wiki/Basic_access_authentication) for all endpoints listed in this documentation with the exception of `/users/authenticate`, which uses bearer token.  API requests without authentication will fail.  All API requests must be made over [HTTPS](https://en.wikipedia.org/wiki/HTTPS).  # Errors  RegioJet uses conventional HTTP status codes in responses to indicate the success or failure of an API request.  In general:   * `2xx` codes indicate success;   * `4xx` codes indicate an error that failed given the information provided in request.   * `5xx` codes indicate an error with RegioJet's servers.
 
 API version: 1.1.0
 Contact: developers@studentagency.cz
@@ -20,19 +20,18 @@ import (
 	"strings"
 )
 
-
 // SroTicketsAPIService SroTicketsAPI service
 type SroTicketsAPIService service
 
 type ApiCancelSroTicketRequest struct {
-	ctx context.Context
-	ApiService *SroTicketsAPIService
-	accountCode string
-	ticketId int64
-	request *CancelTicketRequest
+	ctx                context.Context
+	ApiService         *SroTicketsAPIService
+	accountCode        string
+	ticketId           int64
+	request            *CancelTicketRequest
 	xApplicationOrigin *string
-	xLang *string
-	xTxToken *string
+	xLang              *string
+	xTxToken           *string
 }
 
 func (r ApiCancelSroTicketRequest) Request(request CancelTicketRequest) ApiCancelSroTicketRequest {
@@ -46,7 +45,7 @@ func (r ApiCancelSroTicketRequest) XApplicationOrigin(xApplicationOrigin string)
 	return r
 }
 
-// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             | 
+// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             |
 func (r ApiCancelSroTicketRequest) XLang(xLang string) ApiCancelSroTicketRequest {
 	r.xLang = &xLang
 	return r
@@ -65,28 +64,29 @@ func (r ApiCancelSroTicketRequest) Execute() (*SuccessResponse, *http.Response, 
 /*
 CancelSroTicket Cancel seat reservation only ticket by ID.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param accountCode Unique code for the customer's account.  To obtain account code you should go through these two steps:   1. Create new ticket using endpoint `tickets/create`. This endpoint will return `token` in response, which you should use in the step 2.   2. Authenticate user's token using endpoint `users/authenticate`, which will return `accountCode` in response. 
- @param ticketId Unique identifier for the ticket.
- @return ApiCancelSroTicketRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param accountCode Unique code for the customer's account.  To obtain account code you should go through these two steps:   1. Create new ticket using endpoint `tickets/create`. This endpoint will return `token` in response, which you should use in the step 2.   2. Authenticate user's token using endpoint `users/authenticate`, which will return `accountCode` in response.
+	@param ticketId Unique identifier for the ticket.
+	@return ApiCancelSroTicketRequest
 */
 func (a *SroTicketsAPIService) CancelSroTicket(ctx context.Context, accountCode string, ticketId int64) ApiCancelSroTicketRequest {
 	return ApiCancelSroTicketRequest{
-		ApiService: a,
-		ctx: ctx,
+		ApiService:  a,
+		ctx:         ctx,
 		accountCode: accountCode,
-		ticketId: ticketId,
+		ticketId:    ticketId,
 	}
 }
 
 // Execute executes the request
-//  @return SuccessResponse
+//
+//	@return SuccessResponse
 func (a *SroTicketsAPIService) CancelSroTicketExecute(r ApiCancelSroTicketRequest) (*SuccessResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodDelete
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *SuccessResponse
+		localVarHTTPMethod  = http.MethodDelete
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *SuccessResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SroTicketsAPIService.CancelSroTicket")
@@ -162,8 +162,8 @@ func (a *SroTicketsAPIService) CancelSroTicketExecute(r ApiCancelSroTicketReques
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -173,8 +173,8 @@ func (a *SroTicketsAPIService) CancelSroTicketExecute(r ApiCancelSroTicketReques
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -184,8 +184,8 @@ func (a *SroTicketsAPIService) CancelSroTicketExecute(r ApiCancelSroTicketReques
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -203,13 +203,13 @@ func (a *SroTicketsAPIService) CancelSroTicketExecute(r ApiCancelSroTicketReques
 }
 
 type ApiCancelSroTicketByTxTokenRequest struct {
-	ctx context.Context
-	ApiService *SroTicketsAPIService
-	xTxToken *string
-	txToken string
-	request *CancelTicketRequest
+	ctx                context.Context
+	ApiService         *SroTicketsAPIService
+	xTxToken           *string
+	txToken            string
+	request            *CancelTicketRequest
 	xApplicationOrigin *string
-	xLang *string
+	xLang              *string
 }
 
 // Internal ID of the operation - used for check status 204.
@@ -229,7 +229,7 @@ func (r ApiCancelSroTicketByTxTokenRequest) XApplicationOrigin(xApplicationOrigi
 	return r
 }
 
-// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             | 
+// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             |
 func (r ApiCancelSroTicketByTxTokenRequest) XLang(xLang string) ApiCancelSroTicketByTxTokenRequest {
 	r.xLang = &xLang
 	return r
@@ -242,26 +242,27 @@ func (r ApiCancelSroTicketByTxTokenRequest) Execute() (*SuccessResponse, *http.R
 /*
 CancelSroTicketByTxToken Cancel seat reservation only ticket by txToken.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param txToken Internal ID of the original booking operation that will be canceled.
- @return ApiCancelSroTicketByTxTokenRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param txToken Internal ID of the original booking operation that will be canceled.
+	@return ApiCancelSroTicketByTxTokenRequest
 */
 func (a *SroTicketsAPIService) CancelSroTicketByTxToken(ctx context.Context, txToken string) ApiCancelSroTicketByTxTokenRequest {
 	return ApiCancelSroTicketByTxTokenRequest{
 		ApiService: a,
-		ctx: ctx,
-		txToken: txToken,
+		ctx:        ctx,
+		txToken:    txToken,
 	}
 }
 
 // Execute executes the request
-//  @return SuccessResponse
+//
+//	@return SuccessResponse
 func (a *SroTicketsAPIService) CancelSroTicketByTxTokenExecute(r ApiCancelSroTicketByTxTokenRequest) (*SuccessResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodDelete
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *SuccessResponse
+		localVarHTTPMethod  = http.MethodDelete
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *SuccessResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SroTicketsAPIService.CancelSroTicketByTxToken")
@@ -349,8 +350,8 @@ func (a *SroTicketsAPIService) CancelSroTicketByTxTokenExecute(r ApiCancelSroTic
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -360,8 +361,8 @@ func (a *SroTicketsAPIService) CancelSroTicketByTxTokenExecute(r ApiCancelSroTic
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -371,8 +372,8 @@ func (a *SroTicketsAPIService) CancelSroTicketByTxTokenExecute(r ApiCancelSroTic
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -390,13 +391,13 @@ func (a *SroTicketsAPIService) CancelSroTicketByTxTokenExecute(r ApiCancelSroTic
 }
 
 type ApiCreateUnregisteredSroTicketsRequest struct {
-	ctx context.Context
-	ApiService *SroTicketsAPIService
-	xTxToken *string
-	request *CreateSroTicketsRequest
+	ctx                context.Context
+	ApiService         *SroTicketsAPIService
+	xTxToken           *string
+	request            *CreateSroTicketsRequest
 	xApplicationOrigin *string
-	xLang *string
-	xCurrency *string
+	xLang              *string
+	xCurrency          *string
 }
 
 // Internal ID of the operation - used for check status 204.
@@ -417,13 +418,13 @@ func (r ApiCreateUnregisteredSroTicketsRequest) XApplicationOrigin(xApplicationO
 	return r
 }
 
-// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             | 
+// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             |
 func (r ApiCreateUnregisteredSroTicketsRequest) XLang(xLang string) ApiCreateUnregisteredSroTicketsRequest {
 	r.xLang = &xLang
 	return r
 }
 
-// A three-letter currency code from [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217). Defines monetary unit to be used in respons.  Currently supported currencies:  | Currency     | ISO 4217 code | |--------------|---------------| | Czech koruna | CZK           | | Euro         | EUR           | 
+// A three-letter currency code from [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217). Defines monetary unit to be used in respons.  Currently supported currencies:  | Currency     | ISO 4217 code | |--------------|---------------| | Czech koruna | CZK           | | Euro         | EUR           |
 func (r ApiCreateUnregisteredSroTicketsRequest) XCurrency(xCurrency string) ApiCreateUnregisteredSroTicketsRequest {
 	r.xCurrency = &xCurrency
 	return r
@@ -438,13 +439,13 @@ CreateUnregisteredSroTickets Create seat reservation.
 
 Creates seat reservation for unregistered user.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiCreateUnregisteredSroTicketsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiCreateUnregisteredSroTicketsRequest
 */
 func (a *SroTicketsAPIService) CreateUnregisteredSroTickets(ctx context.Context) ApiCreateUnregisteredSroTicketsRequest {
 	return ApiCreateUnregisteredSroTicketsRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
@@ -569,11 +570,11 @@ func (a *SroTicketsAPIService) CreateUnregisteredSroTickets(ctx context.Context)
 // }
 
 type ApiGetBookedSroTicketsRequest struct {
-	ctx context.Context
-	ApiService *SroTicketsAPIService
-	txToken string
+	ctx                context.Context
+	ApiService         *SroTicketsAPIService
+	txToken            string
 	xApplicationOrigin *string
-	xLang *string
+	xLang              *string
 }
 
 // Application origin - APP - Mobile application (Android / Apple) - AFF - Affiliate application which is managed by third party - CAT - Web application used to sell catering - DEV - Only for development and testing - DOT - Check-in application for ticket sales on a train or bus - NOT - Unknown application type
@@ -582,7 +583,7 @@ func (r ApiGetBookedSroTicketsRequest) XApplicationOrigin(xApplicationOrigin str
 	return r
 }
 
-// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             | 
+// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             |
 func (r ApiGetBookedSroTicketsRequest) XLang(xLang string) ApiGetBookedSroTicketsRequest {
 	r.xLang = &xLang
 	return r
@@ -595,26 +596,27 @@ func (r ApiGetBookedSroTicketsRequest) Execute() ([]SroTicketBookingResponse, *h
 /*
 GetBookedSroTickets Get seat reservation by softbooking operation ID.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param txToken Internal ID of the soft booking operation that will be canceled.
- @return ApiGetBookedSroTicketsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param txToken Internal ID of the soft booking operation that will be canceled.
+	@return ApiGetBookedSroTicketsRequest
 */
 func (a *SroTicketsAPIService) GetBookedSroTickets(ctx context.Context, txToken string) ApiGetBookedSroTicketsRequest {
 	return ApiGetBookedSroTicketsRequest{
 		ApiService: a,
-		ctx: ctx,
-		txToken: txToken,
+		ctx:        ctx,
+		txToken:    txToken,
 	}
 }
 
 // Execute executes the request
-//  @return []SroTicketBookingResponse
+//
+//	@return []SroTicketBookingResponse
 func (a *SroTicketsAPIService) GetBookedSroTicketsExecute(r ApiGetBookedSroTicketsRequest) ([]SroTicketBookingResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []SroTicketBookingResponse
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []SroTicketBookingResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SroTicketsAPIService.GetBookedSroTickets")
@@ -687,8 +689,8 @@ func (a *SroTicketsAPIService) GetBookedSroTicketsExecute(r ApiGetBookedSroTicke
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -698,8 +700,8 @@ func (a *SroTicketsAPIService) GetBookedSroTicketsExecute(r ApiGetBookedSroTicke
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -709,8 +711,8 @@ func (a *SroTicketsAPIService) GetBookedSroTicketsExecute(r ApiGetBookedSroTicke
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -728,12 +730,12 @@ func (a *SroTicketsAPIService) GetBookedSroTicketsExecute(r ApiGetBookedSroTicke
 }
 
 type ApiGetSroTicketByIdRequest struct {
-	ctx context.Context
-	ApiService *SroTicketsAPIService
-	accountCode string
-	ticketId int64
+	ctx                context.Context
+	ApiService         *SroTicketsAPIService
+	accountCode        string
+	ticketId           int64
 	xApplicationOrigin *string
-	xLang *string
+	xLang              *string
 }
 
 // Application origin - APP - Mobile application (Android / Apple) - AFF - Affiliate application which is managed by third party - CAT - Web application used to sell catering - DEV - Only for development and testing - DOT - Check-in application for ticket sales on a train or bus - NOT - Unknown application type
@@ -742,7 +744,7 @@ func (r ApiGetSroTicketByIdRequest) XApplicationOrigin(xApplicationOrigin string
 	return r
 }
 
-// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             | 
+// A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             |
 func (r ApiGetSroTicketByIdRequest) XLang(xLang string) ApiGetSroTicketByIdRequest {
 	r.xLang = &xLang
 	return r
@@ -755,28 +757,29 @@ func (r ApiGetSroTicketByIdRequest) Execute() (*SroTicket, *http.Response, error
 /*
 GetSroTicketById Get seat reservation by ID.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param accountCode Unique code for the customer's account.  To obtain account code you should go through these two steps:   1. Create new ticket using endpoint `tickets/create`. This endpoint will return `token` in response, which you should use in the step 2.   2. Authenticate user's token using endpoint `users/authenticate`, which will return `accountCode` in response. 
- @param ticketId Unique identifier for the ticket.
- @return ApiGetSroTicketByIdRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param accountCode Unique code for the customer's account.  To obtain account code you should go through these two steps:   1. Create new ticket using endpoint `tickets/create`. This endpoint will return `token` in response, which you should use in the step 2.   2. Authenticate user's token using endpoint `users/authenticate`, which will return `accountCode` in response.
+	@param ticketId Unique identifier for the ticket.
+	@return ApiGetSroTicketByIdRequest
 */
 func (a *SroTicketsAPIService) GetSroTicketById(ctx context.Context, accountCode string, ticketId int64) ApiGetSroTicketByIdRequest {
 	return ApiGetSroTicketByIdRequest{
-		ApiService: a,
-		ctx: ctx,
+		ApiService:  a,
+		ctx:         ctx,
 		accountCode: accountCode,
-		ticketId: ticketId,
+		ticketId:    ticketId,
 	}
 }
 
 // Execute executes the request
-//  @return SroTicket
+//
+//	@return SroTicket
 func (a *SroTicketsAPIService) GetSroTicketByIdExecute(r ApiGetSroTicketByIdRequest) (*SroTicket, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *SroTicket
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *SroTicket
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SroTicketsAPIService.GetSroTicketById")
@@ -844,8 +847,8 @@ func (a *SroTicketsAPIService) GetSroTicketByIdExecute(r ApiGetSroTicketByIdRequ
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -855,8 +858,8 @@ func (a *SroTicketsAPIService) GetSroTicketByIdExecute(r ApiGetSroTicketByIdRequ
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -866,8 +869,8 @@ func (a *SroTicketsAPIService) GetSroTicketByIdExecute(r ApiGetSroTicketByIdRequ
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

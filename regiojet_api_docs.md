@@ -22,14 +22,9 @@ All of the example requests are already configured in the Bruno project.
 ![Bruno - configuring variables](./assets/bruno-configure-variables-2.png)
 
 
-## Basic description of endpoints
+## Description of endpoints
 
-- `GET /routes/search/simple` - used when searching by origin and destination + date:
-```
-https://brn-ybus-pubapi.sa.cz/restapi/routes/search/simple?tariffs=CZECH_STUDENT_PASS_26&toLocationType=CITY&toLocationId=10202003&fromLocationType=CITY&fromLocationId=10202002&departureDate=2024-12-22&fromLocationName=&toLocationName=
-```
-
-- TODO: study the normal flow of searching and describe it here
+- Look at the Booking API section of [the docs](https://regiojet.com/about-us/affiliate/api).
 
 ## Authentication
 
@@ -43,3 +38,12 @@ as the `Login with kreditová jízdenka` request.
 
 After logging in successfully, we are granted a UUID. 
 This should be used as a `Authorization: Bearer <uuid_token>` header in subsequent requests.
+
+## Generated API client
+
+How we have generated the code inside the `generated-api-client-go` folder:
+
+1. `npm install @openapitools/openapi-generator-cli -g`
+2. `openapi-generator-cli generate -i ./regiojet-affiliate-1.1.0-resolved.json -g go -o generated-api-client-go --skip-validate-spec`
+
+Look inside [the readme](./generated-api-client-go/README.md) to see how to use the generated client.

@@ -11,10 +11,11 @@ package openapi
 
 import (
 	"context"
+	"testing"
+
+	openapiclient "github.com/metju-ac/train-me-maybe/openapi"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"testing"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
 )
 
 func Test_openapi_TicketsAPIService(t *testing.T) {
@@ -24,7 +25,7 @@ func Test_openapi_TicketsAPIService(t *testing.T) {
 
 	t.Run("Test TicketsAPIService CancelTicket", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		var accountCode string
 		var ticketId int64
@@ -39,7 +40,7 @@ func Test_openapi_TicketsAPIService(t *testing.T) {
 
 	t.Run("Test TicketsAPIService CreateTickets", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		resp, httpRes, err := apiClient.TicketsAPI.CreateTickets(context.Background()).Execute()
 
@@ -51,7 +52,7 @@ func Test_openapi_TicketsAPIService(t *testing.T) {
 
 	t.Run("Test TicketsAPIService GetTicketById", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		var accountCode string
 		var ticketId int64
@@ -66,7 +67,7 @@ func Test_openapi_TicketsAPIService(t *testing.T) {
 
 	t.Run("Test TicketsAPIService GetTicketQrCode", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		var accountCode string
 		var ticketId int64
@@ -81,7 +82,7 @@ func Test_openapi_TicketsAPIService(t *testing.T) {
 
 	t.Run("Test TicketsAPIService GetTicketQrCodePng", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		var accountCode string
 		var ticketId int64
@@ -96,7 +97,7 @@ func Test_openapi_TicketsAPIService(t *testing.T) {
 
 	t.Run("Test TicketsAPIService Print", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		var accountCode string
 		var ticketId int64

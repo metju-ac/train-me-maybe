@@ -11,10 +11,11 @@ package openapi
 
 import (
 	"context"
+	"testing"
+
+	openapiclient "github.com/metju-ac/train-me-maybe/openapi"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"testing"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
 )
 
 func Test_openapi_RoutesAPIService(t *testing.T) {
@@ -24,7 +25,7 @@ func Test_openapi_RoutesAPIService(t *testing.T) {
 
 	t.Run("Test RoutesAPIService GetPassengersData", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		var routeId string
 
@@ -38,7 +39,7 @@ func Test_openapi_RoutesAPIService(t *testing.T) {
 
 	t.Run("Test RoutesAPIService GetRouteFreeSeats", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		resp, httpRes, err := apiClient.RoutesAPI.GetRouteFreeSeats(context.Background()).Execute()
 
@@ -50,7 +51,7 @@ func Test_openapi_RoutesAPIService(t *testing.T) {
 
 	t.Run("Test RoutesAPIService GetRouteFreeSeats110", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		var routeId string
 
@@ -64,7 +65,7 @@ func Test_openapi_RoutesAPIService(t *testing.T) {
 
 	t.Run("Test RoutesAPIService GetSimpleRouteDetail", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		var routeId string
 
@@ -78,7 +79,7 @@ func Test_openapi_RoutesAPIService(t *testing.T) {
 
 	t.Run("Test RoutesAPIService GetSroPassengersData", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		var routeId string
 
@@ -92,7 +93,7 @@ func Test_openapi_RoutesAPIService(t *testing.T) {
 
 	t.Run("Test RoutesAPIService GetSroRoutePrices", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		var routeId string
 
@@ -106,7 +107,7 @@ func Test_openapi_RoutesAPIService(t *testing.T) {
 
 	t.Run("Test RoutesAPIService SearchRoutes", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		resp, httpRes, err := apiClient.RoutesAPI.SearchRoutes(context.Background()).Execute()
 
@@ -118,7 +119,7 @@ func Test_openapi_RoutesAPIService(t *testing.T) {
 
 	t.Run("Test RoutesAPIService SearchSR70Routes", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		var connection int64
 		var fromLocation int64
@@ -135,7 +136,7 @@ func Test_openapi_RoutesAPIService(t *testing.T) {
 
 	t.Run("Test RoutesAPIService SimpleSearchRoutes", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		resp, httpRes, err := apiClient.RoutesAPI.SimpleSearchRoutes(context.Background()).Execute()
 

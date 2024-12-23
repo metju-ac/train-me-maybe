@@ -429,9 +429,9 @@ func (r ApiCreateUnregisteredSroTicketsRequest) XCurrency(xCurrency string) ApiC
 	return r
 }
 
-func (r ApiCreateUnregisteredSroTicketsRequest) Execute() (*Object, *http.Response, error) {
-	return r.ApiService.CreateUnregisteredSroTicketsExecute(r)
-}
+// func (r ApiCreateUnregisteredSroTicketsRequest) Execute() (*Object, *http.Response, error) {
+// 	return r.ApiService.CreateUnregisteredSroTicketsExecute(r)
+// }
 
 /*
 CreateUnregisteredSroTickets Create seat reservation.
@@ -448,125 +448,125 @@ func (a *SroTicketsAPIService) CreateUnregisteredSroTickets(ctx context.Context)
 	}
 }
 
-// Execute executes the request
-//  @return Object
-func (a *SroTicketsAPIService) CreateUnregisteredSroTicketsExecute(r ApiCreateUnregisteredSroTicketsRequest) (*Object, *http.Response, error) {
-	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *Object
-	)
+// // Execute executes the request
+// //  @return Object
+// func (a *SroTicketsAPIService) CreateUnregisteredSroTicketsExecute(r ApiCreateUnregisteredSroTicketsRequest) (*Object, *http.Response, error) {
+// 	var (
+// 		localVarHTTPMethod   = http.MethodPost
+// 		localVarPostBody     interface{}
+// 		formFiles            []formFile
+// 		localVarReturnValue  *Object
+// 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SroTicketsAPIService.CreateUnregisteredSroTickets")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
+// 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SroTicketsAPIService.CreateUnregisteredSroTickets")
+// 	if err != nil {
+// 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+// 	}
 
-	localVarPath := localBasePath + "/tickets/RJ_SRO/unregistered"
+// 	localVarPath := localBasePath + "/tickets/RJ_SRO/unregistered"
 
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-	if r.xTxToken == nil {
-		return localVarReturnValue, nil, reportError("xTxToken is required and must be specified")
-	}
-	if strlen(*r.xTxToken) < 8 {
-		return localVarReturnValue, nil, reportError("xTxToken must have at least 8 elements")
-	}
-	if strlen(*r.xTxToken) > 10 {
-		return localVarReturnValue, nil, reportError("xTxToken must have less than 10 elements")
-	}
-	if r.request == nil {
-		return localVarReturnValue, nil, reportError("request is required and must be specified")
-	}
+// 	localVarHeaderParams := make(map[string]string)
+// 	localVarQueryParams := url.Values{}
+// 	localVarFormParams := url.Values{}
+// 	if r.xTxToken == nil {
+// 		return localVarReturnValue, nil, reportError("xTxToken is required and must be specified")
+// 	}
+// 	if strlen(*r.xTxToken) < 8 {
+// 		return localVarReturnValue, nil, reportError("xTxToken must have at least 8 elements")
+// 	}
+// 	if strlen(*r.xTxToken) > 10 {
+// 		return localVarReturnValue, nil, reportError("xTxToken must have less than 10 elements")
+// 	}
+// 	if r.request == nil {
+// 		return localVarReturnValue, nil, reportError("request is required and must be specified")
+// 	}
 
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{"application/json"}
+// 	// to determine the Content-Type header
+// 	localVarHTTPContentTypes := []string{"application/json"}
 
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
+// 	// set Content-Type header
+// 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+// 	if localVarHTTPContentType != "" {
+// 		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+// 	}
 
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
+// 	// to determine the Accept header
+// 	localVarHTTPHeaderAccepts := []string{"application/json"}
 
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.xApplicationOrigin != nil {
-		parameterAddToHeaderOrQuery(localVarHeaderParams, "X-Application-Origin", r.xApplicationOrigin, "", "")
-	}
-	if r.xLang != nil {
-		parameterAddToHeaderOrQuery(localVarHeaderParams, "X-Lang", r.xLang, "", "")
-	}
-	if r.xCurrency != nil {
-		parameterAddToHeaderOrQuery(localVarHeaderParams, "X-Currency", r.xCurrency, "", "")
-	}
-	parameterAddToHeaderOrQuery(localVarHeaderParams, "X-TxToken", r.xTxToken, "", "")
-	// body params
-	localVarPostBody = r.request
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
+// 	// set Accept header
+// 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+// 	if localVarHTTPHeaderAccept != "" {
+// 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+// 	}
+// 	if r.xApplicationOrigin != nil {
+// 		parameterAddToHeaderOrQuery(localVarHeaderParams, "X-Application-Origin", r.xApplicationOrigin, "", "")
+// 	}
+// 	if r.xLang != nil {
+// 		parameterAddToHeaderOrQuery(localVarHeaderParams, "X-Lang", r.xLang, "", "")
+// 	}
+// 	if r.xCurrency != nil {
+// 		parameterAddToHeaderOrQuery(localVarHeaderParams, "X-Currency", r.xCurrency, "", "")
+// 	}
+// 	parameterAddToHeaderOrQuery(localVarHeaderParams, "X-TxToken", r.xTxToken, "", "")
+// 	// body params
+// 	localVarPostBody = r.request
+// 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+// 	if err != nil {
+// 		return localVarReturnValue, nil, err
+// 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
+// 	localVarHTTPResponse, err := a.client.callAPI(req)
+// 	if err != nil || localVarHTTPResponse == nil {
+// 		return localVarReturnValue, localVarHTTPResponse, err
+// 	}
 
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
+// 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+// 	localVarHTTPResponse.Body.Close()
+// 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+// 	if err != nil {
+// 		return localVarReturnValue, localVarHTTPResponse, err
+// 	}
 
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v Object
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 401 {
-			var v Object
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
+// 	if localVarHTTPResponse.StatusCode >= 300 {
+// 		newErr := &GenericOpenAPIError{
+// 			body:  localVarBody,
+// 			error: localVarHTTPResponse.Status,
+// 		}
+// 		if localVarHTTPResponse.StatusCode == 400 {
+// 			var v Object
+// 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+// 			if err != nil {
+// 				newErr.error = err.Error()
+// 				return localVarReturnValue, localVarHTTPResponse, newErr
+// 			}
+// 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+// 					newErr.model = v
+// 			return localVarReturnValue, localVarHTTPResponse, newErr
+// 		}
+// 		if localVarHTTPResponse.StatusCode == 401 {
+// 			var v Object
+// 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+// 			if err != nil {
+// 				newErr.error = err.Error()
+// 				return localVarReturnValue, localVarHTTPResponse, newErr
+// 			}
+// 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+// 					newErr.model = v
+// 		}
+// 		return localVarReturnValue, localVarHTTPResponse, newErr
+// 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
+// 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+// 	if err != nil {
+// 		newErr := &GenericOpenAPIError{
+// 			body:  localVarBody,
+// 			error: err.Error(),
+// 		}
+// 		return localVarReturnValue, localVarHTTPResponse, newErr
+// 	}
 
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
+// 	return localVarReturnValue, localVarHTTPResponse, nil
+// }
 
 type ApiGetBookedSroTicketsRequest struct {
 	ctx context.Context

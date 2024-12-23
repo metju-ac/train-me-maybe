@@ -96,8 +96,12 @@ func NewConfiguration() *Configuration {
 		UserAgent:        "OpenAPI-Generator/1.0.0/go",
 		Debug:            false,
 		Servers:          ServerConfigurations{
+			// {
+			// 	URL: "https://brn-qa-ybus-privapi.sa.cz/affiliate",
+			// 	Description: "No description provided",
+			// },
 			{
-				URL: "https://brn-qa-ybus-privapi.sa.cz/affiliate",
+				URL: "https://brn-ybus-pubapi.sa.cz/restapi",
 				Description: "No description provided",
 			},
 		},

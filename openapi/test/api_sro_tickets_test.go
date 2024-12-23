@@ -11,10 +11,11 @@ package openapi
 
 import (
 	"context"
+	"testing"
+
+	openapiclient "github.com/metju-ac/train-me-maybe/openapi"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"testing"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
 )
 
 func Test_openapi_SroTicketsAPIService(t *testing.T) {
@@ -24,7 +25,7 @@ func Test_openapi_SroTicketsAPIService(t *testing.T) {
 
 	t.Run("Test SroTicketsAPIService CancelSroTicket", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		var accountCode string
 		var ticketId int64
@@ -39,7 +40,7 @@ func Test_openapi_SroTicketsAPIService(t *testing.T) {
 
 	t.Run("Test SroTicketsAPIService CancelSroTicketByTxToken", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		var txToken string
 
@@ -51,21 +52,21 @@ func Test_openapi_SroTicketsAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test SroTicketsAPIService CreateUnregisteredSroTickets", func(t *testing.T) {
+	// t.Run("Test SroTicketsAPIService CreateUnregisteredSroTickets", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+	// 	t.Skip("skip test") // remove to run test
 
-		resp, httpRes, err := apiClient.SroTicketsAPI.CreateUnregisteredSroTickets(context.Background()).Execute()
+	// 	resp, httpRes, err := apiClient.SroTicketsAPI.CreateUnregisteredSroTickets(context.Background()).Execute()
 
-		require.Nil(t, err)
-		require.NotNil(t, resp)
-		assert.Equal(t, 200, httpRes.StatusCode)
+	// 	require.Nil(t, err)
+	// 	require.NotNil(t, resp)
+	// 	assert.Equal(t, 200, httpRes.StatusCode)
 
-	})
+	// })
 
 	t.Run("Test SroTicketsAPIService GetBookedSroTickets", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		var txToken string
 
@@ -79,7 +80,7 @@ func Test_openapi_SroTicketsAPIService(t *testing.T) {
 
 	t.Run("Test SroTicketsAPIService GetSroTicketById", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		var accountCode string
 		var ticketId int64

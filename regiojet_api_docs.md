@@ -41,9 +41,17 @@ This should be used as a `Authorization: Bearer <uuid_token>` header in subseque
 
 ## Generated API client
 
-How we have generated the code inside the `generated-api-client-go` folder:
+How we have generated the code inside the `openapi` folder:
 
 1. `npm install @openapitools/openapi-generator-cli -g`
-2. `openapi-generator-cli generate -i ./regiojet-affiliate-1.1.0-resolved.json -g go -o generated-api-client-go --skip-validate-spec`
+2. `openapi-generator-cli generate -i ./regiojet-affiliate-1.1.0-resolved.json -g go -o openapi --skip-validate-spec`
 
-Look inside [the readme](./generated-api-client-go/README.md) to see how to use the generated client.
+Look inside [the readme](./openapi/README.md) to see how to use the generated client.
+
+### Changes made to the generated code
+
+- Comment out code which reference non-existing `*Object` type
+- Remove `go.mod` and `go.sum` files from the `openapi` folder, so that we do not
+  have multiple modules in the project.
+- Find `github.com/GIT_USER_ID/GIT_REPO_ID` and replace with `github.com/metju-ac/train-me-maybe/openapi`
+- Inside `openapi\configuration.go`, comment out the `https://brn-qa-ybus-privapi.sa.cz/affiliate` and replace with public `https://brn-ybus-pubapi.sa.cz/restapi` URL

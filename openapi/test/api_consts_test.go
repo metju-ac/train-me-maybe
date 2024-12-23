@@ -11,10 +11,11 @@ package openapi
 
 import (
 	"context"
+	"testing"
+
+	openapiclient "github.com/metju-ac/train-me-maybe/openapi"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"testing"
-	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
 )
 
 func Test_openapi_ConstsAPIService(t *testing.T) {
@@ -24,7 +25,7 @@ func Test_openapi_ConstsAPIService(t *testing.T) {
 
 	t.Run("Test ConstsAPIService GetActionPrices", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		resp, httpRes, err := apiClient.ConstsAPI.GetActionPrices(context.Background()).Execute()
 
@@ -36,7 +37,7 @@ func Test_openapi_ConstsAPIService(t *testing.T) {
 
 	t.Run("Test ConstsAPIService GetLanguageDictionary", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		var language string
 
@@ -50,7 +51,7 @@ func Test_openapi_ConstsAPIService(t *testing.T) {
 
 	t.Run("Test ConstsAPIService GetLocations", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		resp, httpRes, err := apiClient.ConstsAPI.GetLocations(context.Background()).Execute()
 
@@ -62,7 +63,7 @@ func Test_openapi_ConstsAPIService(t *testing.T) {
 
 	t.Run("Test ConstsAPIService GetSeatClasses", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		resp, httpRes, err := apiClient.ConstsAPI.GetSeatClasses(context.Background()).Execute()
 
@@ -74,7 +75,7 @@ func Test_openapi_ConstsAPIService(t *testing.T) {
 
 	t.Run("Test ConstsAPIService GetStandards", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		resp, httpRes, err := apiClient.ConstsAPI.GetStandards(context.Background()).Execute()
 
@@ -86,7 +87,7 @@ func Test_openapi_ConstsAPIService(t *testing.T) {
 
 	t.Run("Test ConstsAPIService GetTariffs", func(t *testing.T) {
 
-		t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
 		resp, httpRes, err := apiClient.ConstsAPI.GetTariffs(context.Background()).Execute()
 

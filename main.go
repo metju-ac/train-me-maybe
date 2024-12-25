@@ -1,9 +1,8 @@
 package main
 
 import (
-	"context"
 	"fmt"
-
+	"github.com/metju-ac/train-me-maybe/internal/handlers"
 	openapiclient "github.com/metju-ac/train-me-maybe/openapi"
 )
 
@@ -13,7 +12,11 @@ func main() {
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
 
-	_, httpRes, _ := apiClient.ConstsAPI.GetActionPrices(context.Background()).Execute()
+	selectedRoutes, err := handlers.HandleRouteSelection(apiClient)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
 
-	fmt.Println("GOT", httpRes.StatusCode)
+	fmt.Println("Selected routes:", selectedRoutes)
 }

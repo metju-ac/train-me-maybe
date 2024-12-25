@@ -49,7 +49,9 @@ type Station struct {
 	// The geographic latitude where station is located.
 	Latitude *float32 `json:"latitude,omitempty"`
 	// URL to station's picture (if available).
-	ImageUrl *string `json:"imageUrl,omitempty"`
+	ImageUrl   *string `json:"imageUrl,omitempty"`
+	CisNumber  *int32  `json:"cisNumber,omitempty"`
+	Sr70Number *int32  `json:"sr70Number,omitempty"`
 }
 
 type _Station Station

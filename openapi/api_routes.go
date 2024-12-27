@@ -224,7 +224,7 @@ func (r ApiGetRouteFreeSeatsRequest) XOccupied(xOccupied bool) ApiGetRouteFreeSe
 	return r
 }
 
-func (r ApiGetRouteFreeSeatsRequest) Execute() (*RouteSeatsResponse, *http.Response, error) {
+func (r ApiGetRouteFreeSeatsRequest) Execute() (*[]RouteSeatsResponse, *http.Response, error) {
 	return r.ApiService.GetRouteFreeSeatsExecute(r)
 }
 
@@ -244,12 +244,12 @@ func (a *RoutesAPIService) GetRouteFreeSeats(ctx context.Context) ApiGetRouteFre
 // Execute executes the request
 //
 //	@return RouteSeatsResponse
-func (a *RoutesAPIService) GetRouteFreeSeatsExecute(r ApiGetRouteFreeSeatsRequest) (*RouteSeatsResponse, *http.Response, error) {
+func (a *RoutesAPIService) GetRouteFreeSeatsExecute(r ApiGetRouteFreeSeatsRequest) (*[]RouteSeatsResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *RouteSeatsResponse
+		localVarReturnValue *[]RouteSeatsResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RoutesAPIService.GetRouteFreeSeats")

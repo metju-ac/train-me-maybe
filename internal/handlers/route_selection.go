@@ -3,19 +3,20 @@ package handlers
 import (
 	"context"
 	"fmt"
+	"log/slog"
+	"time"
+
 	"github.com/metju-ac/train-me-maybe/internal/cli"
 	"github.com/metju-ac/train-me-maybe/internal/models"
 	"github.com/metju-ac/train-me-maybe/internal/parser"
 	openapiclient "github.com/metju-ac/train-me-maybe/openapi"
-	"log/slog"
-	"time"
 )
 
 func fetchLocations(ctx context.Context, apiClient *openapiclient.APIClient) ([]models.StationModel, error) {
 	slog.Info("Fetching locations")
 	data, httpRes, err := apiClient.ConstsAPI.GetLocations(ctx).Execute()
 	if err != nil {
-		slog.Error("Failed to fetch station data", "error", err, "statusCode", httpRes.StatusCode)
+		slog.Error("Failed to fetch station data", "error", err)
 		return nil, fmt.Errorf("failed to fetch station data: %w", err)
 	}
 
@@ -78,7 +79,7 @@ func fetchRoutes(ctx context.Context, apiClient *openapiclient.APIClient, depart
 		DepartureDate(departureDate).
 		Execute()
 	if err != nil {
-		slog.Error("Failed to fetch routes", "error", err, "statusCode", httpRes.StatusCode)
+		slog.Error("Failed to fetch routes", "error", err)
 		return nil, fmt.Errorf("failed to fetch routes: %w", err)
 	}
 
@@ -101,35 +102,40 @@ func selectRoute(routes []openapiclient.SimpleRoute) ([]int64, error) {
 	return selectedRoute, nil
 }
 
-func HandleRouteSelection(apiClient *openapiclient.APIClient) ([]int64, error) {
+func HandleRouteSelection(apiClient *openapiclient.APIClient) (int64, int64, []int64, error) {
 	slog.Info("Handling route selection")
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
 	locations, err := fetchLocations(ctx, apiClient)
 	if err != nil {
-		return nil, err
+		return 0, 0, nil, err
 	}
 
 	departingStation, err := selectDepartingStation(locations)
 	if err != nil {
-		return nil, err
+		return 0, 0, nil, err
 	}
 
 	arrivingStation, err := selectArrivingStation(locations)
 	if err != nil {
-		return nil, err
+		return 0, 0, nil, err
 	}
 
 	departureDate, err := selectDepartureDate()
 	if err != nil {
-		return nil, err
+		return 0, 0, nil, err
 	}
 
 	routes, err := fetchRoutes(ctx, apiClient, departingStation, arrivingStation, departureDate)
 	if err != nil {
-		return nil, err
+		return 0, 0, nil, err
 	}
 
-	return selectRoute(routes)
+	selectedRoutes, err := selectRoute(routes)
+	if err != nil {
+		return 0, 0, nil, err
+	}
+
+	return departingStation, arrivingStation, selectedRoutes, nil
 }

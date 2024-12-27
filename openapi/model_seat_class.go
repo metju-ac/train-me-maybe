@@ -27,7 +27,8 @@ type SeatClass struct {
 	// Vehicle class.
 	VehicleClass *string `json:"vehicleClass,omitempty"`
 	// Seat class title.
-	Title string `json:"title"`
+	Title            string `json:"title"`
+	ShortDescription string `json:"shortDescription,omitempty"`
 	// Full seat class description.
 	Description string `json:"description"`
 	// URL of a seat class thumbnail image.

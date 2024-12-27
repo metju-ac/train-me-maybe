@@ -5,12 +5,18 @@ import (
 	"os"
 	"time"
 
+	"github.com/metju-ac/train-me-maybe/internal/config"
 	"github.com/metju-ac/train-me-maybe/internal/handlers"
+	"github.com/metju-ac/train-me-maybe/internal/notification"
 	openapiclient "github.com/metju-ac/train-me-maybe/openapi"
 )
 
 func main() {
-	fmt.Println("Hello, RegioJet!")
+	config, err := config.LoadConfig()
+	if err != nil {
+		fmt.Println("Error:", err)
+		os.Exit(1)
+	}
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -36,6 +42,7 @@ func main() {
 
 		if freeSeats {
 			fmt.Println("Free seats found!")
+			notification.EmailNotification(&config.Smtp, departingStation, arrivingStation, selectedRoutes, seatClasses)
 			break
 		}
 

@@ -6,7 +6,7 @@ meta {
 
 post {
   url: {{baseUrl}}/routes/freeSeats
-  body: none
+  body: json
   auth: none
 }
 
@@ -14,4 +14,20 @@ headers {
   ~X-Application-Origin: 
   ~X-Lang: 
   ~X-Occupied: 
+}
+
+body:json {
+  {
+    "seatClass": "TRAIN_LOW_COST",
+    "sections": [
+      {
+        "fromStationId": 372825000,
+        "sectionId": 7471783364,
+        "toStationId": 372825008
+      }
+    ],
+    "tariffs": [
+      "REGULAR"
+    ]
+  }
 }

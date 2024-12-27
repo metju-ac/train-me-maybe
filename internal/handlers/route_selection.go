@@ -3,19 +3,20 @@ package handlers
 import (
 	"context"
 	"fmt"
+	"log/slog"
+	"time"
+
 	"github.com/metju-ac/train-me-maybe/internal/cli"
 	"github.com/metju-ac/train-me-maybe/internal/models"
 	"github.com/metju-ac/train-me-maybe/internal/parser"
 	openapiclient "github.com/metju-ac/train-me-maybe/openapi"
-	"log/slog"
-	"time"
 )
 
 func fetchLocations(ctx context.Context, apiClient *openapiclient.APIClient) ([]models.StationModel, error) {
 	slog.Info("Fetching locations")
 	data, httpRes, err := apiClient.ConstsAPI.GetLocations(ctx).Execute()
 	if err != nil {
-		slog.Error("Failed to fetch station data", "error", err, "statusCode", httpRes.StatusCode)
+		slog.Error("Failed to fetch station data", "error", err)
 		return nil, fmt.Errorf("failed to fetch station data: %w", err)
 	}
 
@@ -78,7 +79,7 @@ func fetchRoutes(ctx context.Context, apiClient *openapiclient.APIClient, depart
 		DepartureDate(departureDate).
 		Execute()
 	if err != nil {
-		slog.Error("Failed to fetch routes", "error", err, "statusCode", httpRes.StatusCode)
+		slog.Error("Failed to fetch routes", "error", err)
 		return nil, fmt.Errorf("failed to fetch routes: %w", err)
 	}
 

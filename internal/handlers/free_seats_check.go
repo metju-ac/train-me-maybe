@@ -3,8 +3,9 @@ package handlers
 import (
 	"context"
 	"fmt"
-	openapiclient "github.com/metju-ac/train-me-maybe/openapi"
 	"log/slog"
+
+	openapiclient "github.com/metju-ac/train-me-maybe/openapi"
 )
 
 func freeSeats(res []openapiclient.RouteSeatsResponse) bool {
@@ -30,9 +31,9 @@ func CheckFreeSeats(apiClient *openapiclient.APIClient, departingStation, arrivi
 	for _, seatClass := range seatClasses {
 		routeSeatsRequest := openapiclient.NewRouteSeatsRequest(sections, tariffs, seatClass)
 
-		route, httpRes, err := apiClient.RoutesAPI.GetRouteFreeSeats(context.Background()).Request(*routeSeatsRequest).Execute()
+		route, _, err := apiClient.RoutesAPI.GetRouteFreeSeats(context.Background()).Request(*routeSeatsRequest).Execute()
 		if err != nil {
-			slog.Error("Error calling GetRouteFreeSeats", "error", err, "statusCode", httpRes.StatusCode)
+			slog.Error("Error calling GetRouteFreeSeats", "error", err)
 			return false, fmt.Errorf("error calling GetRouteFreeSeats: %v", err)
 		}
 

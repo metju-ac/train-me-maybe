@@ -3,17 +3,18 @@ package handlers
 import (
 	"context"
 	"fmt"
-	"github.com/metju-ac/train-me-maybe/internal/cli"
-	openapiclient "github.com/metju-ac/train-me-maybe/openapi"
 	"log/slog"
 	"time"
+
+	"github.com/metju-ac/train-me-maybe/internal/cli"
+	openapiclient "github.com/metju-ac/train-me-maybe/openapi"
 )
 
 func fetchSeatClasses(ctx context.Context, apiClient *openapiclient.APIClient) ([]openapiclient.SeatClass, error) {
 	slog.Info("Fetching seat classes")
 	seatClasses, httpRes, err := apiClient.ConstsAPI.GetSeatClasses(ctx).Execute()
 	if err != nil {
-		slog.Error("Failed to fetch seat classes", "error", err, "statusCode", httpRes.StatusCode)
+		slog.Error("Failed to fetch seat classes", "error", err)
 		return nil, fmt.Errorf("failed to fetch seat classes: %w", err)
 	}
 

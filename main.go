@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/metju-ac/train-me-maybe/internal/handlers"
 	openapiclient "github.com/metju-ac/train-me-maybe/openapi"
+	"time"
 )
 
 func main() {
@@ -12,11 +13,30 @@ func main() {
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
 
-	selectedRoutes, err := handlers.HandleRouteSelection(apiClient)
+	departingStation, arrivingStation, selectedRoutes, err := handlers.HandleRouteSelection(apiClient)
 	if err != nil {
 		fmt.Println("Error:", err)
 		return
 	}
 
-	fmt.Println("Selected routes:", selectedRoutes)
+	seatClasses, err := handlers.HandleSeatClassSelection(apiClient)
+	if err != nil {
+		fmt.Println("Error:", err)
+	}
+
+	for {
+		freeSeats, err := handlers.CheckFreeSeats(apiClient, departingStation, arrivingStation, selectedRoutes, seatClasses)
+		if err != nil {
+			fmt.Println("Error:", err)
+			return
+		}
+
+		if freeSeats {
+			fmt.Println("Free seats found!")
+			break
+		}
+
+		fmt.Println("No free seats found, checking again in 10 seconds...")
+		time.Sleep(10 * time.Second)
+	}
 }

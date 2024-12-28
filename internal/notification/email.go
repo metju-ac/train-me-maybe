@@ -2,6 +2,7 @@ package notification
 
 import (
 	"fmt"
+	"log/slog"
 
 	"github.com/metju-ac/train-me-maybe/internal/config"
 	gomail "gopkg.in/mail.v2"
@@ -9,6 +10,7 @@ import (
 
 // partly taken from https://www.loginradius.com/blog/engineering/sending-emails-with-golang/
 func EmailNotification(config *config.SmtpConfig, departingStation, arrivingStation int64, selectedRoutes []int64, seatClasses []string) {
+	slog.Info("Preparing email notification", "departingStation", departingStation, "arrivingStation", arrivingStation, "selectedRoutes", selectedRoutes, "seatClasses", seatClasses)
 
 	m := gomail.NewMessage()
 
@@ -29,9 +31,10 @@ func EmailNotification(config *config.SmtpConfig, departingStation, arrivingStat
 
 	// Now send E-Mail
 	if err := d.DialAndSend(m); err != nil {
-		fmt.Println(err)
+		slog.Error("Failed to send email", "error", err)
 		panic(err)
 	}
 
+	slog.Info("Email notification sent successfully")
 	return
 }

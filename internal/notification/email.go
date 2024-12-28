@@ -30,7 +30,7 @@ func EmailNotification(config *config.SmtpConfig, route *handlers.HandleRouteSel
 	m.SetHeader("Subject", `[REGIOJET] free seats found on `+formatConnectionShort(route))
 
 	// Set E-Mail body. You can set plain text or html with text/html
-	m.SetBody("text/plain", `There are free seats on the route from **`+cli.FormatStation(route.DepartingStation)+`** to **`+cli.FormatStation(route.ArrivingStation)+`** on the selected route: `+cli.FormatRoute(route.SelectedRoute))
+	m.SetBody("text/html", `There are free seats on the route from <b>`+cli.FormatStation(route.DepartingStation)+`</b> to <b>`+cli.FormatStation(route.ArrivingStation)+`</b> on the selected route: `+cli.FormatRoute(route.SelectedRoute))
 
 	// Settings for SMTP server
 	d := gomail.NewDialer(config.Server, config.Port, config.Username, config.Password)

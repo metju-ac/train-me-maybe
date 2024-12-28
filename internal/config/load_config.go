@@ -1,13 +1,15 @@
 package config
 
 import (
+	"log/slog"
+
 	"github.com/BurntSushi/toml"
 	"github.com/joho/godotenv"
-	"log/slog"
 )
 
 type Config struct {
-	Smtp SmtpConfig
+	Smtp    SmtpConfig
+	General GeneralConfig
 }
 
 func LoadConfig() (*Config, error) {
@@ -34,11 +36,21 @@ func LoadConfig() (*Config, error) {
 		return nil, err
 	}
 
+	if err := mergeGeneralConfigs(&config.General); err != nil {
+		slog.Error("Failed to merge general configs", "error", err)
+		return nil, err
+	}
+
 	// more sections will go here
 
 	// validate the configs
 	if err := validateSmtpConfig(&config.Smtp); err != nil {
 		slog.Error("Failed to validate SMTP config", "error", err)
+		return nil, err
+	}
+
+	if err := validateGeneralConfig(&config.General); err != nil {
+		slog.Error("Failed to validate general config", "error", err)
 		return nil, err
 	}
 

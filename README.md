@@ -41,6 +41,10 @@ We support configuration via:
 
 The later options have higher priority.
 
+### General settings
+
+- `POLL_INTERVAL` - how often to check for the free seats (in seconds). Recommended value is at least `60`.
+
 ### Email notifications
 
 We need to know how to connect to an SMTP server to send emails. And also to whom. The following environment variables are used:

@@ -22,8 +22,12 @@ var _ MappedNullable = &PriceConditionsDescriptions{}
 type PriceConditionsDescriptions struct {
 	// Cancel charge
 	Cancel *string `json:"cancel,omitempty"`
+	// Cancel schort
+	CancelShort *string `json:"cancelShort,omitempty"`
 	// Rebook
 	Rebook *string `json:"rebook,omitempty"`
+	// Rebook Short
+	RebookShort *string `json:"rebookShort,omitempty"`
 	// Payment expiration
 	Expiration *string `json:"expiration,omitempty"`
 }

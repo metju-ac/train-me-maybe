@@ -56,6 +56,8 @@ type Section struct {
 	Delay *string `json:"delay,omitempty"`
 	// Textual information about the travel time on a given section
 	TravelTime string `json:"travelTime"`
+	// comes from API
+	EstimatedArrivalTime time.Time `json:"estimatedArrivalTime,omitempty"`
 }
 
 type _Section Section

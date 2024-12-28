@@ -58,6 +58,8 @@ type Route struct {
 	Delay *string `json:"delay,omitempty"`
 	// Textual information about the travel time on the route
 	TravelTime *string `json:"travelTime,omitempty"`
+	// comes additionaly in API
+	CarbonOffset *string `json:"carbonOffset,omitempty"`
 }
 
 type _Route Route

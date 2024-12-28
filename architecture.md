@@ -33,5 +33,5 @@ However, if the application crashes, all watched routes are of course lost.
   - This goroutine is exactly the same function as the one in the single-user mode.
 - The user can enter another route to watch.
 - To support cancellation of the route watching, the user can click on a button "Stop watching".
-  - Technically, this is achieved by cancelling the goroutine (calling `cancel()` on a context)
+  - Technically, this is achieved by cancelling the goroutine (calling `cancel()` on a context; the goroutine must watch for this cancellation)
   - In-memory, for each user we must store the list of watched routes and their respective contexts.  

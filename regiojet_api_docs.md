@@ -55,3 +55,4 @@ Look inside [the readme](./openapi/README.md) to see how to use the generated cl
   have multiple modules in the project.
 - Find `github.com/GIT_USER_ID/GIT_REPO_ID` and replace with `github.com/metju-ac/train-me-maybe/openapi`
 - Inside `openapi\configuration.go`, comment out the `https://brn-qa-ybus-privapi.sa.cz/affiliate` and replace with public `https://brn-ybus-pubapi.sa.cz/restapi` URL
+- There were other changes to the models which were wrongly generated -- see the commit history.

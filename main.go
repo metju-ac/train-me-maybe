@@ -27,7 +27,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	seatClasses, err := handlers.HandleSeatClassSelection(apiClient, route)
+	seatClasses, err := handlers.HandleSeatClassSelection(apiClient)
 	if err != nil {
 		fmt.Println("Error:", err)
 		os.Exit(1)

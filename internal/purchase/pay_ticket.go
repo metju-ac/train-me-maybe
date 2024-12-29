@@ -167,6 +167,21 @@ func payTicket(ctx context.Context, config *config.Config, authToken string, tic
 	request.Header.Set("Cache-Control", "no-cache")
 	request.Header.Set("X-Application-Origin", "WEB")
 	request.Header.Set("Authorization", "Bearer "+authToken)
+	// TxToken is generated like this in JS
+	// const txToken = rA()
+	//
+	// rA = () => {
+	// 		let e = '',
+	// 		t = '',
+	// 		n = (new Date).valueOf();
+	// 	for (; n > 1;) {
+	// 		let t = Math.floor(n % 58);
+	// 		n /= 58,
+	// 			e += '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'[t]
+	// 	}
+	// 	for (let n = e.length; n < 8; n++) t += '1';
+	// 	return t + e
+	// }
 	request.Header.Set("X-TxToken", "182qJ8bn") // TODO set this properly, it is definitely needed
 	request.Header.Set("Content-Length", "48")
 	request.Header.Set("Origin", "https://regiojet.cz")

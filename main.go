@@ -7,6 +7,8 @@ import (
 
 	"github.com/metju-ac/train-me-maybe/internal/config"
 	"github.com/metju-ac/train-me-maybe/internal/handlers"
+	"github.com/metju-ac/train-me-maybe/internal/lib"
+	"github.com/metju-ac/train-me-maybe/internal/models"
 	"github.com/metju-ac/train-me-maybe/internal/notification"
 	"github.com/metju-ac/train-me-maybe/internal/purchase"
 	openapiclient "github.com/metju-ac/train-me-maybe/openapi"
@@ -43,21 +45,46 @@ func main() {
 		}
 	}
 
+	userInput := &models.UserInput{
+		DepartingStation: route.DepartingStation,
+		ArrivingStation:  route.ArrivingStation,
+		SelectedRoute:    route.SelectedRoute,
+		SeatClasses:      seatClasses,
+		Tariff:           tariff,
+		Section:          nil,
+		RouteDetail:      nil,
+	}
+
+	routeDetail, err := handlers.FetchRouteDetail(apiClient, userInput)
+	if err != nil {
+		fmt.Println("Error:", err)
+		os.Exit(1)
+	}
+	userInput.RouteDetail = routeDetail
+
+	section, err := lib.GetSection(userInput)
+	if err != nil {
+		fmt.Println("Error:", err)
+		os.Exit(1)
+	}
+	userInput.Section = section
+
 	for {
-		freeSeats, err := handlers.CheckFreeSeats(apiClient, route.DepartingStation, route.ArrivingStation, route.SelectedRoute, seatClasses, tariff)
+		freeSeatsResp, err := handlers.CheckFreeSeats(apiClient, userInput)
 		if err != nil {
 			fmt.Println("Error:", err)
 			os.Exit(1)
 		}
 
-		if freeSeats {
-			fmt.Println("Free seats found!")
-			purchase.AutoPurchaseTicket(config)
-			notification.EmailNotification(&config.Smtp, route)
-			break
+		if freeSeatsResp == nil || !freeSeatsResp.HasFreeSeats {
+			fmt.Printf("No free seats found, checking again in %d seconds...\n", config.General.PollInterval)
+			time.Sleep(time.Duration(config.General.PollInterval) * time.Second)
+			continue
 		}
 
-		fmt.Printf("No free seats found, checking again in %d seconds...\n", config.General.PollInterval)
-		time.Sleep(time.Duration(config.General.PollInterval) * time.Second)
+		fmt.Println("Free seats found!")
+		purchase.AutoPurchaseTicket(apiClient, config, userInput, freeSeatsResp)
+		notification.EmailNotification(&config.Smtp, userInput)
+		break
 	}
 }

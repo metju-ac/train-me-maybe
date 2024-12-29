@@ -2,67 +2,76 @@ package handlers
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log/slog"
 
-	"github.com/metju-ac/train-me-maybe/internal/cli"
 	"github.com/metju-ac/train-me-maybe/internal/models"
 	openapiclient "github.com/metju-ac/train-me-maybe/openapi"
 )
 
-func freeSeats(res []openapiclient.RouteSeatsResponse) bool {
-	for _, routeSeatsResponse := range res {
-		for _, vehicle := range routeSeatsResponse.Vehicles {
-			for _, deck := range vehicle.Decks {
-				if len(deck.FreeSeats) > 0 {
-					return true
-				}
+func freeSeats(res *openapiclient.RouteSeatsResponse) bool {
+	for _, vehicle := range res.Vehicles {
+		for _, deck := range vehicle.Decks {
+			if len(deck.FreeSeats) > 0 {
+				return true
 			}
 		}
 	}
 	return false
 }
 
-func CheckFreeSeats(apiClient *openapiclient.APIClient, departingStation, arrivingStation *models.StationModel, selectedRoute *openapiclient.SimpleRoute, seatClasses []string, tariff *openapiclient.Tariff) (bool, error) {
-	slog.Info("Checking for free seats", "departingStation", departingStation.StationID, "arrivingStation", arrivingStation.StationID, "selectedRoutes", selectedRoute.Id, "seatClasses", seatClasses)
+func GetFreeSeatsOnRoute(apiClient *openapiclient.APIClient, userInput *models.UserInput, seatClass string) (*openapiclient.RouteSeatsResponse, error) {
+	slog.Info("Checking for free seats", "departingStation", userInput.DepartingStation.StationID, "arrivingStation", userInput.ArrivingStation.StationID, "selectedRoutes", userInput.SelectedRoute.Id, "seatClasses", userInput.SeatClasses)
 
-	sectionIds, err := cli.GetSectionIdsFromRoute(selectedRoute)
+	sections := []openapiclient.SimpleSection{*userInput.Section}
+	tariffs := []string{*userInput.Tariff.Key}
+
+	routeSeatsRequest := openapiclient.NewRouteSeatsRequest(sections, tariffs, seatClass)
+
+	route, httpResponse, err := apiClient.RoutesAPI.GetRouteFreeSeats(context.Background()).Request(*routeSeatsRequest).Execute()
 	if err != nil {
-		slog.Error("Error getting section IDs", "error", err)
-		return false, fmt.Errorf("error getting section IDs: %v", err)
-	}
-
-	// For now, we only support exactly one section of the given route
-	if len(sectionIds) != 1 {
-		slog.Error("Expected one section ID, got", "sectionIds", sectionIds)
-		return false, fmt.Errorf("expected one section ID, got %v", sectionIds)
-	}
-
-	sections := []openapiclient.SimpleSection{
-		*openapiclient.NewSimpleSection(sectionIds[0], departingStation.StationID, arrivingStation.StationID),
-	}
-	tariffs := []string{*tariff.Key}
-
-	for _, seatClass := range seatClasses {
-		routeSeatsRequest := openapiclient.NewRouteSeatsRequest(sections, tariffs, seatClass)
-
-		route, httpResponse, err := apiClient.RoutesAPI.GetRouteFreeSeats(context.Background()).Request(*routeSeatsRequest).Execute()
-		if err != nil {
-			if httpResponse != nil && httpResponse.StatusCode == 400 {
-				slog.Info("No free seats found (400 response)")
-				return false, nil
-			}
-
-			slog.Error("Error calling GetRouteFreeSeats", "error", err)
-			return false, fmt.Errorf("error calling GetRouteFreeSeats: %v", err)
+		if httpResponse != nil && httpResponse.StatusCode == 400 {
+			slog.Info("No free seats found (400 response)")
+			return nil, nil
 		}
 
-		if freeSeats(*route) {
+		slog.Error("Error calling GetRouteFreeSeats", "error", err)
+		return nil, fmt.Errorf("error calling GetRouteFreeSeats: %v", err)
+	}
+
+	if route == nil || len(*route) <= 0 {
+		return nil, errors.New("Malformed response from GetRouteFreeSeats")
+	}
+
+	return &((*route)[0]), nil
+}
+
+type CheckFreeSeatsResponse struct {
+	SeatClass    string
+	HasFreeSeats bool
+	SelectedSeat *openapiclient.SelectedSeat
+}
+
+func CheckFreeSeats(apiClient *openapiclient.APIClient, userInput *models.UserInput) (*CheckFreeSeatsResponse, error) {
+	for _, seatClass := range userInput.SeatClasses {
+		route, err := GetFreeSeatsOnRoute(apiClient, userInput, seatClass)
+
+		if err != nil {
+			slog.Error("Error getting free seats", "error", err)
+			return nil, fmt.Errorf("error getting free seats: %v", err)
+		}
+
+		if freeSeats(route) {
 			slog.Info("Free seats found", "seatClass", seatClass)
-			return true, nil
+			return &CheckFreeSeatsResponse{
+				SeatClass:    seatClass,
+				HasFreeSeats: true,
+				SelectedSeat: &route.SelectedSeats[0],
+			}, nil
 		}
 	}
 
 	slog.Info("No free seats found")
-	return false, nil
+	return nil, nil
 }

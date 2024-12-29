@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"log/slog"
 
+	"github.com/metju-ac/train-me-maybe/internal/cli"
+	"github.com/metju-ac/train-me-maybe/internal/models"
 	openapiclient "github.com/metju-ac/train-me-maybe/openapi"
 )
 
@@ -21,18 +23,36 @@ func freeSeats(res []openapiclient.RouteSeatsResponse) bool {
 	return false
 }
 
-func CheckFreeSeats(apiClient *openapiclient.APIClient, departingStation, arrivingStation int64, selectedRoutes []int64, seatClasses []string) (bool, error) {
-	slog.Info("Checking for free seats", "departingStation", departingStation, "arrivingStation", arrivingStation, "selectedRoutes", selectedRoutes, "seatClasses", seatClasses)
+func CheckFreeSeats(apiClient *openapiclient.APIClient, departingStation, arrivingStation *models.StationModel, selectedRoute *openapiclient.SimpleRoute, seatClasses []string) (bool, error) {
+	slog.Info("Checking for free seats", "departingStation", departingStation.StationID, "arrivingStation", arrivingStation.StationID, "selectedRoutes", selectedRoute.Id, "seatClasses", seatClasses)
+
+	sectionIds, err := cli.GetSectionIdsFromRoute(selectedRoute)
+	if err != nil {
+		slog.Error("Error getting section IDs", "error", err)
+		return false, fmt.Errorf("error getting section IDs: %v", err)
+	}
+
+	// For now, we only support exactly one section of the given route
+	if len(sectionIds) != 1 {
+		slog.Error("Expected one section ID, got", "sectionIds", sectionIds)
+		return false, fmt.Errorf("expected one section ID, got %v", sectionIds)
+	}
+
 	sections := []openapiclient.SimpleSection{
-		*openapiclient.NewSimpleSection(selectedRoutes[0], departingStation, arrivingStation),
+		*openapiclient.NewSimpleSection(sectionIds[0], departingStation.StationID, arrivingStation.StationID),
 	}
 	tariffs := []string{"REGULAR"}
 
 	for _, seatClass := range seatClasses {
 		routeSeatsRequest := openapiclient.NewRouteSeatsRequest(sections, tariffs, seatClass)
 
-		route, _, err := apiClient.RoutesAPI.GetRouteFreeSeats(context.Background()).Request(*routeSeatsRequest).Execute()
+		route, httpResponse, err := apiClient.RoutesAPI.GetRouteFreeSeats(context.Background()).Request(*routeSeatsRequest).Execute()
 		if err != nil {
+			if httpResponse != nil && httpResponse.StatusCode == 400 {
+				slog.Info("No free seats found (400 response)")
+				return false, nil
+			}
+
 			slog.Error("Error calling GetRouteFreeSeats", "error", err)
 			return false, fmt.Errorf("error calling GetRouteFreeSeats: %v", err)
 		}

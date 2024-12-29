@@ -23,7 +23,9 @@ var _ MappedNullable = &Line{}
 // Line Detailed data about line connection.
 type Line struct {
 	// Unique section identifier.
-	ConnectionId int64 `json:"connectionId"`
+	ConnectionId int64 `json:"connectionId,omitempty"`
+	// Unique section identifier.
+	Id int64 `json:"id,omitempty"`
 	// Line's connection code.
 	Code *string `json:"code,omitempty"`
 	// Line's departure city.
@@ -256,7 +258,6 @@ func (o *Line) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"connectionId",
 		"from",
 		"to",
 	}

@@ -22,6 +22,31 @@ func fetchSeatClasses(ctx context.Context, apiClient *openapiclient.APIClient) (
 	return seatClasses, nil
 }
 
+//func fetchSeatClassesInRoute(ctx context.Context, apiClient *openapiclient.APIClient, route *HandleRouteSelectionResponse) ([]openapiclient.SeatClass, error) {
+//	slog.Info("Fetching route detail")
+//	routeDetail, httpRes, err := apiClient.RoutesAPI.GetSimpleRouteDetail(ctx, route.SelectedRoute.Id).FromStationId(route.DepartingStation.StationID).ToStationId(route.ArrivingStation.StationID).Execute()
+//
+//	if err != nil {
+//		slog.Error("Failed to fetch route detail", "error", err)
+//		return nil, fmt.Errorf("failed to fetch route detail: %w", err)
+//	}
+//
+//	slog.Info("Successfully fetched route detail", "statusCode", httpRes.StatusCode)
+//
+//	// create a "set" to find out if a seat class is present
+//	presentSeatClasses := lib.MapFunc(routeDetail.PriceClasses, func(r openapiclient.PriceClass) string { return r.SeatClassKey })
+//	presentSeatClassesDict := lib.ToSet(presentSeatClasses)
+//
+//	seatClasses, err := fetchSeatClasses(ctx, apiClient)
+//	if err != nil {
+//		return nil, err
+//	}
+//
+//	result := lib.FilterFunc(seatClasses, func(r openapiclient.SeatClass) bool { return presentSeatClassesDict[r.Key] })
+//
+//	return result, nil
+//}
+
 func selectSeatClasses(seatClasses []openapiclient.SeatClass) ([]string, error) {
 	slog.Info("Selecting seat classes")
 

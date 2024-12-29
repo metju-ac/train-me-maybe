@@ -5,19 +5,20 @@ meta {
 }
 
 get {
-  url: {{baseUrl}}/routes/:routeId/simple?fromStationId=3088864001&toStationId=372825000
+  url: {{baseUrl}}/routes/:routeId/simple?fromStationId=3088864001&routeId=7558539230&toStationId=372825000&tariffs=CZECH_STUDENT_PASS_26
   body: none
   auth: none
 }
 
 params:query {
   fromStationId: 3088864001
+  routeId: 7558539230
   toStationId: 372825000
-  ~tariffs: CZECH_STUDENT_PASS_26
+  tariffs: CZECH_STUDENT_PASS_26
 }
 
 params:path {
-  routeId: 7471783692
+  routeId: 7558539230
 }
 
 headers {

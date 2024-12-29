@@ -21,7 +21,7 @@ func main() {
 	apiConfiguration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(apiConfiguration)
 
-	departingStation, arrivingStation, selectedRoutes, err := handlers.HandleRouteSelection(apiClient)
+	route, err := handlers.HandleRouteSelection(apiClient)
 	if err != nil {
 		fmt.Println("Error:", err)
 		os.Exit(1)
@@ -34,7 +34,7 @@ func main() {
 	}
 
 	for {
-		freeSeats, err := handlers.CheckFreeSeats(apiClient, departingStation, arrivingStation, selectedRoutes, seatClasses)
+		freeSeats, err := handlers.CheckFreeSeats(apiClient, route.DepartingStation, route.ArrivingStation, route.SelectedRoute, seatClasses)
 		if err != nil {
 			fmt.Println("Error:", err)
 			os.Exit(1)
@@ -42,11 +42,11 @@ func main() {
 
 		if freeSeats {
 			fmt.Println("Free seats found!")
-			notification.EmailNotification(&config.Smtp, departingStation, arrivingStation, selectedRoutes, seatClasses)
+			notification.EmailNotification(&config.Smtp, route)
 			break
 		}
 
-		fmt.Println("No free seats found, checking again in 10 seconds...")
+		fmt.Printf("No free seats found, checking again in %d seconds...\n", config.General.PollInterval)
 		time.Sleep(time.Duration(config.General.PollInterval) * time.Second)
 	}
 }

@@ -2,20 +2,21 @@ package cli
 
 import (
 	"fmt"
+
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/metju-ac/train-me-maybe/internal/models"
 )
 
-func formatStation(station models.StationModel) string {
+func FormatStation(station *models.StationModel) string {
 	return fmt.Sprintf("%s - %s (%s)", station.City, station.StationName, station.Country)
 }
 
-func SelectStation(stations []models.StationModel) (int64, error) {
+func SelectStation(stations []models.StationModel) (*models.StationModel, error) {
 	var selectedStation string
 
 	formattedStations := make([]string, 0, len(stations))
 	for _, station := range stations {
-		formattedStations = append(formattedStations, formatStation(station))
+		formattedStations = append(formattedStations, FormatStation(&station))
 	}
 
 	selectPrompt := &survey.Select{
@@ -24,15 +25,15 @@ func SelectStation(stations []models.StationModel) (int64, error) {
 	}
 	err := survey.AskOne(selectPrompt, &selectedStation)
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 
 	for _, station := range stations {
-		formatted := formatStation(station)
+		formatted := FormatStation(&station)
 		if formatted == selectedStation {
-			return station.StationID, nil
+			return &station, nil
 		}
 	}
 
-	return 0, fmt.Errorf("station not found")
+	return nil, fmt.Errorf("station not found")
 }

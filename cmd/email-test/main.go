@@ -5,7 +5,10 @@ import (
 	"os"
 
 	"github.com/metju-ac/train-me-maybe/internal/config"
+	"github.com/metju-ac/train-me-maybe/internal/handlers"
+	"github.com/metju-ac/train-me-maybe/internal/models"
 	"github.com/metju-ac/train-me-maybe/internal/notification"
+	"github.com/metju-ac/train-me-maybe/openapi"
 )
 
 func main() {
@@ -15,5 +18,18 @@ func main() {
 		os.Exit(1)
 	}
 
-	notification.EmailNotification(&config.Smtp, 1, 2, []int64{1, 2, 3}, []string{"REGULAR"})
+	test_station := &models.StationModel{
+		Country:        "COUNTRY",
+		City:           "CITY",
+		StationID:      1,
+		StationName:    "STATION_NAME",
+		IsTrainStation: true,
+		IsBusStation:   false,
+	}
+
+	notification.EmailNotification(&config.Smtp, &handlers.HandleRouteSelectionResponse{
+		DepartingStation: test_station,
+		ArrivingStation:  test_station,
+		SelectedRoute:    openapi.NewSimpleRouteWithDefaults(),
+	})
 }

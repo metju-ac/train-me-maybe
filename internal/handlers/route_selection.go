@@ -24,33 +24,33 @@ func fetchLocations(ctx context.Context, apiClient *openapiclient.APIClient) ([]
 	return parser.TransformStations(data), nil
 }
 
-func selectDepartingStation(parsedStations []models.StationModel) (int64, error) {
+func selectDepartingStation(parsedStations []models.StationModel) (*models.StationModel, error) {
 	slog.Info("Selecting departing station")
 	fmt.Println("Select the departing station:")
 
 	departingStation, err := cli.SelectStation(parsedStations)
 	if err != nil {
 		slog.Error("Failed to select departing station", "error", err)
-		return 0, fmt.Errorf("failed to select departing station: %w", err)
+		return nil, fmt.Errorf("failed to select departing station: %w", err)
 	}
 
-	slog.Info("Successfully selected departing station", "stationID", departingStation)
-	fmt.Printf("You selected departing station: %+v\n", departingStation)
+	slog.Info("Successfully selected departing station", "stationID", departingStation.StationID)
+	fmt.Printf("You selected departing station: %+v\n", departingStation.StationID)
 	return departingStation, nil
 }
 
-func selectArrivingStation(parsedStations []models.StationModel) (int64, error) {
+func selectArrivingStation(parsedStations []models.StationModel) (*models.StationModel, error) {
 	slog.Info("Selecting arriving station")
 	fmt.Println("Select the arriving station:")
 
 	arrivingStation, err := cli.SelectStation(parsedStations)
 	if err != nil {
 		slog.Error("Failed to select arriving station", "error", err)
-		return 0, fmt.Errorf("failed to select arriving station: %w", err)
+		return nil, fmt.Errorf("failed to select arriving station: %w", err)
 	}
 
-	slog.Info("Successfully selected arriving station", "stationID", arrivingStation)
-	fmt.Printf("You selected arriving station: %+v\n", arrivingStation)
+	slog.Info("Successfully selected arriving station", "stationID", arrivingStation.StationID)
+	fmt.Printf("You selected arriving station: %+v\n", arrivingStation.StationID)
 	return arrivingStation, nil
 }
 
@@ -87,7 +87,7 @@ func fetchRoutes(ctx context.Context, apiClient *openapiclient.APIClient, depart
 	return routes.Routes, nil
 }
 
-func selectRoute(routes []openapiclient.SimpleRoute) ([]int64, error) {
+func selectRoute(routes []openapiclient.SimpleRoute) (*openapiclient.SimpleRoute, error) {
 	slog.Info("Selecting route")
 	fmt.Println("Select the route:")
 
@@ -97,45 +97,57 @@ func selectRoute(routes []openapiclient.SimpleRoute) ([]int64, error) {
 		return nil, fmt.Errorf("failed to select route: %w", err)
 	}
 
-	slog.Info("Successfully selected route", "routeIDs", selectedRoute)
-	fmt.Printf("You selected routes: %+v\n", selectedRoute)
+	slog.Info("Successfully selected route", "routeIDs", selectedRoute.Id)
+	fmt.Printf("You selected routes: %+v\n", selectedRoute.Id)
 	return selectedRoute, nil
 }
 
-func HandleRouteSelection(apiClient *openapiclient.APIClient) (int64, int64, []int64, error) {
+type HandleRouteSelectionResponse struct {
+	DepartingStation *models.StationModel
+	ArrivingStation  *models.StationModel
+	SelectedRoute    *openapiclient.SimpleRoute
+}
+
+func HandleRouteSelection(apiClient *openapiclient.APIClient) (*HandleRouteSelectionResponse, error) {
 	slog.Info("Handling route selection")
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
 	locations, err := fetchLocations(ctx, apiClient)
 	if err != nil {
-		return 0, 0, nil, err
+		return nil, err
 	}
 
 	departingStation, err := selectDepartingStation(locations)
 	if err != nil {
-		return 0, 0, nil, err
+		return nil, err
 	}
 
 	arrivingStation, err := selectArrivingStation(locations)
 	if err != nil {
-		return 0, 0, nil, err
+		return nil, err
 	}
 
 	departureDate, err := selectDepartureDate()
 	if err != nil {
-		return 0, 0, nil, err
+		return nil, err
 	}
 
-	routes, err := fetchRoutes(ctx, apiClient, departingStation, arrivingStation, departureDate)
+	routes, err := fetchRoutes(ctx, apiClient, departingStation.StationID, arrivingStation.StationID, departureDate)
 	if err != nil {
-		return 0, 0, nil, err
+		return nil, err
 	}
 
-	selectedRoutes, err := selectRoute(routes)
+	selectedRoute, err := selectRoute(routes)
 	if err != nil {
-		return 0, 0, nil, err
+		return nil, err
 	}
 
-	return departingStation, arrivingStation, selectedRoutes, nil
+	response := &HandleRouteSelectionResponse{
+		DepartingStation: departingStation,
+		ArrivingStation:  arrivingStation,
+		SelectedRoute:    selectedRoute,
+	}
+
+	return response, nil
 }

@@ -23,7 +23,7 @@ var _ MappedNullable = &SelectedAddon{}
 // SelectedAddon struct for SelectedAddon
 type SelectedAddon struct {
 	AddonId  int64    `json:"addonId"`
-	Count    int32    `json:"count"`
+	Count    int64    `json:"count"`
 	Price    float32  `json:"price"`
 	Currency Currency `json:"currency"`
 	// Hash (MD5) of cancellation terms, agreed on by the customer
@@ -36,7 +36,7 @@ type _SelectedAddon SelectedAddon
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSelectedAddon(addonId int64, count int32, price float32, currency Currency, conditionsHash string) *SelectedAddon {
+func NewSelectedAddon(addonId int64, count int64, price float32, currency Currency, conditionsHash string) *SelectedAddon {
 	this := SelectedAddon{}
 	this.AddonId = addonId
 	this.Count = count
@@ -81,9 +81,9 @@ func (o *SelectedAddon) SetAddonId(v int64) {
 }
 
 // GetCount returns the Count field value
-func (o *SelectedAddon) GetCount() int32 {
+func (o *SelectedAddon) GetCount() int64 {
 	if o == nil {
-		var ret int32
+		var ret int64
 		return ret
 	}
 
@@ -92,7 +92,7 @@ func (o *SelectedAddon) GetCount() int32 {
 
 // GetCountOk returns a tuple with the Count field value
 // and a boolean to check if the value has been set.
-func (o *SelectedAddon) GetCountOk() (*int32, bool) {
+func (o *SelectedAddon) GetCountOk() (*int64, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -100,7 +100,7 @@ func (o *SelectedAddon) GetCountOk() (*int32, bool) {
 }
 
 // SetCount sets field value
-func (o *SelectedAddon) SetCount(v int32) {
+func (o *SelectedAddon) SetCount(v int64) {
 	o.Count = v
 }
 

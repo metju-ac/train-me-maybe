@@ -35,7 +35,7 @@ type Line struct {
 	// Line group code.
 	LineGroupCode *string `json:"lineGroupCode,omitempty"`
 	// Line number.
-	LineNumber *int32 `json:"lineNumber,omitempty"`
+	LineNumber *int64 `json:"lineNumber,omitempty"`
 }
 
 type _Line Line
@@ -197,9 +197,9 @@ func (o *Line) SetLineGroupCode(v string) {
 }
 
 // GetLineNumber returns the LineNumber field value if set, zero value otherwise.
-func (o *Line) GetLineNumber() int32 {
+func (o *Line) GetLineNumber() int64 {
 	if o == nil || IsNil(o.LineNumber) {
-		var ret int32
+		var ret int64
 		return ret
 	}
 	return *o.LineNumber
@@ -207,7 +207,7 @@ func (o *Line) GetLineNumber() int32 {
 
 // GetLineNumberOk returns a tuple with the LineNumber field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *Line) GetLineNumberOk() (*int32, bool) {
+func (o *Line) GetLineNumberOk() (*int64, bool) {
 	if o == nil || IsNil(o.LineNumber) {
 		return nil, false
 	}
@@ -223,8 +223,8 @@ func (o *Line) HasLineNumber() bool {
 	return false
 }
 
-// SetLineNumber gets a reference to the given int32 and assigns it to the LineNumber field.
-func (o *Line) SetLineNumber(v int32) {
+// SetLineNumber gets a reference to the given int64 and assigns it to the LineNumber field.
+func (o *Line) SetLineNumber(v int64) {
 	o.LineNumber = &v
 }
 

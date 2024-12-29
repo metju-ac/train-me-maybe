@@ -42,7 +42,7 @@ type User struct {
 	// Acceptance of transport conditions and personal data protection
 	ConditionsAcceptance *bool `json:"conditionsAcceptance,omitempty"`
 	// NULL for normal customer, internal number for Regiojet employee
-	EmployeeNumber *int32 `json:"employeeNumber,omitempty"`
+	EmployeeNumber *int64 `json:"employeeNumber,omitempty"`
 }
 
 // NewUser instantiates a new User object
@@ -563,9 +563,9 @@ func (o *User) SetConditionsAcceptance(v bool) {
 }
 
 // GetEmployeeNumber returns the EmployeeNumber field value if set, zero value otherwise.
-func (o *User) GetEmployeeNumber() int32 {
+func (o *User) GetEmployeeNumber() int64 {
 	if o == nil || IsNil(o.EmployeeNumber) {
-		var ret int32
+		var ret int64
 		return ret
 	}
 	return *o.EmployeeNumber
@@ -573,7 +573,7 @@ func (o *User) GetEmployeeNumber() int32 {
 
 // GetEmployeeNumberOk returns a tuple with the EmployeeNumber field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *User) GetEmployeeNumberOk() (*int32, bool) {
+func (o *User) GetEmployeeNumberOk() (*int64, bool) {
 	if o == nil || IsNil(o.EmployeeNumber) {
 		return nil, false
 	}
@@ -589,8 +589,8 @@ func (o *User) HasEmployeeNumber() bool {
 	return false
 }
 
-// SetEmployeeNumber gets a reference to the given int32 and assigns it to the EmployeeNumber field.
-func (o *User) SetEmployeeNumber(v int32) {
+// SetEmployeeNumber gets a reference to the given int64 and assigns it to the EmployeeNumber field.
+func (o *User) SetEmployeeNumber(v int64) {
 	o.EmployeeNumber = &v
 }
 

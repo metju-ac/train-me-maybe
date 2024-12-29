@@ -38,13 +38,13 @@ type SroRoute struct {
 	// Array of vehicle types.
 	VehicleTypes []VehicleType `json:"vehicleTypes"`
 	// Number of transfers.
-	TransfersCount *int32 `json:"transfersCount,omitempty"`
+	TransfersCount *int64 `json:"transfersCount,omitempty"`
 	// Price of the least expensive route.
 	PriceFrom float32 `json:"priceFrom"`
 	// Price of the most expensive route.
 	PriceTo *float32 `json:"priceTo,omitempty"`
 	// Number of returned prices.
-	PricesCount int32 `json:"pricesCount"`
+	PricesCount int64 `json:"pricesCount"`
 	// Are there any traffic limitations or extraordinary events on the route?
 	Notices bool `json:"notices"`
 	// Does this line have a support connection?
@@ -65,7 +65,7 @@ type _SroRoute SroRoute
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSroRoute(id string, connectionCode string, departureStationId int64, departureTime time.Time, arrivalTime time.Time, vehicleTypes []VehicleType, priceFrom float32, pricesCount int32, notices bool, support bool) *SroRoute {
+func NewSroRoute(id string, connectionCode string, departureStationId int64, departureTime time.Time, arrivalTime time.Time, vehicleTypes []VehicleType, priceFrom float32, pricesCount int64, notices bool, support bool) *SroRoute {
 	this := SroRoute{}
 	this.Id = id
 	this.ConnectionCode = connectionCode
@@ -265,9 +265,9 @@ func (o *SroRoute) SetVehicleTypes(v []VehicleType) {
 }
 
 // GetTransfersCount returns the TransfersCount field value if set, zero value otherwise.
-func (o *SroRoute) GetTransfersCount() int32 {
+func (o *SroRoute) GetTransfersCount() int64 {
 	if o == nil || IsNil(o.TransfersCount) {
-		var ret int32
+		var ret int64
 		return ret
 	}
 	return *o.TransfersCount
@@ -275,7 +275,7 @@ func (o *SroRoute) GetTransfersCount() int32 {
 
 // GetTransfersCountOk returns a tuple with the TransfersCount field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *SroRoute) GetTransfersCountOk() (*int32, bool) {
+func (o *SroRoute) GetTransfersCountOk() (*int64, bool) {
 	if o == nil || IsNil(o.TransfersCount) {
 		return nil, false
 	}
@@ -291,8 +291,8 @@ func (o *SroRoute) HasTransfersCount() bool {
 	return false
 }
 
-// SetTransfersCount gets a reference to the given int32 and assigns it to the TransfersCount field.
-func (o *SroRoute) SetTransfersCount(v int32) {
+// SetTransfersCount gets a reference to the given int64 and assigns it to the TransfersCount field.
+func (o *SroRoute) SetTransfersCount(v int64) {
 	o.TransfersCount = &v
 }
 
@@ -353,9 +353,9 @@ func (o *SroRoute) SetPriceTo(v float32) {
 }
 
 // GetPricesCount returns the PricesCount field value
-func (o *SroRoute) GetPricesCount() int32 {
+func (o *SroRoute) GetPricesCount() int64 {
 	if o == nil {
-		var ret int32
+		var ret int64
 		return ret
 	}
 
@@ -364,7 +364,7 @@ func (o *SroRoute) GetPricesCount() int32 {
 
 // GetPricesCountOk returns a tuple with the PricesCount field value
 // and a boolean to check if the value has been set.
-func (o *SroRoute) GetPricesCountOk() (*int32, bool) {
+func (o *SroRoute) GetPricesCountOk() (*int64, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -372,7 +372,7 @@ func (o *SroRoute) GetPricesCountOk() (*int32, bool) {
 }
 
 // SetPricesCount sets field value
-func (o *SroRoute) SetPricesCount(v int32) {
+func (o *SroRoute) SetPricesCount(v int64) {
 	o.PricesCount = v
 }
 

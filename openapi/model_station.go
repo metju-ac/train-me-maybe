@@ -43,15 +43,15 @@ type Station struct {
 	// \"Name of wheelchair platform provider (if available).\"  Possible providers:    | Provider name | Provider code |   |---------------|---------------|   | České dráhy   | CD            |   | RegioJet      | RJ            |
 	WheelChairPlatform *string `json:"wheelChairPlatform,omitempty"`
 	// Station's significance within the city. (e.g. for the city of Brno, Brno main railway station is more significant than Brno - Královo Pole railway station.)
-	Significance int32 `json:"significance"`
+	Significance int64 `json:"significance"`
 	// The geographic longitude where station is located.
 	Longitude *float32 `json:"longitude,omitempty"`
 	// The geographic latitude where station is located.
 	Latitude *float32 `json:"latitude,omitempty"`
 	// URL to station's picture (if available).
 	ImageUrl   *string `json:"imageUrl,omitempty"`
-	CisNumber  *int32  `json:"cisNumber,omitempty"`
-	Sr70Number *int32  `json:"sr70Number,omitempty"`
+	CisNumber  *int64  `json:"cisNumber,omitempty"`
+	Sr70Number *int64  `json:"sr70Number,omitempty"`
 }
 
 type _Station Station
@@ -60,7 +60,7 @@ type _Station Station
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewStation(id int64, name string, fullname string, significance int32) *Station {
+func NewStation(id int64, name string, fullname string, significance int64) *Station {
 	this := Station{}
 	this.Id = id
 	this.Name = name
@@ -374,9 +374,9 @@ func (o *Station) SetWheelChairPlatform(v string) {
 }
 
 // GetSignificance returns the Significance field value
-func (o *Station) GetSignificance() int32 {
+func (o *Station) GetSignificance() int64 {
 	if o == nil {
-		var ret int32
+		var ret int64
 		return ret
 	}
 
@@ -385,7 +385,7 @@ func (o *Station) GetSignificance() int32 {
 
 // GetSignificanceOk returns a tuple with the Significance field value
 // and a boolean to check if the value has been set.
-func (o *Station) GetSignificanceOk() (*int32, bool) {
+func (o *Station) GetSignificanceOk() (*int64, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -393,7 +393,7 @@ func (o *Station) GetSignificanceOk() (*int32, bool) {
 }
 
 // SetSignificance sets field value
-func (o *Station) SetSignificance(v int32) {
+func (o *Station) SetSignificance(v int64) {
 	o.Significance = v
 }
 

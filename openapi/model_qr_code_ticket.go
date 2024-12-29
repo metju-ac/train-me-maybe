@@ -21,7 +21,7 @@ var _ MappedNullable = &QrCodeTicket{}
 // QrCodeTicket struct for QrCodeTicket
 type QrCodeTicket struct {
 	// Version of QR code
-	QrCodeVersion    *int32            `json:"qrCodeVersion,omitempty"`
+	QrCodeVersion    *int64            `json:"qrCodeVersion,omitempty"`
 	QrCodeTicketType *QrCodeTicketType `json:"qrCodeTicketType,omitempty"`
 	// If there is used discount there is as well ticket ID which is linked to it.
 	TicketId *int64 `json:"ticketId,omitempty"`
@@ -45,9 +45,9 @@ func NewQrCodeTicketWithDefaults() *QrCodeTicket {
 }
 
 // GetQrCodeVersion returns the QrCodeVersion field value if set, zero value otherwise.
-func (o *QrCodeTicket) GetQrCodeVersion() int32 {
+func (o *QrCodeTicket) GetQrCodeVersion() int64 {
 	if o == nil || IsNil(o.QrCodeVersion) {
-		var ret int32
+		var ret int64
 		return ret
 	}
 	return *o.QrCodeVersion
@@ -55,7 +55,7 @@ func (o *QrCodeTicket) GetQrCodeVersion() int32 {
 
 // GetQrCodeVersionOk returns a tuple with the QrCodeVersion field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *QrCodeTicket) GetQrCodeVersionOk() (*int32, bool) {
+func (o *QrCodeTicket) GetQrCodeVersionOk() (*int64, bool) {
 	if o == nil || IsNil(o.QrCodeVersion) {
 		return nil, false
 	}
@@ -71,8 +71,8 @@ func (o *QrCodeTicket) HasQrCodeVersion() bool {
 	return false
 }
 
-// SetQrCodeVersion gets a reference to the given int32 and assigns it to the QrCodeVersion field.
-func (o *QrCodeTicket) SetQrCodeVersion(v int32) {
+// SetQrCodeVersion gets a reference to the given int64 and assigns it to the QrCodeVersion field.
+func (o *QrCodeTicket) SetQrCodeVersion(v int64) {
 	o.QrCodeVersion = &v
 }
 

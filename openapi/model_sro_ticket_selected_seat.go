@@ -23,8 +23,8 @@ var _ MappedNullable = &SroTicketSelectedSeat{}
 // SroTicketSelectedSeat struct for SroTicketSelectedSeat
 type SroTicketSelectedSeat struct {
 	SectionId     int64 `json:"sectionId"`
-	VehicleNumber int32 `json:"vehicleNumber"`
-	SeatIndex     int32 `json:"seatIndex"`
+	VehicleNumber int64 `json:"vehicleNumber"`
+	SeatIndex     int64 `json:"seatIndex"`
 }
 
 type _SroTicketSelectedSeat SroTicketSelectedSeat
@@ -33,7 +33,7 @@ type _SroTicketSelectedSeat SroTicketSelectedSeat
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSroTicketSelectedSeat(sectionId int64, vehicleNumber int32, seatIndex int32) *SroTicketSelectedSeat {
+func NewSroTicketSelectedSeat(sectionId int64, vehicleNumber int64, seatIndex int64) *SroTicketSelectedSeat {
 	this := SroTicketSelectedSeat{}
 	this.SectionId = sectionId
 	this.VehicleNumber = vehicleNumber
@@ -74,9 +74,9 @@ func (o *SroTicketSelectedSeat) SetSectionId(v int64) {
 }
 
 // GetVehicleNumber returns the VehicleNumber field value
-func (o *SroTicketSelectedSeat) GetVehicleNumber() int32 {
+func (o *SroTicketSelectedSeat) GetVehicleNumber() int64 {
 	if o == nil {
-		var ret int32
+		var ret int64
 		return ret
 	}
 
@@ -85,7 +85,7 @@ func (o *SroTicketSelectedSeat) GetVehicleNumber() int32 {
 
 // GetVehicleNumberOk returns a tuple with the VehicleNumber field value
 // and a boolean to check if the value has been set.
-func (o *SroTicketSelectedSeat) GetVehicleNumberOk() (*int32, bool) {
+func (o *SroTicketSelectedSeat) GetVehicleNumberOk() (*int64, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -93,14 +93,14 @@ func (o *SroTicketSelectedSeat) GetVehicleNumberOk() (*int32, bool) {
 }
 
 // SetVehicleNumber sets field value
-func (o *SroTicketSelectedSeat) SetVehicleNumber(v int32) {
+func (o *SroTicketSelectedSeat) SetVehicleNumber(v int64) {
 	o.VehicleNumber = v
 }
 
 // GetSeatIndex returns the SeatIndex field value
-func (o *SroTicketSelectedSeat) GetSeatIndex() int32 {
+func (o *SroTicketSelectedSeat) GetSeatIndex() int64 {
 	if o == nil {
-		var ret int32
+		var ret int64
 		return ret
 	}
 
@@ -109,7 +109,7 @@ func (o *SroTicketSelectedSeat) GetSeatIndex() int32 {
 
 // GetSeatIndexOk returns a tuple with the SeatIndex field value
 // and a boolean to check if the value has been set.
-func (o *SroTicketSelectedSeat) GetSeatIndexOk() (*int32, bool) {
+func (o *SroTicketSelectedSeat) GetSeatIndexOk() (*int64, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -117,7 +117,7 @@ func (o *SroTicketSelectedSeat) GetSeatIndexOk() (*int32, bool) {
 }
 
 // SetSeatIndex sets field value
-func (o *SroTicketSelectedSeat) SetSeatIndex(v int32) {
+func (o *SroTicketSelectedSeat) SetSeatIndex(v int64) {
 	o.SeatIndex = v
 }
 

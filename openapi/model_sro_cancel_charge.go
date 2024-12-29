@@ -25,7 +25,7 @@ type SroCancelCharge struct {
 	Message  string  `json:"message"`
 	Amount   float32 `json:"amount"`
 	Currency string  `json:"currency"`
-	Percent  int32   `json:"percent"`
+	Percent  int64   `json:"percent"`
 }
 
 type _SroCancelCharge SroCancelCharge
@@ -34,7 +34,7 @@ type _SroCancelCharge SroCancelCharge
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSroCancelCharge(message string, amount float32, currency string, percent int32) *SroCancelCharge {
+func NewSroCancelCharge(message string, amount float32, currency string, percent int64) *SroCancelCharge {
 	this := SroCancelCharge{}
 	this.Message = message
 	this.Amount = amount
@@ -124,9 +124,9 @@ func (o *SroCancelCharge) SetCurrency(v string) {
 }
 
 // GetPercent returns the Percent field value
-func (o *SroCancelCharge) GetPercent() int32 {
+func (o *SroCancelCharge) GetPercent() int64 {
 	if o == nil {
-		var ret int32
+		var ret int64
 		return ret
 	}
 
@@ -135,7 +135,7 @@ func (o *SroCancelCharge) GetPercent() int32 {
 
 // GetPercentOk returns a tuple with the Percent field value
 // and a boolean to check if the value has been set.
-func (o *SroCancelCharge) GetPercentOk() (*int32, bool) {
+func (o *SroCancelCharge) GetPercentOk() (*int64, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -143,7 +143,7 @@ func (o *SroCancelCharge) GetPercentOk() (*int32, bool) {
 }
 
 // SetPercent sets field value
-func (o *SroCancelCharge) SetPercent(v int32) {
+func (o *SroCancelCharge) SetPercent(v int64) {
 	o.Percent = v
 }
 

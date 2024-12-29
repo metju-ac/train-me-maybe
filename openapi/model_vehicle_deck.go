@@ -22,7 +22,7 @@ var _ MappedNullable = &VehicleDeck{}
 
 // VehicleDeck struct for VehicleDeck
 type VehicleDeck struct {
-	Number              int32   `json:"number"`
+	Number              int64   `json:"number"`
 	Name                string  `json:"name"`
 	LayoutURL           *string `json:"layoutURL,omitempty"`
 	HorizontalLayoutURL *string `json:"horizontalLayoutURL,omitempty"`
@@ -36,7 +36,7 @@ type _VehicleDeck VehicleDeck
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewVehicleDeck(number int32, name string, freeSeats []Seat, occupiedSeats []Seat) *VehicleDeck {
+func NewVehicleDeck(number int64, name string, freeSeats []Seat, occupiedSeats []Seat) *VehicleDeck {
 	this := VehicleDeck{}
 	this.Number = number
 	this.Name = name
@@ -54,9 +54,9 @@ func NewVehicleDeckWithDefaults() *VehicleDeck {
 }
 
 // GetNumber returns the Number field value
-func (o *VehicleDeck) GetNumber() int32 {
+func (o *VehicleDeck) GetNumber() int64 {
 	if o == nil {
-		var ret int32
+		var ret int64
 		return ret
 	}
 
@@ -65,7 +65,7 @@ func (o *VehicleDeck) GetNumber() int32 {
 
 // GetNumberOk returns a tuple with the Number field value
 // and a boolean to check if the value has been set.
-func (o *VehicleDeck) GetNumberOk() (*int32, bool) {
+func (o *VehicleDeck) GetNumberOk() (*int64, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -73,7 +73,7 @@ func (o *VehicleDeck) GetNumberOk() (*int32, bool) {
 }
 
 // SetNumber sets field value
-func (o *VehicleDeck) SetNumber(v int32) {
+func (o *VehicleDeck) SetNumber(v int64) {
 	o.Number = v
 }
 

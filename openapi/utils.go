@@ -26,7 +26,7 @@ func PtrBool(v bool) *bool { return &v }
 func PtrInt(v int) *int { return &v }
 
 // PtrInt32 is a helper routine that returns a pointer to given integer value.
-func PtrInt32(v int32) *int32 { return &v }
+func PtrInt32(v int64) *int64 { return &v }
 
 // PtrInt64 is a helper routine that returns a pointer to given integer value.
 func PtrInt64(v int64) *int64 { return &v }
@@ -116,15 +116,15 @@ func (v *NullableInt) UnmarshalJSON(src []byte) error {
 }
 
 type NullableInt32 struct {
-	value *int32
+	value *int64
 	isSet bool
 }
 
-func (v NullableInt32) Get() *int32 {
+func (v NullableInt32) Get() *int64 {
 	return v.value
 }
 
-func (v *NullableInt32) Set(val *int32) {
+func (v *NullableInt32) Set(val *int64) {
 	v.value = val
 	v.isSet = true
 }
@@ -138,7 +138,7 @@ func (v *NullableInt32) Unset() {
 	v.isSet = false
 }
 
-func NewNullableInt32(val *int32) *NullableInt32 {
+func NewNullableInt32(val *int64) *NullableInt32 {
 	return &NullableInt32{value: val, isSet: true}
 }
 

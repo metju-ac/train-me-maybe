@@ -32,12 +32,15 @@ type Vehicle110 struct {
 	VehicleStandardKey string `json:"vehicleStandardKey"`
 	// Supported services icons (wifi, etc.)
 	Services      []string `json:"services,omitempty"`
-	VehicleNumber int32    `json:"vehicleNumber"`
+	VehicleNumber int64    `json:"vehicleNumber"`
 	// Available classes in this vehicle
-	SeatClasses []string `json:"seatClasses"`
+	SeatClasses []string `json:"seatClasses,omitempty"`
 	// Additional informations relating to whole vehicle. These informations are visible, but wont requiring confirmation.
 	Notifications []string `json:"notifications,omitempty"`
 	FreeSeats     []Seat   `json:"freeSeats"`
+	OccupiedSeats     []Seat   `json:"occupiedSeats,omitempty"`
+	CateringEnabled bool `json:"cateringEnabled,omitempty"`
+	VehicleSeatClasses []VehicleSeatClass `json:"vehicleSeatClasses,omitempty"`
 }
 
 type _Vehicle110 Vehicle110
@@ -46,7 +49,7 @@ type _Vehicle110 Vehicle110
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewVehicle110(vehicleId int64, vehicleStandardKey string, vehicleNumber int32, seatClasses []string, freeSeats []Seat) *Vehicle110 {
+func NewVehicle110(vehicleId int64, vehicleStandardKey string, vehicleNumber int64, seatClasses []string, freeSeats []Seat) *Vehicle110 {
 	this := Vehicle110{}
 	this.VehicleId = vehicleId
 	this.VehicleStandardKey = vehicleStandardKey
@@ -273,9 +276,9 @@ func (o *Vehicle110) SetServices(v []string) {
 }
 
 // GetVehicleNumber returns the VehicleNumber field value
-func (o *Vehicle110) GetVehicleNumber() int32 {
+func (o *Vehicle110) GetVehicleNumber() int64 {
 	if o == nil {
-		var ret int32
+		var ret int64
 		return ret
 	}
 
@@ -284,7 +287,7 @@ func (o *Vehicle110) GetVehicleNumber() int32 {
 
 // GetVehicleNumberOk returns a tuple with the VehicleNumber field value
 // and a boolean to check if the value has been set.
-func (o *Vehicle110) GetVehicleNumberOk() (*int32, bool) {
+func (o *Vehicle110) GetVehicleNumberOk() (*int64, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -292,7 +295,7 @@ func (o *Vehicle110) GetVehicleNumberOk() (*int32, bool) {
 }
 
 // SetVehicleNumber sets field value
-func (o *Vehicle110) SetVehicleNumber(v int32) {
+func (o *Vehicle110) SetVehicleNumber(v int64) {
 	o.VehicleNumber = v
 }
 
@@ -420,7 +423,6 @@ func (o *Vehicle110) UnmarshalJSON(data []byte) (err error) {
 		"vehicleId",
 		"vehicleStandardKey",
 		"vehicleNumber",
-		"seatClasses",
 		"freeSeats",
 	}
 

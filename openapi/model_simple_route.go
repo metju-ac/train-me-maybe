@@ -36,9 +36,9 @@ type SimpleRoute struct {
 	// Vehicle type.
 	VehicleTypes []VehicleType `json:"vehicleTypes"`
 	// Number of transfers between stations.
-	TransfersCount *int32 `json:"transfersCount,omitempty"`
+	TransfersCount *int64 `json:"transfersCount,omitempty"`
 	// Number of available free seats through all sections.
-	FreeSeatsCount int32 `json:"freeSeatsCount"`
+	FreeSeatsCount int64 `json:"freeSeatsCount"`
 	// Minimum ticket price for open account.
 	PriceFrom float32 `json:"priceFrom"`
 	// Maximum ticket price for open account.
@@ -48,7 +48,7 @@ type SimpleRoute struct {
 	// Maximum ticket price for RegioJet Pay.
 	CreditPriceTo *float32 `json:"creditPriceTo,omitempty"`
 	// Number of available prices.
-	PricesCount int32 `json:"pricesCount"`
+	PricesCount int64 `json:"pricesCount"`
 	// `true` if any price is action price, otherwise `false`.
 	ActionPrice bool `json:"actionPrice"`
 	// `true` if there is surcharge on this route, otherwise `false`.
@@ -75,7 +75,7 @@ type _SimpleRoute SimpleRoute
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSimpleRoute(id string, departureTime time.Time, arrivalTime time.Time, vehicleTypes []VehicleType, freeSeatsCount int32, priceFrom float32, creditPriceFrom float32, pricesCount int32, actionPrice bool, surcharge bool, notices bool, support bool, bookable bool) *SimpleRoute {
+func NewSimpleRoute(id string, departureTime time.Time, arrivalTime time.Time, vehicleTypes []VehicleType, freeSeatsCount int64, priceFrom float32, creditPriceFrom float32, pricesCount int64, actionPrice bool, surcharge bool, notices bool, support bool, bookable bool) *SimpleRoute {
 	this := SimpleRoute{}
 	this.Id = id
 	this.DepartureTime = departureTime
@@ -262,9 +262,9 @@ func (o *SimpleRoute) SetVehicleTypes(v []VehicleType) {
 }
 
 // GetTransfersCount returns the TransfersCount field value if set, zero value otherwise.
-func (o *SimpleRoute) GetTransfersCount() int32 {
+func (o *SimpleRoute) GetTransfersCount() int64 {
 	if o == nil || IsNil(o.TransfersCount) {
-		var ret int32
+		var ret int64
 		return ret
 	}
 	return *o.TransfersCount
@@ -272,7 +272,7 @@ func (o *SimpleRoute) GetTransfersCount() int32 {
 
 // GetTransfersCountOk returns a tuple with the TransfersCount field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *SimpleRoute) GetTransfersCountOk() (*int32, bool) {
+func (o *SimpleRoute) GetTransfersCountOk() (*int64, bool) {
 	if o == nil || IsNil(o.TransfersCount) {
 		return nil, false
 	}
@@ -288,15 +288,15 @@ func (o *SimpleRoute) HasTransfersCount() bool {
 	return false
 }
 
-// SetTransfersCount gets a reference to the given int32 and assigns it to the TransfersCount field.
-func (o *SimpleRoute) SetTransfersCount(v int32) {
+// SetTransfersCount gets a reference to the given int64 and assigns it to the TransfersCount field.
+func (o *SimpleRoute) SetTransfersCount(v int64) {
 	o.TransfersCount = &v
 }
 
 // GetFreeSeatsCount returns the FreeSeatsCount field value
-func (o *SimpleRoute) GetFreeSeatsCount() int32 {
+func (o *SimpleRoute) GetFreeSeatsCount() int64 {
 	if o == nil {
-		var ret int32
+		var ret int64
 		return ret
 	}
 
@@ -305,7 +305,7 @@ func (o *SimpleRoute) GetFreeSeatsCount() int32 {
 
 // GetFreeSeatsCountOk returns a tuple with the FreeSeatsCount field value
 // and a boolean to check if the value has been set.
-func (o *SimpleRoute) GetFreeSeatsCountOk() (*int32, bool) {
+func (o *SimpleRoute) GetFreeSeatsCountOk() (*int64, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -313,7 +313,7 @@ func (o *SimpleRoute) GetFreeSeatsCountOk() (*int32, bool) {
 }
 
 // SetFreeSeatsCount sets field value
-func (o *SimpleRoute) SetFreeSeatsCount(v int32) {
+func (o *SimpleRoute) SetFreeSeatsCount(v int64) {
 	o.FreeSeatsCount = v
 }
 
@@ -430,9 +430,9 @@ func (o *SimpleRoute) SetCreditPriceTo(v float32) {
 }
 
 // GetPricesCount returns the PricesCount field value
-func (o *SimpleRoute) GetPricesCount() int32 {
+func (o *SimpleRoute) GetPricesCount() int64 {
 	if o == nil {
-		var ret int32
+		var ret int64
 		return ret
 	}
 
@@ -441,7 +441,7 @@ func (o *SimpleRoute) GetPricesCount() int32 {
 
 // GetPricesCountOk returns a tuple with the PricesCount field value
 // and a boolean to check if the value has been set.
-func (o *SimpleRoute) GetPricesCountOk() (*int32, bool) {
+func (o *SimpleRoute) GetPricesCountOk() (*int64, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -449,7 +449,7 @@ func (o *SimpleRoute) GetPricesCountOk() (*int32, bool) {
 }
 
 // SetPricesCount sets field value
-func (o *SimpleRoute) SetPricesCount(v int32) {
+func (o *SimpleRoute) SetPricesCount(v int64) {
 	o.PricesCount = v
 }
 

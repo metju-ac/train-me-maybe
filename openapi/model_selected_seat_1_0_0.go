@@ -23,8 +23,8 @@ var _ MappedNullable = &SelectedSeat100{}
 // SelectedSeat100 struct for SelectedSeat100
 type SelectedSeat100 struct {
 	SectionId     int64 `json:"sectionId"`
-	VehicleNumber int32 `json:"vehicleNumber"`
-	SeatIndex     int32 `json:"seatIndex"`
+	VehicleNumber int64 `json:"vehicleNumber"`
+	SeatIndex     int64 `json:"seatIndex"`
 }
 
 type _SelectedSeat100 SelectedSeat100
@@ -33,7 +33,7 @@ type _SelectedSeat100 SelectedSeat100
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSelectedSeat100(sectionId int64, vehicleNumber int32, seatIndex int32) *SelectedSeat100 {
+func NewSelectedSeat100(sectionId int64, vehicleNumber int64, seatIndex int64) *SelectedSeat100 {
 	this := SelectedSeat100{}
 	this.SectionId = sectionId
 	this.VehicleNumber = vehicleNumber
@@ -74,9 +74,9 @@ func (o *SelectedSeat100) SetSectionId(v int64) {
 }
 
 // GetVehicleNumber returns the VehicleNumber field value
-func (o *SelectedSeat100) GetVehicleNumber() int32 {
+func (o *SelectedSeat100) GetVehicleNumber() int64 {
 	if o == nil {
-		var ret int32
+		var ret int64
 		return ret
 	}
 
@@ -85,7 +85,7 @@ func (o *SelectedSeat100) GetVehicleNumber() int32 {
 
 // GetVehicleNumberOk returns a tuple with the VehicleNumber field value
 // and a boolean to check if the value has been set.
-func (o *SelectedSeat100) GetVehicleNumberOk() (*int32, bool) {
+func (o *SelectedSeat100) GetVehicleNumberOk() (*int64, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -93,14 +93,14 @@ func (o *SelectedSeat100) GetVehicleNumberOk() (*int32, bool) {
 }
 
 // SetVehicleNumber sets field value
-func (o *SelectedSeat100) SetVehicleNumber(v int32) {
+func (o *SelectedSeat100) SetVehicleNumber(v int64) {
 	o.VehicleNumber = v
 }
 
 // GetSeatIndex returns the SeatIndex field value
-func (o *SelectedSeat100) GetSeatIndex() int32 {
+func (o *SelectedSeat100) GetSeatIndex() int64 {
 	if o == nil {
-		var ret int32
+		var ret int64
 		return ret
 	}
 
@@ -109,7 +109,7 @@ func (o *SelectedSeat100) GetSeatIndex() int32 {
 
 // GetSeatIndexOk returns a tuple with the SeatIndex field value
 // and a boolean to check if the value has been set.
-func (o *SelectedSeat100) GetSeatIndexOk() (*int32, bool) {
+func (o *SelectedSeat100) GetSeatIndexOk() (*int64, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -117,7 +117,7 @@ func (o *SelectedSeat100) GetSeatIndexOk() (*int32, bool) {
 }
 
 // SetSeatIndex sets field value
-func (o *SelectedSeat100) SetSeatIndex(v int32) {
+func (o *SelectedSeat100) SetSeatIndex(v int64) {
 	o.SeatIndex = v
 }
 

@@ -34,6 +34,7 @@ type CustomerActions struct {
 	SentToMail         bool `json:"sentToMail"`
 	PrintTicket        bool `json:"printTicket"`
 	PrintInvoice       bool `json:"printInvoice"`
+	RequiredToFillInQuestionnaire bool `json:"requiredToFillInQuestionnaire,omitempty"`
 }
 
 type _CustomerActions CustomerActions

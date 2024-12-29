@@ -27,7 +27,7 @@ type PriceClass struct {
 	Conditions   PriceConditions `json:"conditions"`
 	// Service icons for wifi, steward, etc.
 	Services       []string `json:"services"`
-	FreeSeatsCount int32    `json:"freeSeatsCount"`
+	FreeSeatsCount int64    `json:"freeSeatsCount"`
 	Price          float32  `json:"price"`
 	CreditPrice    float32  `json:"creditPrice"`
 	// Pricing ID - used for price, services or terms confirmation after route search.
@@ -47,7 +47,7 @@ type _PriceClass PriceClass
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewPriceClass(seatClassKey string, conditions PriceConditions, services []string, freeSeatsCount int32, price float32, creditPrice float32, priceSource string, customerNotifications []string, tariffs []string, bookable bool) *PriceClass {
+func NewPriceClass(seatClassKey string, conditions PriceConditions, services []string, freeSeatsCount int64, price float32, creditPrice float32, priceSource string, customerNotifications []string, tariffs []string, bookable bool) *PriceClass {
 	this := PriceClass{}
 	this.SeatClassKey = seatClassKey
 	this.Conditions = conditions
@@ -143,9 +143,9 @@ func (o *PriceClass) SetServices(v []string) {
 }
 
 // GetFreeSeatsCount returns the FreeSeatsCount field value
-func (o *PriceClass) GetFreeSeatsCount() int32 {
+func (o *PriceClass) GetFreeSeatsCount() int64 {
 	if o == nil {
-		var ret int32
+		var ret int64
 		return ret
 	}
 
@@ -154,7 +154,7 @@ func (o *PriceClass) GetFreeSeatsCount() int32 {
 
 // GetFreeSeatsCountOk returns a tuple with the FreeSeatsCount field value
 // and a boolean to check if the value has been set.
-func (o *PriceClass) GetFreeSeatsCountOk() (*int32, bool) {
+func (o *PriceClass) GetFreeSeatsCountOk() (*int64, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -162,7 +162,7 @@ func (o *PriceClass) GetFreeSeatsCountOk() (*int32, bool) {
 }
 
 // SetFreeSeatsCount sets field value
-func (o *PriceClass) SetFreeSeatsCount(v int32) {
+func (o *PriceClass) SetFreeSeatsCount(v int64) {
 	o.FreeSeatsCount = v
 }
 

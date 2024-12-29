@@ -28,7 +28,7 @@ type CancelCharge struct {
 	Amount   float32   `json:"amount"`
 	Currency *Currency `json:"currency,omitempty"`
 	// Number of percents of original price that will be withheld for cancel.
-	Percent *int32 `json:"percent,omitempty"`
+	Percent *int64 `json:"percent,omitempty"`
 }
 
 type _CancelCharge CancelCharge
@@ -144,9 +144,9 @@ func (o *CancelCharge) SetCurrency(v Currency) {
 }
 
 // GetPercent returns the Percent field value if set, zero value otherwise.
-func (o *CancelCharge) GetPercent() int32 {
+func (o *CancelCharge) GetPercent() int64 {
 	if o == nil || IsNil(o.Percent) {
-		var ret int32
+		var ret int64
 		return ret
 	}
 	return *o.Percent
@@ -154,7 +154,7 @@ func (o *CancelCharge) GetPercent() int32 {
 
 // GetPercentOk returns a tuple with the Percent field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *CancelCharge) GetPercentOk() (*int32, bool) {
+func (o *CancelCharge) GetPercentOk() (*int64, bool) {
 	if o == nil || IsNil(o.Percent) {
 		return nil, false
 	}
@@ -170,8 +170,8 @@ func (o *CancelCharge) HasPercent() bool {
 	return false
 }
 
-// SetPercent gets a reference to the given int32 and assigns it to the Percent field.
-func (o *CancelCharge) SetPercent(v int32) {
+// SetPercent gets a reference to the given int64 and assigns it to the Percent field.
+func (o *CancelCharge) SetPercent(v int64) {
 	o.Percent = &v
 }
 

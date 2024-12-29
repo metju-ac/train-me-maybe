@@ -36,7 +36,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	tariff := handlers.DefualtTariff()
+	tariff := handlers.DefaultTariff()
 	if config.Auth.CreditEnabled {
 		tariff, err = handlers.HandleTariffSelection(apiClient)
 		if err != nil {

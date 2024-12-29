@@ -1,0 +1,57 @@
+meta {
+  name: Create new ticket - registered user
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/tickets/create/registered
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer 5818efb5-b025-46f0-93dc-eab126fef058
+  ~X-Application-Origin: 
+  ~X-Lang: 
+  ~X-Currency: 
+}
+
+body:json {
+  {
+    "ticketRequests": [
+      {
+        "passengers": [
+          {
+            "email": "robert.gemrot@centrum.cz",
+            "phone": "+420705216492",
+            "tariff": "CZECH_STUDENT_PASS_26"
+          }
+        ],
+        "route": {
+          "priceSource": "7586296071<372825000-3088864001-7586296071>",
+          "routeId": "7558539375",
+          "seatClass": "TRAIN_LOW_COST",
+          "sections": [
+            {
+              "section": {
+                "fromStationId": 372825000,
+                "sectionId": 7558539375,
+                "toStationId": 3088864001
+              },
+              "selectedSeats": [
+                {
+                  "seatIndex": 5,
+                  "sectionId": 7558539375,
+                  "vehicleNumber": 2
+                }
+              ]
+            }
+          ]
+        },
+        "selectedAddons": [],
+        "percentualDiscountIds": []
+      }
+    ]
+  }
+}

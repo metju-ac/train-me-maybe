@@ -35,7 +35,7 @@ func selectTariff(tariff []openapiclient.Tariff) (*openapiclient.Tariff, error) 
 	return selectedTariff, nil
 }
 
-func DefualtTariff() *openapiclient.Tariff {
+func DefaultTariff() *openapiclient.Tariff {
 	regular := "REGULAR"
 	adult := "Adult 18-64 years"
 	return &openapiclient.Tariff{

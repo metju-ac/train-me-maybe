@@ -46,8 +46,13 @@ func CheckFreeSeats(apiClient *openapiclient.APIClient, departingStation, arrivi
 	for _, seatClass := range seatClasses {
 		routeSeatsRequest := openapiclient.NewRouteSeatsRequest(sections, tariffs, seatClass)
 
-		route, _, err := apiClient.RoutesAPI.GetRouteFreeSeats(context.Background()).Request(*routeSeatsRequest).Execute()
+		route, httpResponse, err := apiClient.RoutesAPI.GetRouteFreeSeats(context.Background()).Request(*routeSeatsRequest).Execute()
 		if err != nil {
+			if httpResponse != nil && httpResponse.StatusCode == 400 {
+				slog.Info("No free seats found (400 response)")
+				return false, nil
+			}
+
 			slog.Error("Error calling GetRouteFreeSeats", "error", err)
 			return false, fmt.Errorf("error calling GetRouteFreeSeats: %v", err)
 		}

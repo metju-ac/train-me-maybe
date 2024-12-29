@@ -46,7 +46,7 @@ func main() {
 			break
 		}
 
-		fmt.Println("No free seats found, checking again in 10 seconds...")
+		fmt.Printf("No free seats found, checking again in %d seconds...\n", config.General.PollInterval)
 		time.Sleep(time.Duration(config.General.PollInterval) * time.Second)
 	}
 }

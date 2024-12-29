@@ -10,6 +10,7 @@ import (
 type Config struct {
 	Smtp    SmtpConfig
 	General GeneralConfig
+	Auth    AuthConfig
 }
 
 func LoadConfig() (*Config, error) {
@@ -41,6 +42,11 @@ func LoadConfig() (*Config, error) {
 		return nil, err
 	}
 
+	if err := mergeAuthConfigs(&config.Auth); err != nil {
+		slog.Error("Failed to merge auth configs", "error", err)
+		return nil, err
+	}
+
 	// more sections will go here
 
 	// validate the configs
@@ -51,6 +57,11 @@ func LoadConfig() (*Config, error) {
 
 	if err := validateGeneralConfig(&config.General); err != nil {
 		slog.Error("Failed to validate general config", "error", err)
+		return nil, err
+	}
+
+	if err := validateAuthConfig(&config.Auth); err != nil {
+		slog.Error("Failed to validate auth config", "error", err)
 		return nil, err
 	}
 

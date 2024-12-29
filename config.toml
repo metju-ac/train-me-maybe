@@ -4,3 +4,8 @@ port = 587
 
 [general]
 poll_interval = 120
+
+[auth]
+credit_enabled = true
+credit_user = ""
+credit_password = ""

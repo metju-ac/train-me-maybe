@@ -8,6 +8,7 @@ import (
 	"github.com/metju-ac/train-me-maybe/internal/config"
 	"github.com/metju-ac/train-me-maybe/internal/handlers"
 	"github.com/metju-ac/train-me-maybe/internal/notification"
+	"github.com/metju-ac/train-me-maybe/internal/purchase"
 	openapiclient "github.com/metju-ac/train-me-maybe/openapi"
 )
 
@@ -33,8 +34,17 @@ func main() {
 		os.Exit(1)
 	}
 
+	tariff := handlers.DefualtTariff()
+	if config.Auth.CreditEnabled {
+		tariff, err = handlers.HandleTariffSelection(apiClient)
+		if err != nil {
+			fmt.Println("Error:", err)
+			os.Exit(1)
+		}
+	}
+
 	for {
-		freeSeats, err := handlers.CheckFreeSeats(apiClient, route.DepartingStation, route.ArrivingStation, route.SelectedRoute, seatClasses)
+		freeSeats, err := handlers.CheckFreeSeats(apiClient, route.DepartingStation, route.ArrivingStation, route.SelectedRoute, seatClasses, tariff)
 		if err != nil {
 			fmt.Println("Error:", err)
 			os.Exit(1)
@@ -42,6 +52,7 @@ func main() {
 
 		if freeSeats {
 			fmt.Println("Free seats found!")
+			purchase.AutoPurchaseTicket(config)
 			notification.EmailNotification(&config.Smtp, route)
 			break
 		}

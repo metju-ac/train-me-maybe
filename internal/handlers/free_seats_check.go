@@ -23,7 +23,7 @@ func freeSeats(res []openapiclient.RouteSeatsResponse) bool {
 	return false
 }
 
-func CheckFreeSeats(apiClient *openapiclient.APIClient, departingStation, arrivingStation *models.StationModel, selectedRoute *openapiclient.SimpleRoute, seatClasses []string) (bool, error) {
+func CheckFreeSeats(apiClient *openapiclient.APIClient, departingStation, arrivingStation *models.StationModel, selectedRoute *openapiclient.SimpleRoute, seatClasses []string, tariff *openapiclient.Tariff) (bool, error) {
 	slog.Info("Checking for free seats", "departingStation", departingStation.StationID, "arrivingStation", arrivingStation.StationID, "selectedRoutes", selectedRoute.Id, "seatClasses", seatClasses)
 
 	sectionIds, err := cli.GetSectionIdsFromRoute(selectedRoute)
@@ -41,7 +41,7 @@ func CheckFreeSeats(apiClient *openapiclient.APIClient, departingStation, arrivi
 	sections := []openapiclient.SimpleSection{
 		*openapiclient.NewSimpleSection(sectionIds[0], departingStation.StationID, arrivingStation.StationID),
 	}
-	tariffs := []string{"REGULAR"}
+	tariffs := []string{*tariff.Key}
 
 	for _, seatClass := range seatClasses {
 		routeSeatsRequest := openapiclient.NewRouteSeatsRequest(sections, tariffs, seatClass)

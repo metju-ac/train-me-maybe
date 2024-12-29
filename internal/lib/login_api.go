@@ -14,7 +14,7 @@ type LoginRequest struct {
 	Password    string `json:"password"`
 }
 
-func LoginWithCreditTicket(ctx context.Context, username string, password string) (string, error) {
+func LoginWithCreditTicket(ctx context.Context, baseUrl string, username string, password string) (string, error) {
 	body := LoginRequest{
 		AccountCode: username,
 		Password:    password,
@@ -28,7 +28,7 @@ func LoginWithCreditTicket(ctx context.Context, username string, password string
 
 	buffer := bytes.NewBuffer(bodyJson)
 
-	request, err := http.NewRequestWithContext(ctx, http.MethodPost, "https://brn-ybus-pubapi.sa.cz/restapi/users/login/registeredAccount", buffer)
+	request, err := http.NewRequestWithContext(ctx, http.MethodPost, baseUrl+"/users/login/registeredAccount", buffer)
 	if err != nil {
 		slog.Error("Failed to create login request", "error", err)
 		return "", err
@@ -36,6 +36,7 @@ func LoginWithCreditTicket(ctx context.Context, username string, password string
 
 	request.Header.Set("Content-Type", "application/json")
 
+	slog.Info("Sending login request", "url", request.URL.String())
 	resp, err := http.DefaultClient.Do(request)
 	if err != nil {
 		slog.Error("Failed to send login request", "error", err)

@@ -90,7 +90,7 @@ type Configuration struct {
 }
 
 // NewConfiguration returns a new Configuration object
-func NewConfiguration() *Configuration {
+func NewConfiguration(baseUrl string) *Configuration {
 	cfg := &Configuration{
 		DefaultHeader: make(map[string]string),
 		UserAgent:     "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:133.0) Gecko/20100101 Firefox/133.0",
@@ -101,7 +101,7 @@ func NewConfiguration() *Configuration {
 			// 	Description: "No description provided",
 			// },
 			{
-				URL:         "https://brn-ybus-pubapi.sa.cz/restapi",
+				URL:         baseUrl,
 				Description: "No description provided",
 			},
 		},

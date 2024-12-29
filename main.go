@@ -18,7 +18,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	apiConfiguration := openapiclient.NewConfiguration()
+	apiConfiguration := openapiclient.NewConfiguration(config.General.ApiBaseUrl)
 	apiClient := openapiclient.NewAPIClient(apiConfiguration)
 
 	route, err := handlers.HandleRouteSelection(apiClient)

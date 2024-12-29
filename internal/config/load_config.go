@@ -60,7 +60,7 @@ func LoadConfig() (*Config, error) {
 		return nil, err
 	}
 
-	if err := validateAuthConfig(&config.Auth); err != nil {
+	if err := validateAuthConfig(&config); err != nil {
 		slog.Error("Failed to validate auth config", "error", err)
 		return nil, err
 	}

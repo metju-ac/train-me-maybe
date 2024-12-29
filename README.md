@@ -45,6 +45,7 @@ The later options have higher priority.
 ### General settings
 
 - `REGIOJET_POLL_INTERVAL` - how often to check for the free seats (in seconds). Recommended value is at least `60`.
+- `REGIOJET_API_BASE_URL` - the base URL of the Regiojet API. Default is `https://brn-ybus-pubapi.sa.cz/restapi`.
 
 ### Email notifications
 
@@ -62,3 +63,8 @@ To test that the email notification works for you, you can run
 go run .\cmd\email-test\main.go
 ```
 
+### Automatic purchases
+
+- `REGIOJET_AUTH_CREDIT_USER` - the username of your Regiojet account (kreditová jízdenka)
+- `REGIOJET_AUTH_CREDIT_PASSWORD` - the password of your Regiojet account
+- `REGIOJET_AUTH_CREDIT_ENABLED` - set to `true` to enable automatic purchases

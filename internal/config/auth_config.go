@@ -43,24 +43,24 @@ func mergeAuthConfigs(config *AuthConfig) error {
 	return nil
 }
 
-func validateAuthConfig(config *AuthConfig) error {
+func validateAuthConfig(config *Config) error {
 
-	if !config.CreditEnabled {
+	if !config.Auth.CreditEnabled {
 		return nil
 	}
 
-	if config.CreditUser == "" {
+	if config.Auth.CreditUser == "" {
 		return errors.New("The Credit user must be set")
 	}
 
-	if config.CreditPassword == "" {
+	if config.Auth.CreditPassword == "" {
 		return errors.New("The Credit password must be set")
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
-	token, err := lib.LoginWithCreditTicket(ctx, config.CreditUser, config.CreditPassword)
+	token, err := lib.LoginWithCreditTicket(ctx, config.General.ApiBaseUrl, config.Auth.CreditUser, config.Auth.CreditPassword)
 	if err != nil {
 		return err
 	}

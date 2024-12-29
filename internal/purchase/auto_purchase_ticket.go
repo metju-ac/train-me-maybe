@@ -53,7 +53,13 @@ func AutoPurchaseTicket(apiClient *openapiclient.APIClient, config *config.Confi
 		return err
 	}
 
-	slog.Info("Successfully created ticket", "ticketId", ticket.Id)
+	payment, err := payTicket(ctx, config, token, ticket, user)
+	if err != nil {
+		slog.Error("Failed to pay ticket", "error", err)
+		return err
+	}
+
+	slog.Info("Successfully purchased ticket", "amount", payment.Amount, "currency", payment.Currency)
 
 	return nil
 }

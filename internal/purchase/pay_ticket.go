@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"net/http/httputil"
 	"os"
+	"time"
 
 	"github.com/metju-ac/train-me-maybe/internal/config"
 	openapiclient "github.com/metju-ac/train-me-maybe/openapi"
@@ -40,12 +41,33 @@ type PayTicketResponse struct {
 	Currency string  `json:"currency"`
 }
 
+func generateTxToken() string {
+	const base58Alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
+	base := int64(len(base58Alphabet))
+	timestamp := time.Now().UnixMilli()
+	var encoded string
+
+	// Generate the base58-encoded string
+	for timestamp > 0 {
+		remainder := timestamp % base
+		timestamp /= base
+		encoded = string(base58Alphabet[remainder]) + encoded
+	}
+
+	// Pad the result to a minimum length of 8
+	for len(encoded) < 8 {
+		encoded = "1" + encoded
+	}
+
+	return encoded
+}
+
 func payTicket(ctx context.Context, config *config.Config, authToken string, ticket *openapiclient.Ticket, user *openapiclient.User) (*PayTicketResponse, error) {
 	body := PayTicketRequest{
 		Tickets: []Ticket{
 			{
 				Type: "RJ_SEAT",
-				Id:   ticket.Id, // TODO what the fuck is this id
+				Id:   ticket.Id,
 			},
 		},
 		FormFields: []FormField{
@@ -167,22 +189,7 @@ func payTicket(ctx context.Context, config *config.Config, authToken string, tic
 	request.Header.Set("Cache-Control", "no-cache")
 	request.Header.Set("X-Application-Origin", "WEB")
 	request.Header.Set("Authorization", "Bearer "+authToken)
-	// TxToken is generated like this in JS
-	// const txToken = rA()
-	//
-	// rA = () => {
-	// 		let e = '',
-	// 		t = '',
-	// 		n = (new Date).valueOf();
-	// 	for (; n > 1;) {
-	// 		let t = Math.floor(n % 58);
-	// 		n /= 58,
-	// 			e += '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'[t]
-	// 	}
-	// 	for (let n = e.length; n < 8; n++) t += '1';
-	// 	return t + e
-	// }
-	request.Header.Set("X-TxToken", "182qJ8bn") // TODO set this properly, it is definitely needed
+	request.Header.Set("X-TxToken", generateTxToken())
 	request.Header.Set("Content-Length", "48")
 	request.Header.Set("Origin", "https://regiojet.cz")
 	request.Header.Set("DNT", "1")

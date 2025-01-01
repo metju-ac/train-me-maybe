@@ -21,11 +21,11 @@ var _ MappedNullable = &TimePeriod{}
 // TimePeriod struct for TimePeriod
 type TimePeriod struct {
 	// Number of days
-	Days *int32 `json:"days,omitempty"`
+	Days *int64 `json:"days,omitempty"`
 	// Number of hours
-	Hours *int32 `json:"hours,omitempty"`
+	Hours *int64 `json:"hours,omitempty"`
 	// Number of minutes
-	Minutes *int32 `json:"minutes,omitempty"`
+	Minutes *int64 `json:"minutes,omitempty"`
 }
 
 // NewTimePeriod instantiates a new TimePeriod object
@@ -46,9 +46,9 @@ func NewTimePeriodWithDefaults() *TimePeriod {
 }
 
 // GetDays returns the Days field value if set, zero value otherwise.
-func (o *TimePeriod) GetDays() int32 {
+func (o *TimePeriod) GetDays() int64 {
 	if o == nil || IsNil(o.Days) {
-		var ret int32
+		var ret int64
 		return ret
 	}
 	return *o.Days
@@ -56,7 +56,7 @@ func (o *TimePeriod) GetDays() int32 {
 
 // GetDaysOk returns a tuple with the Days field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *TimePeriod) GetDaysOk() (*int32, bool) {
+func (o *TimePeriod) GetDaysOk() (*int64, bool) {
 	if o == nil || IsNil(o.Days) {
 		return nil, false
 	}
@@ -72,15 +72,15 @@ func (o *TimePeriod) HasDays() bool {
 	return false
 }
 
-// SetDays gets a reference to the given int32 and assigns it to the Days field.
-func (o *TimePeriod) SetDays(v int32) {
+// SetDays gets a reference to the given int64 and assigns it to the Days field.
+func (o *TimePeriod) SetDays(v int64) {
 	o.Days = &v
 }
 
 // GetHours returns the Hours field value if set, zero value otherwise.
-func (o *TimePeriod) GetHours() int32 {
+func (o *TimePeriod) GetHours() int64 {
 	if o == nil || IsNil(o.Hours) {
-		var ret int32
+		var ret int64
 		return ret
 	}
 	return *o.Hours
@@ -88,7 +88,7 @@ func (o *TimePeriod) GetHours() int32 {
 
 // GetHoursOk returns a tuple with the Hours field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *TimePeriod) GetHoursOk() (*int32, bool) {
+func (o *TimePeriod) GetHoursOk() (*int64, bool) {
 	if o == nil || IsNil(o.Hours) {
 		return nil, false
 	}
@@ -104,15 +104,15 @@ func (o *TimePeriod) HasHours() bool {
 	return false
 }
 
-// SetHours gets a reference to the given int32 and assigns it to the Hours field.
-func (o *TimePeriod) SetHours(v int32) {
+// SetHours gets a reference to the given int64 and assigns it to the Hours field.
+func (o *TimePeriod) SetHours(v int64) {
 	o.Hours = &v
 }
 
 // GetMinutes returns the Minutes field value if set, zero value otherwise.
-func (o *TimePeriod) GetMinutes() int32 {
+func (o *TimePeriod) GetMinutes() int64 {
 	if o == nil || IsNil(o.Minutes) {
-		var ret int32
+		var ret int64
 		return ret
 	}
 	return *o.Minutes
@@ -120,7 +120,7 @@ func (o *TimePeriod) GetMinutes() int32 {
 
 // GetMinutesOk returns a tuple with the Minutes field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *TimePeriod) GetMinutesOk() (*int32, bool) {
+func (o *TimePeriod) GetMinutesOk() (*int64, bool) {
 	if o == nil || IsNil(o.Minutes) {
 		return nil, false
 	}
@@ -136,8 +136,8 @@ func (o *TimePeriod) HasMinutes() bool {
 	return false
 }
 
-// SetMinutes gets a reference to the given int32 and assigns it to the Minutes field.
-func (o *TimePeriod) SetMinutes(v int32) {
+// SetMinutes gets a reference to the given int64 and assigns it to the Minutes field.
+func (o *TimePeriod) SetMinutes(v int64) {
 	o.Minutes = &v
 }
 

@@ -27,6 +27,7 @@ type ApiAuthenticateRequest struct {
 	ApiService         *UsersAPIService
 	xApplicationOrigin *string
 	xLang              *string
+	BearerToken        *string
 }
 
 // Application origin - APP - Mobile application (Android / Apple) - AFF - Affiliate application which is managed by third party - CAT - Web application used to sell catering - DEV - Only for development and testing - DOT - Check-in application for ticket sales on a train or bus - NOT - Unknown application type
@@ -38,6 +39,13 @@ func (r ApiAuthenticateRequest) XApplicationOrigin(xApplicationOrigin string) Ap
 // A two-letter language code from [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Defines the language into which the response will be translated.  Currently supported languages:  | ISO language name | ISO 639-1 code | |-------------------|----------------| | Czech             | cs             | | German            | de             | | English           | en             | | Spanish           | es             | | French            | fr             | | Hungarian         | hu             | | Russian           | ru             | | Slovak            | sk             | | Ukrainian         | uk             | | Chinese           | zh             |
 func (r ApiAuthenticateRequest) XLang(xLang string) ApiAuthenticateRequest {
 	r.xLang = &xLang
+	return r
+}
+
+// added manually
+func (r ApiAuthenticateRequest) Authorization(token string) ApiAuthenticateRequest {
+	bearer := "Bearer " + token
+	r.BearerToken = &bearer
 	return r
 }
 
@@ -104,6 +112,9 @@ func (a *UsersAPIService) AuthenticateExecute(r ApiAuthenticateRequest) (*User, 
 	}
 	if r.xLang != nil {
 		parameterAddToHeaderOrQuery(localVarHeaderParams, "X-Lang", r.xLang, "", "")
+	}
+	if r.BearerToken != nil {
+		parameterAddToHeaderOrQuery(localVarHeaderParams, "Authorization", r.BearerToken, "", "")
 	}
 	if r.ctx != nil {
 		// API Key Authentication

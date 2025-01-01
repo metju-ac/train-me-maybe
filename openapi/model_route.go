@@ -38,7 +38,7 @@ type Route struct {
 	ArrivalCityName      *string   `json:"arrivalCityName,omitempty"`
 	ArrivalTime          time.Time `json:"arrivalTime"`
 	// Number of available free seats through all sections.
-	FreeSeatsCount  int32         `json:"freeSeatsCount"`
+	FreeSeatsCount  int64         `json:"freeSeatsCount"`
 	PriceFrom       *float32      `json:"priceFrom,omitempty"`
 	PriceTo         *float32      `json:"priceTo,omitempty"`
 	CreditPriceFrom *float32      `json:"creditPriceFrom,omitempty"`
@@ -68,7 +68,7 @@ type _Route Route
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewRoute(id string, mainSectionId int64, departureStationId int64, departureCityId int64, departureTime time.Time, arrivalStationId int64, arrivalCityId int64, arrivalTime time.Time, freeSeatsCount int32, sections []Section, bookable bool) *Route {
+func NewRoute(id string, mainSectionId int64, departureStationId int64, departureCityId int64, departureTime time.Time, arrivalStationId int64, arrivalCityId int64, arrivalTime time.Time, freeSeatsCount int64, sections []Section, bookable bool) *Route {
 	this := Route{}
 	this.Id = id
 	this.MainSectionId = mainSectionId
@@ -413,9 +413,9 @@ func (o *Route) SetArrivalTime(v time.Time) {
 }
 
 // GetFreeSeatsCount returns the FreeSeatsCount field value
-func (o *Route) GetFreeSeatsCount() int32 {
+func (o *Route) GetFreeSeatsCount() int64 {
 	if o == nil {
-		var ret int32
+		var ret int64
 		return ret
 	}
 
@@ -424,7 +424,7 @@ func (o *Route) GetFreeSeatsCount() int32 {
 
 // GetFreeSeatsCountOk returns a tuple with the FreeSeatsCount field value
 // and a boolean to check if the value has been set.
-func (o *Route) GetFreeSeatsCountOk() (*int32, bool) {
+func (o *Route) GetFreeSeatsCountOk() (*int64, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -432,7 +432,7 @@ func (o *Route) GetFreeSeatsCountOk() (*int32, bool) {
 }
 
 // SetFreeSeatsCount sets field value
-func (o *Route) SetFreeSeatsCount(v int32) {
+func (o *Route) SetFreeSeatsCount(v int64) {
 	o.FreeSeatsCount = v
 }
 

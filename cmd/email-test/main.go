@@ -5,7 +5,6 @@ import (
 	"os"
 
 	"github.com/metju-ac/train-me-maybe/internal/config"
-	"github.com/metju-ac/train-me-maybe/internal/handlers"
 	"github.com/metju-ac/train-me-maybe/internal/models"
 	"github.com/metju-ac/train-me-maybe/internal/notification"
 	"github.com/metju-ac/train-me-maybe/openapi"
@@ -27,9 +26,12 @@ func main() {
 		IsBusStation:   false,
 	}
 
-	notification.EmailNotification(&config.Smtp, &handlers.HandleRouteSelectionResponse{
+	notification.EmailNotificationFreeSeats(&config.Smtp, &models.UserInput{
 		DepartingStation: test_station,
 		ArrivingStation:  test_station,
 		SelectedRoute:    openapi.NewSimpleRouteWithDefaults(),
+		SeatClasses:      []string{"SEAT_CLASS"},
+		Tariff:           nil,
+		Section:          nil,
 	})
 }

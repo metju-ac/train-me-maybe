@@ -6,15 +6,31 @@ meta {
 
 post {
   url: {{baseUrl}}/routes/:routeId/freeSeats
-  body: none
+  body: json
   auth: none
 }
 
 params:path {
-  routeId: 7471783692
+  routeId: 7583030916
 }
 
 headers {
   ~X-Application-Origin: 
   ~X-Lang: 
+}
+
+body:json {
+  {
+    "sections": [
+      {
+        "sectionId": 7558539230,
+        "fromStationId": 3088864001,
+        "toStationId": 372825000
+      }
+    ],
+    "seatClass": "TRAIN_LOW_COST",
+    "tariffs": [
+      "CZECH_STUDENT_PASS_26"
+    ]
+  }
 }

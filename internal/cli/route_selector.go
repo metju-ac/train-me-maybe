@@ -2,8 +2,6 @@ package cli
 
 import (
 	"fmt"
-	"strconv"
-	"strings"
 
 	"github.com/AlecAivazis/survey/v2"
 	openapiclient "github.com/metju-ac/train-me-maybe/openapi"
@@ -11,21 +9,6 @@ import (
 
 func FormatRoute(route *openapiclient.SimpleRoute) string {
 	return fmt.Sprintf("%s - %s (Transfers: %d)", route.DepartureTime.Format("02.01. 15:04"), route.ArrivalTime.Format("02.01. 15:04"), route.GetTransfersCount())
-}
-
-func GetSectionIdsFromRoute(route *openapiclient.SimpleRoute) ([]int64, error) {
-	intIds := make([]int64, 0)
-
-	ids := strings.Split(route.Id, ",")
-	for _, idStr := range ids {
-		id, err := strconv.ParseInt(idStr, 10, 64)
-		if err != nil {
-			return nil, fmt.Errorf("invalid route ID: %s", idStr)
-		}
-		intIds = append(intIds, id)
-	}
-
-	return intIds, nil
 }
 
 func SelectRoute(routes []openapiclient.SimpleRoute) (*openapiclient.SimpleRoute, error) {

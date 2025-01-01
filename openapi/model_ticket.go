@@ -23,6 +23,14 @@ var _ MappedNullable = &Ticket{}
 
 // Ticket expirationDate is date-time value states when ticket expires. ExpiresAt states how many days, hours and minutes left to ticket expiration.
 type Ticket struct {
+	// manually added
+	TicketCode                      string  `json:"ticketCode,omitempty"`
+	ActionName                      string  `json:"actionName,omitempty"`
+	WheelChairPlatformOrderPossible bool    `json:"wheelChairPlatformOrderPossible,omitempty"`
+	WheelChairPlatformOrdered       bool    `json:"wheelChairPlatformOrdered,omitempty"`
+	CarbonOffset                    float32 `json:"carbonOffset,omitempty"`
+	AffiliateTicket                 bool    `json:"affiliateTicket,omitempty"`
+
 	// ID of the ticket
 	Id int64 `json:"id"`
 	// route id (section0.id,section1.id, ... sectionx.id)
@@ -54,7 +62,7 @@ type Ticket struct {
 	CancelChargeSum *float32 `json:"cancelChargeSum,omitempty"`
 	// Total count of reversible amounts
 	CancelMoneyBackSum *float32       `json:"cancelMoneyBackSum,omitempty"`
-	PassengersInfo     PassengersInfo `json:"passengersInfo"`
+	PassengersInfo     PassengersInfo `json:"passengersInfo,omitempty"`
 	// Textual information about the first delay on the route
 	Delay *string `json:"delay,omitempty"`
 	// Textual information about the travel time on a given section

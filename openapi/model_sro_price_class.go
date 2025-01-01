@@ -24,10 +24,10 @@ var _ MappedNullable = &SroPriceClass{}
 type SroPriceClass struct {
 	// Seat class code.
 	SeatClassKey       string             `json:"seatClassKey"`
-	FreeSeatsCount     int32              `json:"freeSeatsCount"`
+	FreeSeatsCount     int64              `json:"freeSeatsCount"`
 	Price              float32            `json:"price"`
 	PriceSource        string             `json:"priceSource"`
-	NumberOfPassengers int32              `json:"numberOfPassengers"`
+	NumberOfPassengers int64              `json:"numberOfPassengers"`
 	Conditions         SroPriceConditions `json:"conditions"`
 }
 
@@ -37,7 +37,7 @@ type _SroPriceClass SroPriceClass
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSroPriceClass(seatClassKey string, freeSeatsCount int32, price float32, priceSource string, numberOfPassengers int32, conditions SroPriceConditions) *SroPriceClass {
+func NewSroPriceClass(seatClassKey string, freeSeatsCount int64, price float32, priceSource string, numberOfPassengers int64, conditions SroPriceConditions) *SroPriceClass {
 	this := SroPriceClass{}
 	this.SeatClassKey = seatClassKey
 	this.FreeSeatsCount = freeSeatsCount
@@ -81,9 +81,9 @@ func (o *SroPriceClass) SetSeatClassKey(v string) {
 }
 
 // GetFreeSeatsCount returns the FreeSeatsCount field value
-func (o *SroPriceClass) GetFreeSeatsCount() int32 {
+func (o *SroPriceClass) GetFreeSeatsCount() int64 {
 	if o == nil {
-		var ret int32
+		var ret int64
 		return ret
 	}
 
@@ -92,7 +92,7 @@ func (o *SroPriceClass) GetFreeSeatsCount() int32 {
 
 // GetFreeSeatsCountOk returns a tuple with the FreeSeatsCount field value
 // and a boolean to check if the value has been set.
-func (o *SroPriceClass) GetFreeSeatsCountOk() (*int32, bool) {
+func (o *SroPriceClass) GetFreeSeatsCountOk() (*int64, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -100,7 +100,7 @@ func (o *SroPriceClass) GetFreeSeatsCountOk() (*int32, bool) {
 }
 
 // SetFreeSeatsCount sets field value
-func (o *SroPriceClass) SetFreeSeatsCount(v int32) {
+func (o *SroPriceClass) SetFreeSeatsCount(v int64) {
 	o.FreeSeatsCount = v
 }
 
@@ -153,9 +153,9 @@ func (o *SroPriceClass) SetPriceSource(v string) {
 }
 
 // GetNumberOfPassengers returns the NumberOfPassengers field value
-func (o *SroPriceClass) GetNumberOfPassengers() int32 {
+func (o *SroPriceClass) GetNumberOfPassengers() int64 {
 	if o == nil {
-		var ret int32
+		var ret int64
 		return ret
 	}
 
@@ -164,7 +164,7 @@ func (o *SroPriceClass) GetNumberOfPassengers() int32 {
 
 // GetNumberOfPassengersOk returns a tuple with the NumberOfPassengers field value
 // and a boolean to check if the value has been set.
-func (o *SroPriceClass) GetNumberOfPassengersOk() (*int32, bool) {
+func (o *SroPriceClass) GetNumberOfPassengersOk() (*int64, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -172,7 +172,7 @@ func (o *SroPriceClass) GetNumberOfPassengersOk() (*int32, bool) {
 }
 
 // SetNumberOfPassengers sets field value
-func (o *SroPriceClass) SetNumberOfPassengers(v int32) {
+func (o *SroPriceClass) SetNumberOfPassengers(v int64) {
 	o.NumberOfPassengers = v
 }
 

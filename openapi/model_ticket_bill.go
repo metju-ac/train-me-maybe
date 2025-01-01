@@ -25,6 +25,13 @@ type TicketBill struct {
 	Amount   float32  `json:"amount"`
 	Currency Currency `json:"currency"`
 	Label    string   `json:"label"`
+
+	Number                int64   `json:"number,omitempty"`
+	Type                  string  `json:"type,omitempty"`
+	VatRate               float32 `json:"vatRate,omitempty"`
+	AmountWithoutVat      float32 `json:"amountWithoutVat,omitempty"`
+	VatAmount             float32 `json:"vatAmount,omitempty"`
+	DateOfChargeableEvent string  `json:"dateOfChargeableEvent,omitempty"`
 }
 
 type _TicketBill TicketBill

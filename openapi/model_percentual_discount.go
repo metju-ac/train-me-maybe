@@ -25,11 +25,11 @@ var _ MappedNullable = &PercentualDiscount{}
 type PercentualDiscount struct {
 	Id int64 `json:"id"`
 	// Size of a percentual discount
-	Percentage int32 `json:"percentage"`
+	Percentage int64 `json:"percentage"`
 	// Discount sum in account currency
 	Amount float32 `json:"amount"`
 	// Maximal number of passengers
-	Passengers int32 `json:"passengers"`
+	Passengers int64 `json:"passengers"`
 	// Default departure country/city/station translations
 	FromLocation *string `json:"fromLocation,omitempty"`
 	// Default arrival country/city/station translations
@@ -44,7 +44,7 @@ type _PercentualDiscount PercentualDiscount
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewPercentualDiscount(id int64, percentage int32, amount float32, passengers int32) *PercentualDiscount {
+func NewPercentualDiscount(id int64, percentage int64, amount float32, passengers int64) *PercentualDiscount {
 	this := PercentualDiscount{}
 	this.Id = id
 	this.Percentage = percentage
@@ -86,9 +86,9 @@ func (o *PercentualDiscount) SetId(v int64) {
 }
 
 // GetPercentage returns the Percentage field value
-func (o *PercentualDiscount) GetPercentage() int32 {
+func (o *PercentualDiscount) GetPercentage() int64 {
 	if o == nil {
-		var ret int32
+		var ret int64
 		return ret
 	}
 
@@ -97,7 +97,7 @@ func (o *PercentualDiscount) GetPercentage() int32 {
 
 // GetPercentageOk returns a tuple with the Percentage field value
 // and a boolean to check if the value has been set.
-func (o *PercentualDiscount) GetPercentageOk() (*int32, bool) {
+func (o *PercentualDiscount) GetPercentageOk() (*int64, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -105,7 +105,7 @@ func (o *PercentualDiscount) GetPercentageOk() (*int32, bool) {
 }
 
 // SetPercentage sets field value
-func (o *PercentualDiscount) SetPercentage(v int32) {
+func (o *PercentualDiscount) SetPercentage(v int64) {
 	o.Percentage = v
 }
 
@@ -134,9 +134,9 @@ func (o *PercentualDiscount) SetAmount(v float32) {
 }
 
 // GetPassengers returns the Passengers field value
-func (o *PercentualDiscount) GetPassengers() int32 {
+func (o *PercentualDiscount) GetPassengers() int64 {
 	if o == nil {
-		var ret int32
+		var ret int64
 		return ret
 	}
 
@@ -145,7 +145,7 @@ func (o *PercentualDiscount) GetPassengers() int32 {
 
 // GetPassengersOk returns a tuple with the Passengers field value
 // and a boolean to check if the value has been set.
-func (o *PercentualDiscount) GetPassengersOk() (*int32, bool) {
+func (o *PercentualDiscount) GetPassengersOk() (*int64, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -153,7 +153,7 @@ func (o *PercentualDiscount) GetPassengersOk() (*int32, bool) {
 }
 
 // SetPassengers sets field value
-func (o *PercentualDiscount) SetPassengers(v int32) {
+func (o *PercentualDiscount) SetPassengers(v int64) {
 	o.Passengers = v
 }
 

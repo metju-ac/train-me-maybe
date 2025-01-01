@@ -718,8 +718,8 @@ type ApiGetSroPassengersDataRequest struct {
 	xCurrency          *string
 	xLang              *string
 	departureDate      *time.Time
-	seatClass          *int32
-	numberOfPassengers *int32
+	seatClass          *int64
+	numberOfPassengers *int64
 }
 
 // Unique identifier for &#x60;from&#x60; station. Detailed data for identifier can be obtained from &#x60;/consts/locations&#x60; endpoint.
@@ -759,13 +759,13 @@ func (r ApiGetSroPassengersDataRequest) DepartureDate(departureDate time.Time) A
 }
 
 // Seat class.
-func (r ApiGetSroPassengersDataRequest) SeatClass(seatClass int32) ApiGetSroPassengersDataRequest {
+func (r ApiGetSroPassengersDataRequest) SeatClass(seatClass int64) ApiGetSroPassengersDataRequest {
 	r.seatClass = &seatClass
 	return r
 }
 
 // Number of passengers.
-func (r ApiGetSroPassengersDataRequest) NumberOfPassengers(numberOfPassengers int32) ApiGetSroPassengersDataRequest {
+func (r ApiGetSroPassengersDataRequest) NumberOfPassengers(numberOfPassengers int64) ApiGetSroPassengersDataRequest {
 	r.numberOfPassengers = &numberOfPassengers
 	return r
 }
@@ -828,13 +828,13 @@ func (a *RoutesAPIService) GetSroPassengersDataExecute(r ApiGetSroPassengersData
 	if r.seatClass != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "seatClass", r.seatClass, "", "")
 	} else {
-		var defaultValue int32 = 2
+		var defaultValue int64 = 2
 		r.seatClass = &defaultValue
 	}
 	if r.numberOfPassengers != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "numberOfPassengers", r.numberOfPassengers, "", "")
 	} else {
-		var defaultValue int32 = 1
+		var defaultValue int64 = 1
 		r.numberOfPassengers = &defaultValue
 	}
 	// to determine the Content-Type header
@@ -910,8 +910,8 @@ type ApiGetSroRoutePricesRequest struct {
 	xCurrency          *string
 	xLang              *string
 	departureDate      *time.Time
-	seatClass          *int32
-	numberOfPassengers *int32
+	seatClass          *int64
+	numberOfPassengers *int64
 }
 
 // Unique identifier for &#x60;from&#x60; station. Detailed data for identifier can be obtained from &#x60;/consts/locations&#x60; endpoint.
@@ -951,13 +951,13 @@ func (r ApiGetSroRoutePricesRequest) DepartureDate(departureDate time.Time) ApiG
 }
 
 // Seat class.
-func (r ApiGetSroRoutePricesRequest) SeatClass(seatClass int32) ApiGetSroRoutePricesRequest {
+func (r ApiGetSroRoutePricesRequest) SeatClass(seatClass int64) ApiGetSroRoutePricesRequest {
 	r.seatClass = &seatClass
 	return r
 }
 
 // Number of passengers.
-func (r ApiGetSroRoutePricesRequest) NumberOfPassengers(numberOfPassengers int32) ApiGetSroRoutePricesRequest {
+func (r ApiGetSroRoutePricesRequest) NumberOfPassengers(numberOfPassengers int64) ApiGetSroRoutePricesRequest {
 	r.numberOfPassengers = &numberOfPassengers
 	return r
 }
@@ -1020,13 +1020,13 @@ func (a *RoutesAPIService) GetSroRoutePricesExecute(r ApiGetSroRoutePricesReques
 	if r.seatClass != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "seatClass", r.seatClass, "", "")
 	} else {
-		var defaultValue int32 = 2
+		var defaultValue int64 = 2
 		r.seatClass = &defaultValue
 	}
 	if r.numberOfPassengers != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "numberOfPassengers", r.numberOfPassengers, "", "")
 	} else {
-		var defaultValue int32 = 1
+		var defaultValue int64 = 1
 		r.numberOfPassengers = &defaultValue
 	}
 	// to determine the Content-Type header
@@ -1353,8 +1353,8 @@ type ApiSearchSR70RoutesRequest struct {
 	xApplicationOrigin *string
 	xCurrency          *string
 	xLang              *string
-	seatClass          *int32
-	numberOfPassengers *int32
+	seatClass          *int64
+	numberOfPassengers *int64
 }
 
 // Date and time of departure, mandatory for this request.
@@ -1382,13 +1382,13 @@ func (r ApiSearchSR70RoutesRequest) XLang(xLang string) ApiSearchSR70RoutesReque
 }
 
 // Seat class.
-func (r ApiSearchSR70RoutesRequest) SeatClass(seatClass int32) ApiSearchSR70RoutesRequest {
+func (r ApiSearchSR70RoutesRequest) SeatClass(seatClass int64) ApiSearchSR70RoutesRequest {
 	r.seatClass = &seatClass
 	return r
 }
 
 // Number of passengers.
-func (r ApiSearchSR70RoutesRequest) NumberOfPassengers(numberOfPassengers int32) ApiSearchSR70RoutesRequest {
+func (r ApiSearchSR70RoutesRequest) NumberOfPassengers(numberOfPassengers int64) ApiSearchSR70RoutesRequest {
 	r.numberOfPassengers = &numberOfPassengers
 	return r
 }
@@ -1453,13 +1453,13 @@ func (a *RoutesAPIService) SearchSR70RoutesExecute(r ApiSearchSR70RoutesRequest)
 	if r.seatClass != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "seatClass", r.seatClass, "", "")
 	} else {
-		var defaultValue int32 = 2
+		var defaultValue int64 = 2
 		r.seatClass = &defaultValue
 	}
 	if r.numberOfPassengers != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "numberOfPassengers", r.numberOfPassengers, "", "")
 	} else {
-		var defaultValue int32 = 1
+		var defaultValue int64 = 1
 		r.numberOfPassengers = &defaultValue
 	}
 	// to determine the Content-Type header

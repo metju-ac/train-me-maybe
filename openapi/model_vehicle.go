@@ -26,9 +26,9 @@ type Vehicle struct {
 	// Vehicle code tag (BUS => SPZ, VAGON => code)
 	Code   *string      `json:"code,omitempty"`
 	Type   *VehicleType `json:"type,omitempty"`
-	Number int32        `json:"number"`
+	Number int64        `json:"number"`
 	// Available services in this vehicle
-	SeatClasses []VehicleSeatClass `json:"seatClasses"`
+	SeatClasses []VehicleSeatClass `json:"seatClasses,omitempty"`
 	// Vehicle standard code tag
 	Standard string `json:"standard"`
 	// Additional informations relating to whole vehicle. These informations are visible, but wont requiring confirmation.
@@ -44,7 +44,7 @@ type _Vehicle Vehicle
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewVehicle(id int64, number int32, seatClasses []VehicleSeatClass, standard string, decks []VehicleDeck) *Vehicle {
+func NewVehicle(id int64, number int64, seatClasses []VehicleSeatClass, standard string, decks []VehicleDeck) *Vehicle {
 	this := Vehicle{}
 	this.Id = id
 	this.Number = number
@@ -151,9 +151,9 @@ func (o *Vehicle) SetType(v VehicleType) {
 }
 
 // GetNumber returns the Number field value
-func (o *Vehicle) GetNumber() int32 {
+func (o *Vehicle) GetNumber() int64 {
 	if o == nil {
-		var ret int32
+		var ret int64
 		return ret
 	}
 
@@ -162,7 +162,7 @@ func (o *Vehicle) GetNumber() int32 {
 
 // GetNumberOk returns a tuple with the Number field value
 // and a boolean to check if the value has been set.
-func (o *Vehicle) GetNumberOk() (*int32, bool) {
+func (o *Vehicle) GetNumberOk() (*int64, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -170,7 +170,7 @@ func (o *Vehicle) GetNumberOk() (*int32, bool) {
 }
 
 // SetNumber sets field value
-func (o *Vehicle) SetNumber(v int32) {
+func (o *Vehicle) SetNumber(v int64) {
 	o.Number = v
 }
 
@@ -347,7 +347,6 @@ func (o *Vehicle) UnmarshalJSON(data []byte) (err error) {
 	requiredProperties := []string{
 		"id",
 		"number",
-		"seatClasses",
 		"standard",
 		"decks",
 	}

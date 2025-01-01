@@ -23,9 +23,9 @@ var _ MappedNullable = &SelectedSeat{}
 // SelectedSeat struct for SelectedSeat
 type SelectedSeat struct {
 	SectionId         int64 `json:"sectionId"`
-	VehicleNumber     int32 `json:"vehicleNumber"`
-	VehicleDeckNumber int32 `json:"vehicleDeckNumber"`
-	SeatIndex         int32 `json:"seatIndex"`
+	VehicleNumber     int64 `json:"vehicleNumber"`
+	VehicleDeckNumber int64 `json:"vehicleDeckNumber"`
+	SeatIndex         int64 `json:"seatIndex"`
 }
 
 type _SelectedSeat SelectedSeat
@@ -34,7 +34,7 @@ type _SelectedSeat SelectedSeat
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSelectedSeat(sectionId int64, vehicleNumber int32, vehicleDeckNumber int32, seatIndex int32) *SelectedSeat {
+func NewSelectedSeat(sectionId int64, vehicleNumber int64, vehicleDeckNumber int64, seatIndex int64) *SelectedSeat {
 	this := SelectedSeat{}
 	this.SectionId = sectionId
 	this.VehicleNumber = vehicleNumber
@@ -76,9 +76,9 @@ func (o *SelectedSeat) SetSectionId(v int64) {
 }
 
 // GetVehicleNumber returns the VehicleNumber field value
-func (o *SelectedSeat) GetVehicleNumber() int32 {
+func (o *SelectedSeat) GetVehicleNumber() int64 {
 	if o == nil {
-		var ret int32
+		var ret int64
 		return ret
 	}
 
@@ -87,7 +87,7 @@ func (o *SelectedSeat) GetVehicleNumber() int32 {
 
 // GetVehicleNumberOk returns a tuple with the VehicleNumber field value
 // and a boolean to check if the value has been set.
-func (o *SelectedSeat) GetVehicleNumberOk() (*int32, bool) {
+func (o *SelectedSeat) GetVehicleNumberOk() (*int64, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -95,14 +95,14 @@ func (o *SelectedSeat) GetVehicleNumberOk() (*int32, bool) {
 }
 
 // SetVehicleNumber sets field value
-func (o *SelectedSeat) SetVehicleNumber(v int32) {
+func (o *SelectedSeat) SetVehicleNumber(v int64) {
 	o.VehicleNumber = v
 }
 
 // GetVehicleDeckNumber returns the VehicleDeckNumber field value
-func (o *SelectedSeat) GetVehicleDeckNumber() int32 {
+func (o *SelectedSeat) GetVehicleDeckNumber() int64 {
 	if o == nil {
-		var ret int32
+		var ret int64
 		return ret
 	}
 
@@ -111,7 +111,7 @@ func (o *SelectedSeat) GetVehicleDeckNumber() int32 {
 
 // GetVehicleDeckNumberOk returns a tuple with the VehicleDeckNumber field value
 // and a boolean to check if the value has been set.
-func (o *SelectedSeat) GetVehicleDeckNumberOk() (*int32, bool) {
+func (o *SelectedSeat) GetVehicleDeckNumberOk() (*int64, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -119,14 +119,14 @@ func (o *SelectedSeat) GetVehicleDeckNumberOk() (*int32, bool) {
 }
 
 // SetVehicleDeckNumber sets field value
-func (o *SelectedSeat) SetVehicleDeckNumber(v int32) {
+func (o *SelectedSeat) SetVehicleDeckNumber(v int64) {
 	o.VehicleDeckNumber = v
 }
 
 // GetSeatIndex returns the SeatIndex field value
-func (o *SelectedSeat) GetSeatIndex() int32 {
+func (o *SelectedSeat) GetSeatIndex() int64 {
 	if o == nil {
-		var ret int32
+		var ret int64
 		return ret
 	}
 
@@ -135,7 +135,7 @@ func (o *SelectedSeat) GetSeatIndex() int32 {
 
 // GetSeatIndexOk returns a tuple with the SeatIndex field value
 // and a boolean to check if the value has been set.
-func (o *SelectedSeat) GetSeatIndexOk() (*int32, bool) {
+func (o *SelectedSeat) GetSeatIndexOk() (*int64, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -143,7 +143,7 @@ func (o *SelectedSeat) GetSeatIndexOk() (*int32, bool) {
 }
 
 // SetSeatIndex sets field value
-func (o *SelectedSeat) SetSeatIndex(v int32) {
+func (o *SelectedSeat) SetSeatIndex(v int64) {
 	o.SeatIndex = v
 }
 

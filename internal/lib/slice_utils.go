@@ -31,3 +31,13 @@ func ToSet[T comparable](slice []T) map[T]bool {
 
 	return set
 }
+
+func Contains[T comparable](slice []T, value T) bool {
+	for i := 0; i < len(slice); i++ {
+		if slice[i] == value {
+			return true
+		}
+	}
+
+	return false
+}

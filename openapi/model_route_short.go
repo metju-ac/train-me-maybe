@@ -38,7 +38,7 @@ type RouteShort struct {
 	ArrivalCityName      *string   `json:"arrivalCityName,omitempty"`
 	ArrivalTime          time.Time `json:"arrivalTime"`
 	// Number of available free seats through all sections.
-	FreeSeatsCount  int32         `json:"freeSeatsCount"`
+	FreeSeatsCount  int64         `json:"freeSeatsCount"`
 	PriceFrom       *float32      `json:"priceFrom,omitempty"`
 	PriceTo         *float32      `json:"priceTo,omitempty"`
 	CreditPriceFrom *float32      `json:"creditPriceFrom,omitempty"`
@@ -65,7 +65,7 @@ type _RouteShort RouteShort
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewRouteShort(id string, mainSectionId int64, departureStationId int64, departureCityId int64, departureTime time.Time, arrivalStationId int64, arrivalCityId int64, arrivalTime time.Time, freeSeatsCount int32, sections []Section, bookable bool) *RouteShort {
+func NewRouteShort(id string, mainSectionId int64, departureStationId int64, departureCityId int64, departureTime time.Time, arrivalStationId int64, arrivalCityId int64, arrivalTime time.Time, freeSeatsCount int64, sections []Section, bookable bool) *RouteShort {
 	this := RouteShort{}
 	this.Id = id
 	this.MainSectionId = mainSectionId
@@ -410,9 +410,9 @@ func (o *RouteShort) SetArrivalTime(v time.Time) {
 }
 
 // GetFreeSeatsCount returns the FreeSeatsCount field value
-func (o *RouteShort) GetFreeSeatsCount() int32 {
+func (o *RouteShort) GetFreeSeatsCount() int64 {
 	if o == nil {
-		var ret int32
+		var ret int64
 		return ret
 	}
 
@@ -421,7 +421,7 @@ func (o *RouteShort) GetFreeSeatsCount() int32 {
 
 // GetFreeSeatsCountOk returns a tuple with the FreeSeatsCount field value
 // and a boolean to check if the value has been set.
-func (o *RouteShort) GetFreeSeatsCountOk() (*int32, bool) {
+func (o *RouteShort) GetFreeSeatsCountOk() (*int64, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -429,7 +429,7 @@ func (o *RouteShort) GetFreeSeatsCountOk() (*int32, bool) {
 }
 
 // SetFreeSeatsCount sets field value
-func (o *RouteShort) SetFreeSeatsCount(v int32) {
+func (o *RouteShort) SetFreeSeatsCount(v int64) {
 	o.FreeSeatsCount = v
 }
 

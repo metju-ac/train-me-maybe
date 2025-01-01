@@ -4,6 +4,7 @@ port = 587
 
 [general]
 poll_interval = 120
+purchase_cutoff_minutes = 120
 api_base_url = "https://brn-ybus-pubapi.sa.cz/restapi"
 
 [auth]

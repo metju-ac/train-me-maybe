@@ -22,18 +22,18 @@ var _ MappedNullable = &CustomerActions{}
 
 // CustomerActions Defines which actions can be executed with current ticket state
 type CustomerActions struct {
-	ShowDetail         bool `json:"showDetail"`
-	Pay                bool `json:"pay"`
-	PayRemaining       bool `json:"payRemaining"`
-	Evaluate           bool `json:"evaluate"`
-	Cancel             bool `json:"cancel"`
-	Storno             bool `json:"storno"`
-	Rebook             bool `json:"rebook"`
-	EditPassengers     bool `json:"editPassengers"`
-	AdditionalServices bool `json:"additionalServices"`
-	SentToMail         bool `json:"sentToMail"`
-	PrintTicket        bool `json:"printTicket"`
-	PrintInvoice       bool `json:"printInvoice"`
+	ShowDetail                    bool `json:"showDetail"`
+	Pay                           bool `json:"pay"`
+	PayRemaining                  bool `json:"payRemaining"`
+	Evaluate                      bool `json:"evaluate"`
+	Cancel                        bool `json:"cancel"`
+	Storno                        bool `json:"storno"`
+	Rebook                        bool `json:"rebook"`
+	EditPassengers                bool `json:"editPassengers"`
+	AdditionalServices            bool `json:"additionalServices"`
+	SentToMail                    bool `json:"sentToMail"`
+	PrintTicket                   bool `json:"printTicket"`
+	PrintInvoice                  bool `json:"printInvoice"`
 	RequiredToFillInQuestionnaire bool `json:"requiredToFillInQuestionnaire,omitempty"`
 }
 

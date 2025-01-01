@@ -62,6 +62,10 @@ func CheckFreeSeats(apiClient *openapiclient.APIClient, userInput *models.UserIn
 			return nil, fmt.Errorf("error getting free seats: %v", err)
 		}
 
+		if route == nil {
+			continue
+		}
+
 		if freeSeats(route) {
 			slog.Info("Free seats found", "seatClass", seatClass)
 			return &CheckFreeSeatsResponse{

@@ -36,10 +36,10 @@ type Vehicle110 struct {
 	// Available classes in this vehicle
 	SeatClasses []string `json:"seatClasses,omitempty"`
 	// Additional informations relating to whole vehicle. These informations are visible, but wont requiring confirmation.
-	Notifications []string `json:"notifications,omitempty"`
-	FreeSeats     []Seat   `json:"freeSeats"`
-	OccupiedSeats     []Seat   `json:"occupiedSeats,omitempty"`
-	CateringEnabled bool `json:"cateringEnabled,omitempty"`
+	Notifications      []string           `json:"notifications,omitempty"`
+	FreeSeats          []Seat             `json:"freeSeats"`
+	OccupiedSeats      []Seat             `json:"occupiedSeats,omitempty"`
+	CateringEnabled    bool               `json:"cateringEnabled,omitempty"`
 	VehicleSeatClasses []VehicleSeatClass `json:"vehicleSeatClasses,omitempty"`
 }
 

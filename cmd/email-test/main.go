@@ -26,7 +26,7 @@ func main() {
 		IsBusStation:   false,
 	}
 
-	notification.EmailNotification(&config.Smtp, &models.UserInput{
+	notification.EmailNotificationFreeSeats(&config.Smtp, &models.UserInput{
 		DepartingStation: test_station,
 		ArrivingStation:  test_station,
 		SelectedRoute:    openapi.NewSimpleRouteWithDefaults(),

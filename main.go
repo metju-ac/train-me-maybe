@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/metju-ac/train-me-maybe/internal/purchase"
 	"os"
 	"time"
 
@@ -10,7 +11,6 @@ import (
 	"github.com/metju-ac/train-me-maybe/internal/lib"
 	"github.com/metju-ac/train-me-maybe/internal/models"
 	"github.com/metju-ac/train-me-maybe/internal/notification"
-	"github.com/metju-ac/train-me-maybe/internal/purchase"
 	openapiclient "github.com/metju-ac/train-me-maybe/openapi"
 )
 
@@ -69,7 +69,14 @@ func main() {
 	}
 	userInput.Section = section
 
+	purchaseCutoffDuration := time.Duration(config.General.PurchaseCutoffMinutes) * time.Minute
+
 	for {
+		if time.Now().After(userInput.SelectedRoute.DepartureTime) {
+			fmt.Println("The train has already departed.")
+			break
+		}
+
 		freeSeatsResp, err := handlers.CheckFreeSeats(apiClient, userInput)
 		if err != nil {
 			fmt.Println("Error:", err)
@@ -83,8 +90,19 @@ func main() {
 		}
 
 		fmt.Println("Free seats found!")
-		purchase.AutoPurchaseTicket(apiClient, config, userInput, freeSeatsResp)
-		notification.EmailNotification(&config.Smtp, userInput)
+
+		if config.Auth.CreditEnabled && time.Now().Add(purchaseCutoffDuration).Before(userInput.SelectedRoute.DepartureTime) {
+			err := purchase.AutoPurchaseTicket(apiClient, config, userInput, freeSeatsResp)
+			if err != nil {
+				fmt.Println("Error purchasing ticket:", err)
+				os.Exit(1)
+			}
+
+			notification.EmailNotificationTicketBought(&config.Smtp, userInput)
+			break
+		}
+
+		notification.EmailNotificationFreeSeats(&config.Smtp, userInput)
 		break
 	}
 }

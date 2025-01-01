@@ -24,12 +24,12 @@ var _ MappedNullable = &Ticket{}
 // Ticket expirationDate is date-time value states when ticket expires. ExpiresAt states how many days, hours and minutes left to ticket expiration.
 type Ticket struct {
 	// manually added
-	TicketCode string `json:"ticketCode,omitempty"`
-	ActionName string `json:"actionName,omitempty"`
-	WheelChairPlatformOrderPossible bool `json:"wheelChairPlatformOrderPossible,omitempty"`
-	WheelChairPlatformOrdered bool `json:"wheelChairPlatformOrdered,omitempty"`
-	CarbonOffset float32 `json:"carbonOffset,omitempty"`
-	AffiliateTicket bool `json:"affiliateTicket,omitempty"`
+	TicketCode                      string  `json:"ticketCode,omitempty"`
+	ActionName                      string  `json:"actionName,omitempty"`
+	WheelChairPlatformOrderPossible bool    `json:"wheelChairPlatformOrderPossible,omitempty"`
+	WheelChairPlatformOrdered       bool    `json:"wheelChairPlatformOrdered,omitempty"`
+	CarbonOffset                    float32 `json:"carbonOffset,omitempty"`
+	AffiliateTicket                 bool    `json:"affiliateTicket,omitempty"`
 
 	// ID of the ticket
 	Id int64 `json:"id"`

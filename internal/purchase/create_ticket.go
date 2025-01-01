@@ -160,7 +160,7 @@ func createTicket(ctx context.Context, config *config.Config, input *models.User
 	request.Header.Set("Accept-Language", "en-US,en;q=0.5")
 	request.Header.Set("Accept-Encoding", "gzip, deflate, br, zstd")
 	request.Header.Set("X-Lang", "cs")
-	request.Header.Set("X-Currency", "CZK")
+	request.Header.Set("X-Currency", "CZK") // TODO: get currency from the user, and fallback to CZK
 	request.Header.Set("Content-Type", "application/1.2.0+json")
 	request.Header.Set("Cache-Control", "no-cache")
 	request.Header.Set("X-Application-Origin", "WEB")

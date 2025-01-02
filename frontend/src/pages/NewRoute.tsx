@@ -1,204 +1,12 @@
 import config from "@/config";
 import { Route } from "@models/Route";
 import { Station } from "@models/Station";
-import {
-  Autocomplete,
-  Box,
-  Button,
-  CircularProgress,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-  Tooltip,
-} from "@mui/material";
-import { DatePicker } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import useRoutes from "@utils/useRoutes";
+import { CircularProgress } from "@mui/material";
 import useStations from "@utils/useStations";
 import dayjs, { Dayjs } from "dayjs";
-import utc from "dayjs/plugin/utc";
-import React, { Dispatch, SetStateAction, useState } from "react";
-
-// Tell dayjs to use UTC timezone, since we are only concerned about dates, not times
-dayjs.extend(utc);
-
-function StationAndDateSelection({
-  stations,
-  fromStation,
-  setFromStation,
-  toStation,
-  setToStation,
-  date,
-  setDate,
-  handleSubmit,
-  isValid,
-}: {
-  stations: Station[];
-  fromStation: Station | null;
-  setFromStation: Dispatch<SetStateAction<Station | null>>;
-  toStation: Station | null;
-  setToStation: Dispatch<SetStateAction<Station | null>>;
-  date: Dayjs | null;
-  setDate: Dispatch<SetStateAction<Dayjs | null>>;
-  handleSubmit: (event: React.FormEvent) => void;
-  isValid: boolean;
-}) {
-  return (
-    <Box
-      component="form"
-      onSubmit={handleSubmit}
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: 2,
-        gap: 2,
-      }}
-    >
-      <Autocomplete
-        options={stations!}
-        getOptionLabel={(option) => option.stationName}
-        value={fromStation}
-        onChange={(_, newValue) => setFromStation(newValue)}
-        renderInput={(params) => (
-          <TextField {...params} label="From Station" variant="outlined" />
-        )}
-        fullWidth
-      />
-      <Autocomplete
-        options={stations!}
-        getOptionLabel={(option) => option.stationName}
-        value={toStation}
-        onChange={(_, newValue) => setToStation(newValue)}
-        renderInput={(params) => (
-          <TextField {...params} label="To Station" variant="outlined" />
-        )}
-        fullWidth
-      />
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DatePicker
-          label="Date"
-          value={date}
-          onChange={(newValue) => setDate(newValue)}
-          disablePast
-          sx={{ width: "100%" }}
-          timezone="UTC"
-        />
-      </LocalizationProvider>
-      <Tooltip title={isValid ? "" : "First fill out all necessary info"}>
-        <span>
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            disabled={!isValid}
-          >
-            Search
-          </Button>
-        </span>
-      </Tooltip>
-    </Box>
-  );
-}
-
-function formatRoute(route: Route) {
-  return `${dayjs(route.departureTime).format("HH:mm:ss")} - ${dayjs(
-    route.arrivalTime
-  ).format("HH:mm:ss")} (${route.vehicleTypes}, price from ${
-    route.creditPriceFrom
-  })`;
-}
-
-function RouteSelection({
-  fromStation,
-  toStation,
-  date,
-  handleSubmit,
-  selectedRoute,
-  setSelectedRoute,
-  isValid,
-}: {
-  fromStation: Station;
-  toStation: Station;
-  date: Dayjs;
-  handleSubmit: (event: React.FormEvent) => void;
-  isValid: boolean;
-  selectedRoute: Route | null;
-  setSelectedRoute: Dispatch<SetStateAction<Route | null>>;
-}) {
-  const {
-    data: routes,
-    isLoading,
-    isError,
-  } = useRoutes({
-    // convert to yyyy-mm-dd format
-    date: date.format("YYYY-MM-DD"),
-    fromStation: fromStation,
-    toStation: toStation,
-  });
-
-  if (isLoading) {
-    return <CircularProgress />;
-  }
-
-  if (isError) {
-    return <div>Error while loading routes</div>;
-  }
-
-  const handleChange: React.ChangeEventHandler<
-    HTMLInputElement | HTMLTextAreaElement
-  > = (event) => {
-    const id = event.target.value;
-
-    const route = routes?.find((route) => route.id === id) ?? null;
-
-    setSelectedRoute(route);
-  };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <TextField
-        label="Selected date"
-        value={date.format("YYYY-MM-DD")}
-        fullWidth
-        aria-readonly={true}
-        disabled
-        sx={{ marginTop: "1rem" }}
-      />
-      <FormControl fullWidth margin="normal">
-        <InputLabel id="select-label">Select a route</InputLabel>
-        <Select
-          labelId="select-label"
-          name="option"
-          value={selectedRoute?.id ?? ""}
-          onChange={handleChange as any}
-        >
-          {routes?.map((route) => (
-            <MenuItem value={route.id} key={route.id}>
-              {formatRoute(route)}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-      <Tooltip title={isValid ? "" : "First fill out all necessary info"}>
-        <span>
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            disabled={!isValid}
-          >
-            Search
-          </Button>
-        </span>
-      </Tooltip>
-    </form>
-  );
-}
+import React, { useState } from "react";
+import RouteAndSeatAndTarriffSelection from "./RouteAndSeatAndTarriffSelection";
+import StationAndDateSelection from "./StationAndDateSelection";
 
 export default function NewRoute() {
   // First, there is a form with selection of stations and a date of departure
@@ -237,9 +45,9 @@ function NewRouteForm({ stations }: { stations: Station[] }) {
   });
   const [selectedRoute, setSelectedRoute] = useState<Route | null>(null);
 
-  const [phase, setPhase] = useState<"stations" | "route" | "ticket">(
-    "stations"
-  );
+  const [phase, setPhase] = useState<
+    "stations-date" | "route-seatClasses-tariff" | "autopurchase"
+  >("stations-date");
 
   const handleSubmitStationsPhase = (event: React.FormEvent) => {
     event.preventDefault();
@@ -248,7 +56,7 @@ function NewRouteForm({ stations }: { stations: Station[] }) {
     console.log("To Station:", toStation);
     console.log("Date:", date);
 
-    setPhase("route");
+    setPhase("route-seatClasses-tariff");
   };
 
   const handleSubmitRoutePhase = (event: React.FormEvent) => {
@@ -259,12 +67,12 @@ function NewRouteForm({ stations }: { stations: Station[] }) {
     console.log("Date:", date);
     console.log("Selected route:", "TODO");
 
-    setPhase("ticket");
+    setPhase("autopurchase");
   };
 
   const renderContent = () => {
     switch (phase) {
-      case "stations":
+      case "stations-date":
         return (
           <StationAndDateSelection
             date={date}
@@ -280,19 +88,19 @@ function NewRouteForm({ stations }: { stations: Station[] }) {
             }
           />
         );
-      case "route":
+      case "route-seatClasses-tariff":
         return (
-          <RouteSelection
+          <RouteAndSeatAndTarriffSelection
             date={date!}
             fromStation={fromStation!}
             toStation={toStation!}
             handleSubmit={handleSubmitRoutePhase}
-            isValid={selectedRoute !== null}
+            isValid={selectedRoute !== null} // TODO
             selectedRoute={selectedRoute}
             setSelectedRoute={setSelectedRoute}
           />
         );
-      case "ticket":
+      case "autopurchase":
         return <div>world</div>;
       default:
         return <div>Unknown phase</div>;

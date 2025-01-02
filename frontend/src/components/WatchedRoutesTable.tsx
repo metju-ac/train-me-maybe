@@ -236,6 +236,7 @@ export default function EnhancedTable() {
 
   // Mutations
   const mutation = useMutation({
+    mutationKey: [watchedRouteService.deleteWatchedRoute.key],
     mutationFn: watchedRouteService.deleteWatchedRoute.fn,
     onSuccess: () => {
       // Invalidate and refetch

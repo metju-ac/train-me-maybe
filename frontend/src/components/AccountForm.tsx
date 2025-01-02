@@ -9,10 +9,8 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import userService from "@services/userService";
-import { useMutation } from "@tanstack/react-query";
-import React, { useContext, useState } from "react";
-import { ToastBarContext } from "./ToastBarProvider";
+import useUpdateUserDetails from "@utils/useUpdateUserDetails";
+import React, { useState } from "react";
 
 export default function AccountForm({ user }: { user: User }) {
   const [creditUser, setcreditUser] = useState(user.creditUser || "");
@@ -24,18 +22,7 @@ export default function AccountForm({ user }: { user: User }) {
     `${user.minimalCredit}` || ""
   );
 
-  const { setToast } = useContext(ToastBarContext);
-
-  const mutation = useMutation({
-    mutationKey: [userService.updateUserDetails.key],
-    mutationFn: userService.updateUserDetails.fn,
-    onSuccess: () => {
-      setToast("Details updated successfully!", "success");
-    },
-    onError: () => {
-      setToast("Failed to update details!", "error");
-    },
-  });
+  const mutation = useUpdateUserDetails();
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();

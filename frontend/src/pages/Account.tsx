@@ -1,7 +1,6 @@
 import AccountForm from "@components/AccountForm";
-import userService from "@services/userService";
-import { useQuery } from "@tanstack/react-query";
 import useIsLoggedIn from "@utils/useIsLoggedIn";
+import useUserDetails from "@utils/useUserDetails";
 
 export default function Account() {
   const isLoggedIn = useIsLoggedIn();
@@ -15,11 +14,7 @@ export default function Account() {
     );
   }
 
-  const { data, isLoading, isError } = useQuery({
-    queryKey: [userService.getUserDetails.key],
-    queryFn: userService.getUserDetails.fn,
-    retry: 2,
-  });
+  const { data, isLoading, isError } = useUserDetails();
 
   if (isLoading) {
     return <div>Loading...</div>;

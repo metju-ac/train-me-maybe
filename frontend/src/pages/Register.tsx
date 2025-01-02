@@ -1,48 +1,18 @@
-import { ToastBarContext } from "@components/ToastBarProvider";
 import { Box, Button, TextField, Typography } from "@mui/material";
-import userService from "@services/userService";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import React, { useContext, useState } from "react";
-import { useNavigate } from "react-router";
+import useRegisterUser from "@utils/useRegisterUser";
+import React, { useState } from "react";
 
 export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const queryClient = useQueryClient();
-
   // Mutations
-  const mutation = useMutation({
-    mutationKey: [userService.registerUser.key],
-    mutationFn: userService.registerUser.fn,
-    onSuccess: () => {
-      // Invalidate and refetch
-      queryClient.invalidateQueries({
-        queryKey: [userService.getUserDetails.key],
-      });
-    },
-  });
-
-  const { setToast } = useContext(ToastBarContext);
-  let navigate = useNavigate();
+  const mutation = useRegisterUser();
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    mutation.mutate(
-      { email, password },
-      {
-        onSuccess: (data) => {
-          console.log("User registered successfully", data);
-          setToast("Successfully registered user", "success");
-          navigate("/account");
-        },
-        onError: (error) => {
-          console.error("Error registering user", error);
-          setToast("Error registering user: " + error.message, "error");
-        },
-      }
-    );
+    mutation.mutate({ email, password });
   };
 
   return (

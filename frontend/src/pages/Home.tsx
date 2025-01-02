@@ -1,3 +1,4 @@
+import AddWatchedRoute from "@components/AddWatchedRoute";
 import WatchedRoutesTable from "@components/WatchedRoutesTable";
 import useIsLoggedIn from "@utils/useIsLoggedIn";
 
@@ -13,5 +14,10 @@ export default function Home() {
     );
   }
 
-  return <WatchedRoutesTable />;
+  return (
+    <>
+      <AddWatchedRoute />
+      <WatchedRoutesTable />
+    </>
+  );
 }

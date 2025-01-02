@@ -4,6 +4,7 @@ import Account from "@pages/Account.tsx";
 import Home from "@pages/Home.tsx";
 import Login from "@pages/Login";
 import Logout from "@pages/Logout";
+import NewRoute from "@pages/NewRoute";
 import NotFound from "@pages/NotFound";
 import Register from "@pages/Register";
 import Root from "@pages/Root.tsx";
@@ -24,6 +25,7 @@ createRoot(document.getElementById("root")!).render(
           <Routes>
             <Route path="/" element={<Root />}>
               <Route index element={<Home />} />
+              <Route path="routes/new" element={<NewRoute />} />
               <Route path="about" element={<About />} />
               <Route path="account" element={<Account />} />
               <Route path="login" element={<Login />} />

@@ -1,5 +1,4 @@
 import { WatchedRoute } from "@/models/WatchedRoute";
-import watchedRouteService from "@/services/watchedRouteService";
 import { Station } from "@models/Station";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Box from "@mui/material/Box";
@@ -21,8 +20,9 @@ import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { visuallyHidden } from "@mui/utils";
-import staticDataService from "@services/staticDataService";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import useDeleteWatchedRoute from "@utils/useDeleteWatchedRoute";
+import useStations from "@utils/useStations";
+import useWatchedRoutes from "@utils/useWatchedRoutes";
 import * as React from "react";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -212,39 +212,15 @@ export default function EnhancedTable() {
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-  // Access the client
-  const queryClient = useQueryClient();
-
   // Queries
-  const {
-    data: rows,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: [watchedRouteService.getWatchedRoutes.key],
-    queryFn: watchedRouteService.getWatchedRoutes.fn,
-  });
-
+  const { data: rows, isLoading, isError } = useWatchedRoutes();
   const {
     data: stations,
     isLoading: areStationsLoading,
     isError: areStationsError,
-  } = useQuery({
-    queryKey: [staticDataService.getStations.key],
-    queryFn: staticDataService.getStations.fn,
-  });
+  } = useStations();
 
-  // Mutations
-  const mutation = useMutation({
-    mutationKey: [watchedRouteService.deleteWatchedRoute.key],
-    mutationFn: watchedRouteService.deleteWatchedRoute.fn,
-    onSuccess: () => {
-      // Invalidate and refetch
-      queryClient.invalidateQueries({
-        queryKey: [watchedRouteService.getWatchedRoutes.key],
-      });
-    },
-  });
+  const mutation = useDeleteWatchedRoute();
 
   if (isLoading || areStationsLoading) {
     return <div>Loading...</div>;

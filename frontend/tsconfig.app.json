@@ -34,11 +34,15 @@
       ],
       "@utils/*": [
         "src/utils/*"
+      ],
+      "@/*": [
+        "src/*"
       ]
       // Add more aliases as needed
     }
   },
   "include": [
-    "src"
+    "src",
+    ".env.d.ts"
   ]
 }

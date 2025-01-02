@@ -12,18 +12,23 @@ export default function Root() {
       container
       direction="column"
       justifyContent="space-between"
-      alignItems="center"
-      sx={{ height: "100vh" }}
+      alignItems="flex-start"
+      padding={2}
+      minHeight="100vh"
+      sx={{ backgroundColor: "#f6f6f6" }}
     >
-      <Box component="header" marginY={2}>
+      <Box component="header" marginY={2} width="100%">
         <Navigation />
       </Box>
-      <main>
+      <Box
+        component="main"
+        sx={{ flexGrow: 1, width: "100%", overflow: "scroll" }}
+      >
         <Outlet />
-      </main>
-      <footer>
+      </Box>
+      <Box component="footer" alignSelf="center">
         <Footer />
-      </footer>
+      </Box>
     </Grid2>
   );
 }

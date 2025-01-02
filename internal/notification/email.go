@@ -44,9 +44,9 @@ func sendEmail(config *config.SmtpConfig, subject string, body string) {
 
 // partly taken from https://www.loginradius.com/blog/engineering/sending-emails-with-golang/
 func EmailNotificationFreeSeats(config *config.SmtpConfig, input *models.UserInput) {
-	slog.Info("Preparing email notification", "departingStation", input.DepartingStation.StationID, "arrivingStation", input.ArrivingStation.StationID, "selectedRoutes", input.SelectedRoute.Id)
+	slog.Info("Preparing free seats email notification", "departingStation", input.DepartingStation.StationID, "arrivingStation", input.ArrivingStation.StationID, "selectedRoutes", input.SelectedRoute.Id)
 
-	subject := `[REGIOJET] Free seats found on ` + formatConnectionShort(input)
+	subject := `[TRAIN ME MAYBE] Free seats found on ` + formatConnectionShort(input)
 	body := `There are free seats on the route from <b>` + cli.FormatStation(input.DepartingStation) + `</b> to <b>` + cli.FormatStation(input.ArrivingStation) + `</b> on the selected route: ` + cli.FormatRoute(input.SelectedRoute)
 	sendEmail(config, subject, body)
 
@@ -54,10 +54,30 @@ func EmailNotificationFreeSeats(config *config.SmtpConfig, input *models.UserInp
 }
 
 func EmailNotificationTicketBought(config *config.SmtpConfig, input *models.UserInput) {
-	slog.Info("Preparing email notification", "departingStation", input.DepartingStation.StationID, "arrivingStation", input.ArrivingStation.StationID, "selectedRoutes", input.SelectedRoute.Id)
+	slog.Info("Preparing bought ticket email notification", "departingStation", input.DepartingStation.StationID, "arrivingStation", input.ArrivingStation.StationID, "selectedRoutes", input.SelectedRoute.Id)
 
-	subject := `[REGIOJET] Ticket purchase successful for ` + formatConnectionShort(input)
+	subject := `[TRAIN ME MAYBE] Ticket purchase successful for ` + formatConnectionShort(input)
 	body := `Your ticket has been successfully purchased for the route from <b>` + cli.FormatStation(input.DepartingStation) + `</b> to <b>` + cli.FormatStation(input.ArrivingStation) + `</b> on the selected route: ` + cli.FormatRoute(input.SelectedRoute)
+	sendEmail(config, subject, body)
+
+	return
+}
+
+func EmailNotificationTicketNotPaid(config *config.SmtpConfig, price float32, currency string) {
+	slog.Info("Preparing not paid ticket email notification", "price", price, "currency", currency)
+
+	subject := `[TRAIN ME MAYBE] Ticket purchase failed`
+	body := `Your ticket purchase has failed. The ticket for <b>` + fmt.Sprintf("%.2f", price) + ` ` + currency + `</b> has been booked but not been paid. Please, check that you have enough credit. If you do, please report this issue to the support.`
+	sendEmail(config, subject, body)
+
+	return
+}
+
+func EmailNotificationLowCredit(config *config.SmtpConfig, remainingCredit float64, currency string) {
+	slog.Info("Preparing low credit email notification", "remainingCredit", remainingCredit, "currency", currency)
+
+	subject := `[TRAIN ME MAYBE] Low credit alert`
+	body := `Your credit is running low. Your remaining credit is <b>` + fmt.Sprintf("%.2f", remainingCredit) + ` ` + currency + `</b>.`
 	sendEmail(config, subject, body)
 
 	return

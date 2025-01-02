@@ -25,9 +25,9 @@ func getUserDetails(ctx context.Context, apiClient *openapiclient.APIClient, tok
 	return user, nil
 }
 
-func AutoPurchaseTicket(apiClient *openapiclient.APIClient, config *config.Config, input *models.UserInput, seats *handlers.CheckFreeSeatsResponse) error {
+func AutoPurchaseTicket(apiClient *openapiclient.APIClient, config *config.Config, input *models.UserInput, seats *handlers.CheckFreeSeatsResponse) (*PayTicketResponse, error) {
 	if !config.Auth.CreditEnabled {
-		return nil
+		return nil, nil
 	}
 
 	slog.Info("Beginning with auto purchasing ticket")
@@ -38,28 +38,28 @@ func AutoPurchaseTicket(apiClient *openapiclient.APIClient, config *config.Confi
 	token, err := lib.LoginWithCreditTicket(ctx, config.General.ApiBaseUrl, config.Auth.CreditUser, config.Auth.CreditPassword)
 	if err != nil {
 		slog.Error("Failed to login with credit ticket", "error", err)
-		return err
+		return nil, err
 	}
 
 	user, err := getUserDetails(ctx, apiClient, token)
 	if err != nil {
 		slog.Error("Failed to get user details", "error", err)
-		return err
+		return nil, err
 	}
 
 	ticket, err := createTicket(ctx, config, input, seats, user, token)
 	if err != nil {
 		slog.Error("Failed to create ticket", "error", err)
-		return err
+		return nil, err
 	}
 
 	payment, err := payTicket(ctx, config, token, ticket, user)
 	if err != nil {
 		slog.Error("Failed to pay ticket", "error", err)
-		return err
+		return nil, err
 	}
 
 	slog.Info("Successfully purchased ticket", "amount", payment.Amount, "currency", payment.Currency)
 
-	return nil
+	return payment, nil
 }

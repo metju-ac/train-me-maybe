@@ -1,8 +1,8 @@
 import WatchedRoutesTable from "@components/WatchedRoutesTable";
-import { getCookie, USER_COOKIE } from "@utils/getCookie";
+import useIsLoggedIn from "@utils/useIsLoggedIn";
 
 export default function Home() {
-  const isLoggedIn = getCookie(USER_COOKIE) !== null;
+  const isLoggedIn = useIsLoggedIn();
 
   if (!isLoggedIn) {
     return (

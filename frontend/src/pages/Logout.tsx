@@ -1,5 +1,10 @@
+import { removeAuthToken } from "@utils/authToken";
+import { useEffect } from "react";
+
 export default function Logout() {
-  // TODO actually log the user out
+  useEffect(() => {
+    removeAuthToken();
+  }, []);
 
   return (
     <>

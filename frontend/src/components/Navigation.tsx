@@ -3,13 +3,13 @@ import { NavLink } from "react-router";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import { getCookie, USER_COOKIE } from "@utils/getCookie";
+import useIsLoggedIn from "@utils/useIsLoggedIn";
 
 /**
  *  See https://reactrouter.com/start/library/navigating
  */
 export default function ButtonAppBar() {
-  const isLoggedIn = getCookie(USER_COOKIE) !== null;
+  const isLoggedIn = useIsLoggedIn();
 
   return (
     <nav>

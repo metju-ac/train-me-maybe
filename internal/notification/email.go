@@ -2,6 +2,7 @@ package notification
 
 import (
 	"fmt"
+	"github.com/metju-ac/train-me-maybe/internal/purchase"
 	"log/slog"
 
 	"github.com/metju-ac/train-me-maybe/internal/cli"
@@ -44,9 +45,9 @@ func sendEmail(config *config.SmtpConfig, subject string, body string) {
 
 // partly taken from https://www.loginradius.com/blog/engineering/sending-emails-with-golang/
 func EmailNotificationFreeSeats(config *config.SmtpConfig, input *models.UserInput) {
-	slog.Info("Preparing email notification", "departingStation", input.DepartingStation.StationID, "arrivingStation", input.ArrivingStation.StationID, "selectedRoutes", input.SelectedRoute.Id)
+	slog.Info("Preparing free seats email notification", "departingStation", input.DepartingStation.StationID, "arrivingStation", input.ArrivingStation.StationID, "selectedRoutes", input.SelectedRoute.Id)
 
-	subject := `[REGIOJET] Free seats found on ` + formatConnectionShort(input)
+	subject := `[TRAIN ME MAYBE] Free seats found on ` + formatConnectionShort(input)
 	body := `There are free seats on the route from <b>` + cli.FormatStation(input.DepartingStation) + `</b> to <b>` + cli.FormatStation(input.ArrivingStation) + `</b> on the selected route: ` + cli.FormatRoute(input.SelectedRoute)
 	sendEmail(config, subject, body)
 
@@ -54,10 +55,20 @@ func EmailNotificationFreeSeats(config *config.SmtpConfig, input *models.UserInp
 }
 
 func EmailNotificationTicketBought(config *config.SmtpConfig, input *models.UserInput) {
-	slog.Info("Preparing email notification", "departingStation", input.DepartingStation.StationID, "arrivingStation", input.ArrivingStation.StationID, "selectedRoutes", input.SelectedRoute.Id)
+	slog.Info("Preparing bought ticket email notification", "departingStation", input.DepartingStation.StationID, "arrivingStation", input.ArrivingStation.StationID, "selectedRoutes", input.SelectedRoute.Id)
 
-	subject := `[REGIOJET] Ticket purchase successful for ` + formatConnectionShort(input)
+	subject := `[TRAIN ME MAYBE] Ticket purchase successful for ` + formatConnectionShort(input)
 	body := `Your ticket has been successfully purchased for the route from <b>` + cli.FormatStation(input.DepartingStation) + `</b> to <b>` + cli.FormatStation(input.ArrivingStation) + `</b> on the selected route: ` + cli.FormatRoute(input.SelectedRoute)
+	sendEmail(config, subject, body)
+
+	return
+}
+
+func EmailNotificationLowCredit(config *config.SmtpConfig, response purchase.PayTicketResponse) {
+	slog.Info("Preparing low credit email notification", "amount", response.Amount, "currency", response.Currency)
+
+	subject := `[TRAIN ME MAYBE] Low credit alert`
+	body := `Your credit is running low. Your remaining credit is <b>` + fmt.Sprintf("%.2f", response.Amount) + ` ` + response.Currency + `</b>.`
 	sendEmail(config, subject, body)
 
 	return

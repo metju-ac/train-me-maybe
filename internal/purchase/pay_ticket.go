@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"github.com/metju-ac/train-me-maybe/internal/notification"
 	"log/slog"
 	"net/http"
 	"net/http/httputil"
@@ -230,6 +231,7 @@ func payTicket(ctx context.Context, config *config.Config, authToken string, tic
 
 	if resp.StatusCode != http.StatusOK {
 		slog.Error("Failed to pay ticket", "status", resp.Status)
+		notification.EmailNotificationTicketNotPaid(&config.Smtp, ticket.Price, string(ticket.Currency))
 		return nil, errors.New("Failed to pay ticket")
 	}
 

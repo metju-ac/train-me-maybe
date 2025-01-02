@@ -101,7 +101,7 @@ func main() {
 			notification.EmailNotificationTicketBought(&config.Smtp, userInput)
 
 			if config.General.LowCreditThreshold.Value != nil && *config.General.LowCreditThreshold.Value >= int(response.Amount) {
-				notification.EmailNotificationLowCredit(&config.Smtp, *response)
+				notification.EmailNotificationLowCredit(&config.Smtp, response.Amount, response.Currency)
 			}
 
 			break

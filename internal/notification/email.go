@@ -2,7 +2,6 @@ package notification
 
 import (
 	"fmt"
-	"github.com/metju-ac/train-me-maybe/internal/purchase"
 	"log/slog"
 
 	"github.com/metju-ac/train-me-maybe/internal/cli"
@@ -64,11 +63,21 @@ func EmailNotificationTicketBought(config *config.SmtpConfig, input *models.User
 	return
 }
 
-func EmailNotificationLowCredit(config *config.SmtpConfig, response purchase.PayTicketResponse) {
-	slog.Info("Preparing low credit email notification", "amount", response.Amount, "currency", response.Currency)
+func EmailNotificationTicketNotPaid(config *config.SmtpConfig, price float32, currency string) {
+	slog.Info("Preparing not paid ticket email notification", "price", price, "currency", currency)
+
+	subject := `[TRAIN ME MAYBE] Ticket purchase failed`
+	body := `Your ticket purchase has failed. The ticket for <b>` + fmt.Sprintf("%.2f", price) + ` ` + currency + `</b> has been booked but not been paid. Please, check that you have enough credit. If you do, please report this issue to the support.`
+	sendEmail(config, subject, body)
+
+	return
+}
+
+func EmailNotificationLowCredit(config *config.SmtpConfig, remainingCredit float64, currency string) {
+	slog.Info("Preparing low credit email notification", "remainingCredit", remainingCredit, "currency", currency)
 
 	subject := `[TRAIN ME MAYBE] Low credit alert`
-	body := `Your credit is running low. Your remaining credit is <b>` + fmt.Sprintf("%.2f", response.Amount) + ` ` + response.Currency + `</b>.`
+	body := `Your credit is running low. Your remaining credit is <b>` + fmt.Sprintf("%.2f", remainingCredit) + ` ` + currency + `</b>.`
 	sendEmail(config, subject, body)
 
 	return

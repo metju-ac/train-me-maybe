@@ -105,6 +105,14 @@ function StationAndDateSelection({
   );
 }
 
+function formatRoute(route: Route) {
+  return `${dayjs(route.departureTime).format("HH:mm:ss")} - ${dayjs(
+    route.arrivalTime
+  ).format("HH:mm:ss")} (${route.vehicleTypes}, price from ${
+    route.creditPriceFrom
+  })`;
+}
+
 function RouteSelection({
   fromStation,
   toStation,
@@ -122,15 +130,13 @@ function RouteSelection({
   selectedRoute: Route | null;
   setSelectedRoute: Dispatch<SetStateAction<Route | null>>;
 }) {
-  console.log("date", date, "string", date.toISOString().substring(0, 10));
-
   const {
     data: routes,
     isLoading,
     isError,
   } = useRoutes({
     // convert to yyyy-mm-dd format
-    date: date.toISOString().substring(0, 10),
+    date: date.format("YYYY-MM-DD"),
     fromStation: fromStation,
     toStation: toStation,
   });
@@ -143,36 +149,37 @@ function RouteSelection({
     return <div>Error while loading routes</div>;
   }
 
-  const handleChange = (event: any) => {
-    console.log("handle change", event);
-    // const { name, value } = event.target;
-    // setFormValues({
-    //   ...formValues,
-    //   [name]: value
-    // });
+  const handleChange: React.ChangeEventHandler<
+    HTMLInputElement | HTMLTextAreaElement
+  > = (event) => {
+    const id = event.target.value;
+
+    const route = routes?.find((route) => route.id === id) ?? null;
+
+    setSelectedRoute(route);
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <TextField
-        label="Name"
-        name="name"
-        value={"yyy" + (selectedRoute?.departureTime ?? "")}
-        onChange={handleChange}
+        label="Selected date"
+        value={date.format("YYYY-MM-DD")}
         fullWidth
-        margin="normal"
+        aria-readonly={true}
+        disabled
+        sx={{ marginTop: "1rem" }}
       />
       <FormControl fullWidth margin="normal">
-        <InputLabel id="select-label">Options</InputLabel>
+        <InputLabel id="select-label">Select a route</InputLabel>
         <Select
           labelId="select-label"
           name="option"
-          value={selectedRoute}
-          onChange={handleChange}
+          value={selectedRoute?.id ?? ""}
+          onChange={handleChange as any}
         >
           {routes?.map((route) => (
-            <MenuItem value={route.id}>
-              xxx route {route.departureTime}
+            <MenuItem value={route.id} key={route.id}>
+              {formatRoute(route)}
             </MenuItem>
           ))}
         </Select>

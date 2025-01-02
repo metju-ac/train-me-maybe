@@ -2,6 +2,7 @@ package config
 
 import (
 	"log/slog"
+	"os"
 
 	"github.com/BurntSushi/toml"
 	"github.com/joho/godotenv"
@@ -24,11 +25,16 @@ func LoadConfig() (*Config, error) {
 		return nil, err
 	}
 
-	// Load .env file
-	err := godotenv.Load()
-	if err != nil {
-		slog.Error("Failed to load .env file", "error", err)
-		return nil, err
+	// Check if .env file exists and load it if present
+	if _, err := os.Stat(".env"); err == nil {
+		err := godotenv.Load()
+		if err != nil {
+			slog.Error("Failed to load .env file", "error", err)
+			return nil, err
+		}
+		slog.Info("Loaded .env file")
+	} else {
+		slog.Info(".env file not found, using environment variables from the system")
 	}
 
 	// then, if something is in the environment variables, overwrite the config

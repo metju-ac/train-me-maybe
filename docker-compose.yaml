@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:17
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: train_me_maybe_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "sh -c 'pg_isready -U postgres -d postgres'" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8081:8080"
+
+  multi-user-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: train_me_maybe_db
+      REGIOJET_SMTP_USERNAME: username@gmail.com
+      REGIOJET_SMTP_PASSWORD: password
+      REGIOJET_SMTP_RECIPIENT: recipient@gmail.com
+      REGIOJET_AUTH_CREDIT_USER: 123456789
+      REGIOJET_AUTH_CREDIT_PASSWORD: password
+    ports:
+      - "8080:8080"
+
+volumes:
+  postgres_data:

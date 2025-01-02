@@ -2,7 +2,7 @@ import config from "@/config";
 import { User } from "@models/User";
 import client from "@services/axiosClient";
 
-let users: User[] = [];
+let users: User[] = [{ email: "a@a.com", debt: 0 }];
 
 const userService = {
   getUserDetails: {
@@ -17,13 +17,24 @@ const userService = {
         }
         return users[0];
       }
-      try {
-        const response = await client.get<User>("/user");
-        return response.data;
-      } catch (error) {
-        console.error(error);
-        return [];
+
+      const response = await client.get<User>("/user");
+      return response.data;
+    },
+  },
+
+  updateUserDetails: {
+    key: "updateUserDetails",
+    fn: async (body: Omit<User, "email" | "debt">) => {
+      console.log("Updating user details", body);
+
+      if (config.useMocks) {
+        users = [{ ...users[0], ...body }];
+        return body;
       }
+
+      const response = await client.put<User>("/user", body);
+      return response.data;
     },
   },
 

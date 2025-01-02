@@ -1,6 +1,6 @@
 export interface User {
   email: string;
-  creditNumber?: string;
+  creditUser?: string;
   creditPassword?: string;
   cutOffTime?: string;
   minimalCredit?: number;

@@ -20,9 +20,6 @@ export default function Login() {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    // Handle form submission logic here
-    console.log("Email:", email);
-    console.log("Password:", password);
 
     mutation.mutate(
       { email, password },
@@ -30,7 +27,7 @@ export default function Login() {
         onSuccess: (data) => {
           console.log("User logged in successfully", data);
           setToast("Successfully logged in", "success");
-          navigate("/");
+          navigate("/account");
         },
         onError: (error) => {
           console.error("Error logging in", error);

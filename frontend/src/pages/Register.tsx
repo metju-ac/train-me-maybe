@@ -28,9 +28,6 @@ export default function Register() {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    // Handle form submission logic here
-    console.log("Email:", email);
-    console.log("Password:", password);
 
     mutation.mutate(
       { email, password },
@@ -38,7 +35,7 @@ export default function Register() {
         onSuccess: (data) => {
           console.log("User registered successfully", data);
           setToast("Successfully registered user", "success");
-          navigate("/");
+          navigate("/account");
         },
         onError: (error) => {
           console.error("Error registering user", error);

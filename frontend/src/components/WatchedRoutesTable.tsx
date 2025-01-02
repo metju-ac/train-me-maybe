@@ -1,5 +1,6 @@
 import { WatchedRoute } from "@/models/WatchedRoute";
-import apiService from "@/services/apiService";
+import watchedRouteService from "@/services/watchedRouteService";
+import { Station } from "@models/Station";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
@@ -20,6 +21,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { visuallyHidden } from "@mui/utils";
+import staticDataService from "@services/staticDataService";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import * as React from "react";
 
@@ -53,6 +55,11 @@ interface HeadCell {
   label: string;
   numeric: boolean;
 }
+
+const renderStation = (id: number, stations: Station[]) => {
+  const station = stations.find((station) => station.stationID === id);
+  return station ? station.stationName : id;
+};
 
 const headCells: readonly HeadCell[] = [
   {
@@ -214,26 +221,35 @@ export default function EnhancedTable() {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: [apiService.getWatchedRoutes.key],
-    queryFn: apiService.getWatchedRoutes.fn,
+    queryKey: [watchedRouteService.getWatchedRoutes.key],
+    queryFn: watchedRouteService.getWatchedRoutes.fn,
+  });
+
+  const {
+    data: stations,
+    isLoading: areStationsLoading,
+    isError: areStationsError,
+  } = useQuery({
+    queryKey: [staticDataService.getStations.key],
+    queryFn: staticDataService.getStations.fn,
   });
 
   // Mutations
   const mutation = useMutation({
-    mutationFn: apiService.deleteWatchedRoute.fn,
+    mutationFn: watchedRouteService.deleteWatchedRoute.fn,
     onSuccess: () => {
       // Invalidate and refetch
       queryClient.invalidateQueries({
-        queryKey: [apiService.getWatchedRoutes.key],
+        queryKey: [watchedRouteService.getWatchedRoutes.key],
       });
     },
   });
 
-  if (isLoading) {
+  if (isLoading || areStationsLoading) {
     return <div>Loading...</div>;
   }
 
-  if (isError) {
+  if (isError || areStationsError) {
     return <div>Error while loading data</div>;
   }
 
@@ -359,8 +375,12 @@ export default function EnhancedTable() {
                     >
                       {row.id}
                     </TableCell>
-                    <TableCell align="left">{row.fromStationId}</TableCell>
-                    <TableCell align="left">{row.toStationId}</TableCell>
+                    <TableCell align="left">
+                      {renderStation(row.fromStationId, stations!)}
+                    </TableCell>
+                    <TableCell align="left">
+                      {renderStation(row.toStationId, stations!)}
+                    </TableCell>
                     <TableCell align="left">{row.tariffClass}</TableCell>
                   </TableRow>
                 );

@@ -1,13 +1,6 @@
-import axios from "axios";
 import config from "@/config";
 import { WatchedRoute } from "@/models/WatchedRoute";
-
-const instance = axios.create({
-  baseURL: config.baseUrl,
-  timeout: 2000,
-});
-
-type Data = WatchedRoute;
+import client from "@services/axiosClient";
 
 function createData(
   id: number,
@@ -17,7 +10,7 @@ function createData(
   toStationId: number,
   selectedSeatClasses: string[],
   userEmail: string
-): Data {
+): WatchedRoute {
   return {
     id,
     fromStationId,
@@ -30,12 +23,12 @@ function createData(
 }
 
 let rows = [
-  createData(1, "Cupcake", 305, 3.7, 3.7, ["67"], "4.3"),
-  createData(2, "Donut", 452, 25.0, 3.7, ["51"], "4.9"),
-  createData(3, "Eclair", 262, 16.0, 3.7, ["24"], "6.0"),
+  createData(1, "Cupcake", 4961583004, 3.7, 4987881000, ["67"], "4.3"),
+  createData(2, "Donut", 5095524063, 25.0, 4987881000, ["51"], "4.9"),
+  createData(3, "Eclair", 4961583004, 16.0, 5095524063, ["24"], "6.0"),
 ];
 
-const apiService = {
+const watchedRouteService = {
   getWatchedRoutes: {
     key: "getWatchedRoutes",
     fn: async () => {
@@ -44,7 +37,7 @@ const apiService = {
         return rows;
       }
       try {
-        const response = await instance.get<WatchedRoute[]>("/watchedRoute");
+        const response = await client.get<WatchedRoute[]>("/watchedRoute");
         return response.data;
       } catch (error) {
         console.error(error);
@@ -60,9 +53,7 @@ const apiService = {
         return;
       }
       try {
-        const promises = ids.map((id) =>
-          instance.delete(`/watchedRoute/${id}`)
-        );
+        const promises = ids.map((id) => client.delete(`/watchedRoute/${id}`));
 
         await Promise.all(promises);
       } catch (error) {
@@ -75,4 +66,4 @@ const apiService = {
   { key: string; fn: (...args: any[]) => Promise<unknown> }
 >;
 
-export default apiService;
+export default watchedRouteService;

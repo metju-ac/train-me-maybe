@@ -1,18 +1,40 @@
 import { User } from "@models/User";
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
+import { Tariff } from "@services/staticDataService";
 import useUpdateUserDetails from "@utils/useUpdateUserDetails";
 import React, { useState } from "react";
+import CreditNumber from "./CreditNumber";
 import CreditPassword from "./CreditPassword";
+import CutOffTime from "./CutOffTime";
+import MinimalCredit from "./MinimalCredit";
+import SelectTariff from "./SelectTariff";
+import SubmitButton from "./SubmitButton";
 
-export default function AccountForm({ user }: { user: User }) {
-  const [creditUser, setcreditUser] = useState(user.creditUser || "");
+export default function AccountForm({
+  user,
+  tariffs,
+}: {
+  user: User;
+  tariffs: Tariff[];
+}) {
+  const [creditUser, setCreditUser] = useState(user.creditUser || "");
   const [creditPassword, setCreditPassword] = useState(
     user.creditPassword || ""
   );
-  const [cutOffTime, setCutOffTime] = useState(user.cutOffTime || "");
+  const [selectedTariff, setSelectedTariff] = useState<Tariff | null>(
+    tariffs.find((t) => t.key === user.tariffKey) ?? null
+  );
+  const [cutOffTime, setCutOffTime] = useState(`${user.cutOffTime}` || "");
   const [minimalCredit, setMinimalCredit] = useState(
     `${user.minimalCredit}` || ""
   );
+
+  const hasChanged =
+    creditUser !== user.creditUser ||
+    creditPassword !== user.creditPassword ||
+    cutOffTime !== `${user.cutOffTime}` ||
+    selectedTariff?.key !== user.tariffKey ||
+    minimalCredit !== `${user.minimalCredit}`;
 
   const mutation = useUpdateUserDetails();
 
@@ -21,7 +43,8 @@ export default function AccountForm({ user }: { user: User }) {
     mutation.mutate({
       creditUser,
       creditPassword,
-      cutOffTime,
+      cutOffTime: cutOffTime !== "" ? Number(cutOffTime) : undefined,
+      tariffKey: selectedTariff?.key ?? undefined,
       minimalCredit: Number(minimalCredit),
     });
   };
@@ -36,6 +59,7 @@ export default function AccountForm({ user }: { user: User }) {
         alignItems: "center",
         justifyContent: "center",
         padding: 2,
+        gap: 2,
       }}
     >
       <Typography variant="h4" component="h1" gutterBottom>
@@ -44,36 +68,29 @@ export default function AccountForm({ user }: { user: User }) {
       <Typography variant="h6" component="h2" gutterBottom>
         Email: {user.email}
       </Typography>
-      <TextField
-        label="Credit Number"
-        value={creditUser}
-        onChange={(e) => setcreditUser(e.target.value)}
-        fullWidth
-        margin="normal"
-      />
+
+      <CreditNumber creditUser={creditUser} setCreditUser={setCreditUser} />
+
       <CreditPassword
         creditPassword={creditPassword}
         setCreditPassword={setCreditPassword}
       />
-      <TextField
-        label="Cut Off Time"
-        type="number"
-        value={cutOffTime}
-        onChange={(e) => setCutOffTime(e.target.value)}
-        fullWidth
-        margin="normal"
+      <SelectTariff
+        selectedTariff={selectedTariff}
+        setSelectedTariff={setSelectedTariff}
+        tariffs={tariffs}
       />
-      <TextField
-        label="Minimal Credit"
-        type="number"
-        value={minimalCredit}
-        onChange={(e) => setMinimalCredit(e.target.value)}
-        fullWidth
-        margin="normal"
+
+      <CutOffTime cutOffTime={cutOffTime} setCutOffTime={setCutOffTime} />
+
+      <MinimalCredit
+        minimalCredit={minimalCredit}
+        setMinimalCredit={setMinimalCredit}
       />
-      <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
+
+      <SubmitButton isValid={hasChanged} tooltipTitle="No changes were made">
         Update Details
-      </Button>
+      </SubmitButton>
     </Box>
   );
 }

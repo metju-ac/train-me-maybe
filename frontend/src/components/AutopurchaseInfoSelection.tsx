@@ -1,50 +1,74 @@
 import { User } from "@models/User";
 import {
   Box,
-  Button,
   Checkbox,
   CircularProgress,
   FormControl,
   FormControlLabel,
-  TextField,
-  Tooltip,
   Typography,
 } from "@mui/material";
+import { Tariff } from "@services/staticDataService";
+import useTariffs from "@utils/useTariffs";
 import useUpdateUserDetails from "@utils/useUpdateUserDetails";
 import useUserDetails from "@utils/useUserDetails";
 import React, { useContext, useState } from "react";
+import CreditNumber from "./CreditNumber";
 import CreditPassword from "./CreditPassword";
+import CutOffTime from "./CutOffTime";
+import MinimalCredit from "./MinimalCredit";
+import SelectTariff from "./SelectTariff";
+import SubmitButton from "./SubmitButton";
 import { ToastBarContext } from "./ToastBarProvider";
 
-interface AutopurchaseInfoSelectionProps {
-  handleSubmit: (ev: React.FormEvent) => void;
+export interface AutopurchaseInfoSelectionProps {
+  handleSubmit: (
+    ev: React.FormEvent,
+    data: {
+      creditUser: string;
+      creditPassword: string;
+      cutOffTime?: number;
+      minimalCredit?: number;
+      tariffKey: string;
+    }
+  ) => void;
 }
 
 export default function AutopurchaseInfoSelection(
   props: AutopurchaseInfoSelectionProps
 ) {
   const { data, isLoading, isError } = useUserDetails();
+  const {
+    data: tariffs,
+    isLoading: isLoadingTariffs,
+    isError: isErrorTariffs,
+  } = useTariffs();
 
-  if (isLoading) {
+  if (isLoading || isLoadingTariffs) {
     return <CircularProgress />;
   }
 
-  if (isError) {
+  if (isError || isErrorTariffs) {
     return <div>Error while loading data</div>;
   }
 
-  return <AutopurchaseInfoSelectionForm {...props} user={data!} />;
+  return (
+    <AutopurchaseInfoSelectionForm {...props} user={data!} tariffs={tariffs!} />
+  );
 }
 
 function AutopurchaseInfoSelectionForm({
   user,
+  tariffs,
   ...props
-}: AutopurchaseInfoSelectionProps & { user: User }) {
+}: AutopurchaseInfoSelectionProps & { user: User; tariffs: Tariff[] }) {
   const [creditUser, setCreditUser] = useState(user.creditUser || "");
   const [creditPassword, setCreditPassword] = useState(
     user.creditPassword || ""
   );
-  const [cutOffTime, setCutOffTime] = useState(user.cutOffTime || "");
+  const [selectedTariff, setSelectedTariff] = useState<Tariff | null>(
+    tariffs.find((t) => t.key === user.tariffKey) ?? null
+  );
+  const [cutOffTime, setCutOffTime] = useState(`${user.cutOffTime}` || "");
   const [minimalCredit, setMinimalCredit] = useState(
     `${user.minimalCredit}` || ""
   );
@@ -55,27 +79,28 @@ function AutopurchaseInfoSelectionForm({
   const { setToast } = useContext(ToastBarContext);
 
   const handleSubmit = (e: React.FormEvent) => {
+    const data: Parameters<AutopurchaseInfoSelectionProps["handleSubmit"]>[1] =
+      {
+        creditPassword,
+        creditUser,
+        tariffKey: selectedTariff?.key ?? "",
+        cutOffTime: cutOffTime !== "" ? Number(cutOffTime) : undefined,
+        minimalCredit: minimalCredit !== "" ? Number(minimalCredit) : undefined,
+      };
+
     if (saveInfoToAccount) {
-      return updateUserDetails.mutate(
-        {
-          creditUser,
-          creditPassword,
-          cutOffTime,
-          minimalCredit: Number(minimalCredit),
+      return updateUserDetails.mutate(data, {
+        onSuccess: () => props.handleSubmit(e, data),
+        onError: (err) => {
+          setToast(
+            "Failed to save details to account: " + err.message,
+            "error"
+          );
         },
-        {
-          onSuccess: () => props.handleSubmit(e),
-          onError: (err) => {
-            setToast(
-              "Failed to save details to account: " + err.message,
-              "error"
-            );
-          },
-        }
-      );
+      });
     }
 
-    props.handleSubmit(e);
+    props.handleSubmit(e, data);
   };
 
   const isValid = creditUser !== "" && creditPassword !== "";
@@ -96,14 +121,12 @@ function AutopurchaseInfoSelectionForm({
       <Box>
         <Typography variant="h5">Review purchase options</Typography>
       </Box>
-      <TextField
-        label="Credit Number"
+
+      <CreditNumber
+        creditUser={creditUser}
+        setCreditUser={setCreditUser}
         required
         error={creditUser === ""}
-        value={creditUser}
-        onChange={(e) => setCreditUser(e.target.value)}
-        fullWidth
-        margin="normal"
       />
 
       <CreditPassword
@@ -112,21 +135,20 @@ function AutopurchaseInfoSelectionForm({
         error={creditPassword === ""}
         required
       />
-      <TextField
-        label="Cut Off Time"
-        type="number"
-        value={cutOffTime}
-        onChange={(e) => setCutOffTime(e.target.value)}
-        fullWidth
-        margin="normal"
+
+      <SelectTariff
+        selectedTariff={selectedTariff}
+        setSelectedTariff={setSelectedTariff}
+        tariffs={tariffs}
+        required
+        error={!selectedTariff}
       />
-      <TextField
-        label="Minimal Credit"
-        type="number"
-        value={minimalCredit}
-        onChange={(e) => setMinimalCredit(e.target.value)}
-        fullWidth
-        margin="normal"
+
+      <CutOffTime cutOffTime={cutOffTime} setCutOffTime={setCutOffTime} />
+
+      <MinimalCredit
+        minimalCredit={minimalCredit}
+        setMinimalCredit={setMinimalCredit}
       />
 
       <FormControl fullWidth>
@@ -142,18 +164,12 @@ function AutopurchaseInfoSelectionForm({
         />
       </FormControl>
 
-      <Tooltip title={isValid ? "" : "First fill out all necessary info"}>
-        <span>
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            disabled={!isValid}
-          >
-            Start watching route
-          </Button>
-        </span>
-      </Tooltip>
+      <SubmitButton
+        isValid={isValid}
+        tooltipTitle="First fill out all necessary info"
+      >
+        Start watching route
+      </SubmitButton>
     </Box>
   );
 }

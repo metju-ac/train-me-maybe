@@ -195,7 +195,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         </Typography>
       )}
       {numSelected > 0 ? (
-        <Tooltip title="Delete">
+        <Tooltip arrow title="Delete">
           <IconButton onClick={onDelete}>
             <DeleteIcon />
           </IconButton>

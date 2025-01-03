@@ -2,7 +2,6 @@ import { Route } from "@models/Route";
 import { Station } from "@models/Station";
 import {
   Box,
-  Button,
   Checkbox,
   CircularProgress,
   FormControl,
@@ -17,13 +16,13 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { SeatClass, Tariff } from "@services/staticDataService";
+import { SeatClass } from "@services/staticDataService";
 import useRoutes from "@utils/useRoutes";
 import useSeatClasses from "@utils/useSeatClasses";
-import useTariffs from "@utils/useTariffs";
 import dayjs, { Dayjs } from "dayjs";
 import utc from "dayjs/plugin/utc";
 import React, { Dispatch, SetStateAction } from "react";
+import SubmitButton from "./SubmitButton";
 
 dayjs.extend(utc);
 
@@ -35,7 +34,7 @@ function formatRoute(route: Route) {
   })`;
 }
 
-interface RouteAndSeatAndTarriffSelectionProps {
+interface RouteAndSeatSelectionProps {
   fromStation: Station;
   toStation: Station;
   date: Dayjs;
@@ -45,14 +44,12 @@ interface RouteAndSeatAndTarriffSelectionProps {
   setSelectedRoute: Dispatch<SetStateAction<Route | null>>;
   selectedSeatClasses: SeatClass[];
   setSelectedSeatClasses: Dispatch<SetStateAction<SeatClass[]>>;
-  selectedTariff: Tariff | null;
-  setSelectedTariff: Dispatch<SetStateAction<Tariff | null>>;
   autopurchase: boolean;
   setAutopurchase: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function RouteAndSeatAndTarriffSelection(
-  props: RouteAndSeatAndTarriffSelectionProps
+export default function RouteAndSeatSelection(
+  props: RouteAndSeatSelectionProps
 ) {
   const {
     data: routes,
@@ -71,26 +68,19 @@ export default function RouteAndSeatAndTarriffSelection(
     isError: isErrorSeatClasses,
   } = useSeatClasses();
 
-  const {
-    data: tariffs,
-    isLoading: isLoadingTariffs,
-    isError: isErrorTariffs,
-  } = useTariffs();
-
-  if (isLoading || isLoadingSeatClasses || isLoadingTariffs) {
+  if (isLoading || isLoadingSeatClasses) {
     return <CircularProgress />;
   }
 
-  if (isError || isErrorSeatClasses || isErrorTariffs) {
+  if (isError || isErrorSeatClasses) {
     return <div>Error while loading routes</div>;
   }
 
   return (
-    <RouteAndSeatAndTarriffSelectionForm
+    <RouteAndSeatSelectionForm
       {...props}
       routes={routes!}
       seatClasses={seatClasses!}
-      tariffs={tariffs!}
     />
   );
 }
@@ -111,7 +101,7 @@ function renderSeatClass(key: string, seatClasses: SeatClass[]) {
   return seatClass?.title ?? key;
 }
 
-function RouteAndSeatAndTarriffSelectionForm({
+function RouteAndSeatSelectionForm({
   date,
   handleSubmit,
   selectedRoute,
@@ -121,15 +111,11 @@ function RouteAndSeatAndTarriffSelectionForm({
   isValid,
   routes,
   seatClasses,
-  tariffs,
-  selectedTariff,
-  setSelectedTariff,
   autopurchase,
   setAutopurchase,
-}: RouteAndSeatAndTarriffSelectionProps & {
+}: RouteAndSeatSelectionProps & {
   routes: Route[];
   seatClasses: SeatClass[];
-  tariffs: Tariff[];
 }) {
   const handleChange: React.ChangeEventHandler<
     HTMLInputElement | HTMLTextAreaElement
@@ -184,10 +170,11 @@ function RouteAndSeatAndTarriffSelectionForm({
         disabled
       />
       <FormControl fullWidth>
-        <InputLabel id="select-label">Select a route</InputLabel>
+        <InputLabel id="select-label">Route</InputLabel>
         <Select
           labelId="select-label"
           name="option"
+          label="Route"
           value={selectedRoute?.id ?? ""}
           onChange={handleChange as any}
         >
@@ -200,10 +187,11 @@ function RouteAndSeatAndTarriffSelectionForm({
       </FormControl>
 
       <FormControl fullWidth>
-        <InputLabel id="select-seat-classes">Select seat classes</InputLabel>
+        <InputLabel id="select-seat-classes">Seat classes</InputLabel>
         <Select
           labelId="select-seat-classes"
           multiple
+          label="Seat classes"
           value={selectedSeatClasses.map((s) => s.key)}
           onChange={handleChangeSeatClasses}
           input={<OutlinedInput label="Tag" />}
@@ -230,45 +218,23 @@ function RouteAndSeatAndTarriffSelectionForm({
               inputProps={{ "aria-label": "controlled" }}
             />
           }
-          label="Autopurchase ticket?"
+          label={
+            <Tooltip
+              arrow
+              title="If checked, we will try to purchase the ticket for you. You will need to provide Regiojet credentials, and you need to have sufficient credit."
+            >
+              <Typography>Autopurchase ticket?</Typography>
+            </Tooltip>
+          }
         />
       </FormControl>
 
-      {autopurchase && (
-        <FormControl fullWidth>
-          <InputLabel id="select-tariff">Select tariff</InputLabel>
-          <Select
-            labelId="select-tariff"
-            value={selectedTariff?.key ?? ""}
-            onChange={(e) =>
-              setSelectedTariff(
-                tariffs.find((t) => t.key === e.target.value) ?? null
-              )
-            }
-          >
-            {tariffs.map((tariff) => (
-              <MenuItem key={tariff.key} value={tariff.key}>
-                {tariff.key} ({tariff.value})
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      )}
-
-      <Tooltip title={isValid ? "" : "First fill out all necessary info"}>
-        <span>
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            disabled={!isValid}
-          >
-            {autopurchase
-              ? "Submit and review payment options"
-              : "Start watching route"}
-          </Button>
-        </span>
-      </Tooltip>
+      <SubmitButton
+        isValid={isValid}
+        tooltipTitle="First fill out all necessary info"
+      >
+        {autopurchase ? "Review payment options" : "Start watching route"}
+      </SubmitButton>
     </Box>
   );
 }

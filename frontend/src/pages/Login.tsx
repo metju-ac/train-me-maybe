@@ -1,4 +1,5 @@
-import { Box, Button, TextField, Typography } from "@mui/material";
+import SubmitButton from "@components/SubmitButton";
+import { Box, TextField, Typography } from "@mui/material";
 import useLoginUser from "@utils/useLoginUser";
 import React, { useState } from "react";
 
@@ -25,6 +26,7 @@ export default function Login() {
         alignItems: "center",
         justifyContent: "center",
         padding: 2,
+        gap: 2,
       }}
     >
       <Typography variant="h4" component="h1" gutterBottom>
@@ -37,7 +39,6 @@ export default function Login() {
         onChange={(e) => setEmail(e.target.value)}
         required
         fullWidth
-        margin="normal"
       />
       <TextField
         label="Password"
@@ -46,11 +47,13 @@ export default function Login() {
         onChange={(e) => setPassword(e.target.value)}
         required
         fullWidth
-        margin="normal"
       />
-      <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
+      <SubmitButton
+        isValid={email !== "" && password !== ""}
+        tooltipTitle="First fill out the form"
+      >
         Login
-      </Button>
+      </SubmitButton>
     </Box>
   );
 }

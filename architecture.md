@@ -41,6 +41,7 @@ However, if the application crashes, all watched routes are of course lost.
   - purchase cutoff time - how much time before the departure should the ticket be purchased
   - jmeno a heslo do kreditove jizdenky
   - castka, kdyz mam mensi kredit nez tohle, tak mi posli email
+  - default tariff class
 
 ### DB design
 

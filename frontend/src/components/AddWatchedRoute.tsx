@@ -7,7 +7,7 @@ export default function AddWatchedRoute() {
 
   return (
     <Stack direction="row" justifyContent="flex-end">
-      <Tooltip title="Add a new watched route">
+      <Tooltip arrow title="Add a new watched route">
         <IconButton onClick={() => navigate("/routes/new")}>
           <AddCircleIcon color="primary" sx={{ fontSize: "3rem" }} />
         </IconButton>

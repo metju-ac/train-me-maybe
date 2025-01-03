@@ -6,7 +6,6 @@ import {
 } from "./authToken";
 
 function getSnapshot() {
-  console.log("getSnapshot called");
   return isUserLoggedIn();
 }
 

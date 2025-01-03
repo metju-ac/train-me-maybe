@@ -5,6 +5,7 @@ import {
   InputAdornment,
   TextField,
   TextFieldProps,
+  Tooltip,
 } from "@mui/material";
 import { useState } from "react";
 
@@ -35,20 +36,23 @@ export default function CreditPassword({
       value={creditPassword}
       onChange={(e) => setCreditPassword(e.target.value)}
       fullWidth
-      margin="normal"
-      InputProps={{
-        endAdornment: (
-          <InputAdornment position="end">
-            <IconButton
-              aria-label="toggle password visibility"
-              onClick={handleClickShowPassword}
-              onMouseDown={handleMouseDownPassword}
-              edge="end"
-            >
-              {showPassword ? <VisibilityOff /> : <Visibility />}
-            </IconButton>
-          </InputAdornment>
-        ),
+      slotProps={{
+        input: {
+          endAdornment: (
+            <InputAdornment position="end">
+              <Tooltip arrow title="Toggle password visibility">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </Tooltip>
+            </InputAdornment>
+          ),
+        },
       }}
       {...props}
     />

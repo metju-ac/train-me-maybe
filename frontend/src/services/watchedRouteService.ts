@@ -71,7 +71,14 @@ const watchedRouteService = {
         routeId: string;
         selectedSeatClasses: string[];
       } & (
-        | { autoPurchase: true; tariffClass: string }
+        | {
+            autoPurchase: true;
+            tariffClass: string;
+            creditUser: string;
+            creditPassword: string;
+            cutOffTime?: number;
+            minimalCredit?: number;
+          }
         | { autoPurchase: false; tariffClass?: null }
       )
     ) => {

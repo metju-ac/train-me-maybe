@@ -1,14 +1,16 @@
 import config from "@/config";
-import AutopurchaseInfoSelection from "@components/AutopurchaseInfoSelection";
+import AutopurchaseInfoSelection, {
+  AutopurchaseInfoSelectionProps,
+} from "@components/AutopurchaseInfoSelection";
 import { Route } from "@models/Route";
 import { Station } from "@models/Station";
 import { CircularProgress } from "@mui/material";
-import { SeatClass, Tariff } from "@services/staticDataService";
+import { SeatClass } from "@services/staticDataService";
 import useCreateWatchedRoute from "@utils/useCreateWatchedRoute";
 import useStations from "@utils/useStations";
 import dayjs, { Dayjs } from "dayjs";
 import React, { useState } from "react";
-import RouteAndSeatAndTarriffSelection from "../components/RouteAndSeatAndTarriffSelection";
+import RouteAndSeatSelection from "../components/RouteAndSeatSelection";
 import StationAndDateSelection from "../components/StationAndDateSelection";
 
 export default function NewRoute() {
@@ -50,7 +52,6 @@ function NewRouteForm({ stations }: { stations: Station[] }) {
   const [selectedSeatClasses, setSelectedSeatClasses] = useState<SeatClass[]>(
     []
   );
-  const [selectedTariff, setSelectedTariff] = useState<Tariff | null>(null);
   const [autopurchase, setAutopurchase] = useState(false);
 
   const [phase, setPhase] = useState<
@@ -64,20 +65,25 @@ function NewRouteForm({ stations }: { stations: Station[] }) {
     setPhase("route-seatClasses-tariff");
   };
 
-  const handleSubmitAutopurchasePhase = (event: React.FormEvent) => {
-    event.preventDefault();
+  const handleSubmitAutopurchasePhase: AutopurchaseInfoSelectionProps["handleSubmit"] =
+    (event, data) => {
+      event.preventDefault();
 
-    mutation.mutate({
-      autoPurchase: true,
-      tariffClass: selectedTariff!.key,
-      fromStationId: fromStation!.stationID,
-      toStationId: toStation!.stationID,
-      routeId: selectedRoute!.id,
-      selectedSeatClasses: selectedSeatClasses.map(
-        (seatClass) => seatClass.key
-      ),
-    });
-  };
+      mutation.mutate({
+        autoPurchase: true,
+        fromStationId: fromStation!.stationID,
+        toStationId: toStation!.stationID,
+        routeId: selectedRoute!.id,
+        selectedSeatClasses: selectedSeatClasses.map(
+          (seatClass) => seatClass.key
+        ),
+        tariffClass: data.tariffKey,
+        creditUser: data.creditUser,
+        creditPassword: data.creditPassword,
+        cutOffTime: data.cutOffTime,
+        minimalCredit: data.minimalCredit,
+      });
+    };
 
   const handleSubmitRoutePhase = (event: React.FormEvent) => {
     event.preventDefault();
@@ -118,22 +124,16 @@ function NewRouteForm({ stations }: { stations: Station[] }) {
         );
       case "route-seatClasses-tariff":
         return (
-          <RouteAndSeatAndTarriffSelection
+          <RouteAndSeatSelection
             date={date!}
             fromStation={fromStation!}
             toStation={toStation!}
             handleSubmit={handleSubmitRoutePhase}
-            isValid={
-              selectedRoute !== null &&
-              selectedSeatClasses.length > 0 &&
-              (autopurchase ? selectedTariff !== null : true) // if autopurchase is enabled, tariff must be selected
-            }
+            isValid={selectedRoute !== null && selectedSeatClasses.length > 0}
             selectedRoute={selectedRoute}
             setSelectedRoute={setSelectedRoute}
             selectedSeatClasses={selectedSeatClasses}
-            selectedTariff={selectedTariff}
             setSelectedSeatClasses={setSelectedSeatClasses}
-            setSelectedTariff={setSelectedTariff}
             autopurchase={autopurchase}
             setAutopurchase={setAutopurchase}
           />

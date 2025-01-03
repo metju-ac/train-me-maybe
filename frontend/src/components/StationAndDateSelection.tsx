@@ -1,17 +1,11 @@
 import { Station } from "@models/Station";
-import {
-  Autocomplete,
-  Box,
-  Button,
-  TextField,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Autocomplete, Box, TextField, Typography } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { Dayjs } from "dayjs";
 import React, { Dispatch, SetStateAction } from "react";
+import SubmitButton from "./SubmitButton";
 
 export default function StationAndDateSelection({
   stations,
@@ -80,18 +74,13 @@ export default function StationAndDateSelection({
           timezone="UTC"
         />
       </LocalizationProvider>
-      <Tooltip title={isValid ? "" : "First fill out all necessary info"}>
-        <span>
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            disabled={!isValid}
-          >
-            Search
-          </Button>
-        </span>
-      </Tooltip>
+
+      <SubmitButton
+        isValid={isValid}
+        tooltipTitle="First fill out all necessary info"
+      >
+        Search
+      </SubmitButton>
     </Box>
   );
 }

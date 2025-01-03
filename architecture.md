@@ -129,13 +129,13 @@ All POST bodies are JSON.
   - body: autoPurchase (bool), fromStationId (int64), toStationId (int64), routeId (string), tariffClass (string), selectedSeatClasses, creditUser (optional string), creditPassword (optional string), cutOffTime (optional int), minimalCredit (optional int)
     - if autoPurchase is true, creditUser and creditPassword and tarriff class must be filled in
 
-- GET /api/user
+- GET /api/auth/user
 
   - gets details about the current logged in user (from the cookie)
 
-- PUT /api/user
+- PUT /api/auth/user
 
-  - body: cutOffTime (int), minimalCredit (int), creditUser (string), creditPassword (string)
+  - body: cutOffTime (int), minimalCredit (int), creditUser (string), creditPassword (string), tarriffClass (string)
   - modifies the current logged in user (from the cookie)
 
 - GET /api/watchedRoute

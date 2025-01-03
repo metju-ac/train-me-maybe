@@ -31,7 +31,7 @@ const userService = {
         return getCurrentUser();
       }
 
-      const response = await client.get<User>("/user");
+      const response = await client.get<User>("/auth/user");
       return response.data;
     },
   },
@@ -46,7 +46,7 @@ const userService = {
         return body;
       }
 
-      const response = await client.put<User>("/user", body);
+      const response = await client.put<User>("/auth/user", body);
       return response.data;
     },
   },
@@ -65,7 +65,7 @@ const userService = {
         return { token };
       }
 
-      const response = await client.post<{ token: string }>("/user", body);
+      const response = await client.post<{ token: string }>("/register", body);
 
       setAuthToken(response.data.token);
 

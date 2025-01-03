@@ -1,3 +1,4 @@
+import AuthenticatedOnly from "@components/AuthenticatedOnly";
 import ToastBarProvider from "@components/ToastBarProvider";
 import About from "@pages/About.tsx";
 import Account from "@pages/Account.tsx";
@@ -17,6 +18,11 @@ import "./index.css";
 // Create a client
 const queryClient = new QueryClient();
 
+const home = <AuthenticatedOnly element={<Home />} />;
+const account = <AuthenticatedOnly element={<Account />} />;
+const logout = <AuthenticatedOnly element={<Logout />} />;
+const newRoute = <AuthenticatedOnly element={<NewRoute />} />;
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
@@ -24,13 +30,13 @@ createRoot(document.getElementById("root")!).render(
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Root />}>
-              <Route index element={<Home />} />
-              <Route path="routes/new" element={<NewRoute />} />
+              <Route index element={home} />
+              <Route path="routes/new" element={newRoute} />
               <Route path="about" element={<About />} />
-              <Route path="account" element={<Account />} />
+              <Route path="account" element={account} />
               <Route path="login" element={<Login />} />
               <Route path="register" element={<Register />} />
-              <Route path="logout" element={<Logout />} />
+              <Route path="logout" element={logout} />
               <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>

@@ -3,7 +3,7 @@ export interface WatchedRoute {
   userEmail: string;
   fromStationId: number;
   toStationId: number;
-  routeId: number;
+  routeId: string;
   tariffClass: string;
   selectedSeatClasses: string[];
 }

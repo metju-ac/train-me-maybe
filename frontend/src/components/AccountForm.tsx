@@ -1,16 +1,8 @@
 import { User } from "@models/User";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import {
-  Box,
-  Button,
-  IconButton,
-  InputAdornment,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
 import useUpdateUserDetails from "@utils/useUpdateUserDetails";
 import React, { useState } from "react";
+import CreditPassword from "./CreditPassword";
 
 export default function AccountForm({ user }: { user: User }) {
   const [creditUser, setcreditUser] = useState(user.creditUser || "");
@@ -32,18 +24,6 @@ export default function AccountForm({ user }: { user: User }) {
       cutOffTime,
       minimalCredit: Number(minimalCredit),
     });
-  };
-
-  const [showPassword, setShowPassword] = useState(false);
-
-  const handleClickShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
   };
 
   return (
@@ -71,27 +51,9 @@ export default function AccountForm({ user }: { user: User }) {
         fullWidth
         margin="normal"
       />
-      <TextField
-        label="Credit Password"
-        type={showPassword ? "text" : "password"}
-        value={creditPassword}
-        onChange={(e) => setCreditPassword(e.target.value)}
-        fullWidth
-        margin="normal"
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle password visibility"
-                onClick={handleClickShowPassword}
-                onMouseDown={handleMouseDownPassword}
-                edge="end"
-              >
-                {showPassword ? <VisibilityOff /> : <Visibility />}
-              </IconButton>
-            </InputAdornment>
-          ),
-        }}
+      <CreditPassword
+        creditPassword={creditPassword}
+        setCreditPassword={setCreditPassword}
       />
       <TextField
         label="Cut Off Time"

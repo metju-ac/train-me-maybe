@@ -55,6 +55,7 @@ Watch out - every int should be (int64) in Go.
   - OPTIONAL - heslo kreditove jizdenky (plaintext)
   - OPTIONAL - cut-off time
   - OPTIONAL - minimalni kredit
+  - OPTIONAL - default tariff key (string)
   - mozna created_at
   - mozna updated_at
   - mozna deleted_at
@@ -121,7 +122,8 @@ All POST bodies are JSON.
 
 - POST /api/watchedRoute
 
-  - body: autoPurchase (bool), fromStationId (int64), toStationId (int64), routeId (int64), tariffClass, selectedSeatClasses
+  - body: autoPurchase (bool), fromStationId (int64), toStationId (int64), routeId (string), tariffClass (string), selectedSeatClasses, creditUser (optional string), creditPassword (optional string), cutOffTime (optional int), minimalCredit (optional int)
+    - if autoPurchase is true, creditUser and creditPassword and tarriff class must be filled in
 
 - GET /api/user
 

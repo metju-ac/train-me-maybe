@@ -5,8 +5,8 @@ import seatClasses from "./data/seatClasses.json";
 import countries from "./data/stations.json";
 import tariffs from "./data/tariffs.json";
 
-type SeatClass = (typeof seatClasses)[0];
-type Tariff = (typeof tariffs)[0];
+export type SeatClass = (typeof seatClasses)[0];
+export type Tariff = (typeof tariffs)[0];
 
 function transformStationsFromRaw(): Station[] {
   const result: Station[] = [];

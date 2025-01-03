@@ -1,12 +1,15 @@
 import config from "@/config";
+import AutopurchaseInfoSelection from "@components/AutopurchaseInfoSelection";
 import { Route } from "@models/Route";
 import { Station } from "@models/Station";
 import { CircularProgress } from "@mui/material";
+import { SeatClass, Tariff } from "@services/staticDataService";
+import useCreateWatchedRoute from "@utils/useCreateWatchedRoute";
 import useStations from "@utils/useStations";
 import dayjs, { Dayjs } from "dayjs";
 import React, { useState } from "react";
-import RouteAndSeatAndTarriffSelection from "./RouteAndSeatAndTarriffSelection";
-import StationAndDateSelection from "./StationAndDateSelection";
+import RouteAndSeatAndTarriffSelection from "../components/RouteAndSeatAndTarriffSelection";
+import StationAndDateSelection from "../components/StationAndDateSelection";
 
 export default function NewRoute() {
   // First, there is a form with selection of stations and a date of departure
@@ -44,30 +47,55 @@ function NewRouteForm({ stations }: { stations: Station[] }) {
     return null;
   });
   const [selectedRoute, setSelectedRoute] = useState<Route | null>(null);
+  const [selectedSeatClasses, setSelectedSeatClasses] = useState<SeatClass[]>(
+    []
+  );
+  const [selectedTariff, setSelectedTariff] = useState<Tariff | null>(null);
+  const [autopurchase, setAutopurchase] = useState(false);
 
   const [phase, setPhase] = useState<
     "stations-date" | "route-seatClasses-tariff" | "autopurchase"
   >("stations-date");
 
+  const mutation = useCreateWatchedRoute();
+
   const handleSubmitStationsPhase = (event: React.FormEvent) => {
     event.preventDefault();
-    // Handle form submission logic here
-    console.log("From Station:", fromStation);
-    console.log("To Station:", toStation);
-    console.log("Date:", date);
-
     setPhase("route-seatClasses-tariff");
+  };
+
+  const handleSubmitAutopurchasePhase = (event: React.FormEvent) => {
+    event.preventDefault();
+
+    mutation.mutate({
+      autoPurchase: true,
+      tariffClass: selectedTariff!.key,
+      fromStationId: fromStation!.stationID,
+      toStationId: toStation!.stationID,
+      routeId: selectedRoute!.id,
+      selectedSeatClasses: selectedSeatClasses.map(
+        (seatClass) => seatClass.key
+      ),
+    });
   };
 
   const handleSubmitRoutePhase = (event: React.FormEvent) => {
     event.preventDefault();
-    // Handle form submission logic here
-    console.log("From Station:", fromStation);
-    console.log("To Station:", toStation);
-    console.log("Date:", date);
-    console.log("Selected route:", "TODO");
 
-    setPhase("autopurchase");
+    if (autopurchase) {
+      setPhase("autopurchase");
+      return;
+    }
+
+    mutation.mutate({
+      autoPurchase: false,
+      fromStationId: fromStation!.stationID,
+      toStationId: toStation!.stationID,
+      routeId: selectedRoute!.id,
+      selectedSeatClasses: selectedSeatClasses.map(
+        (seatClass) => seatClass.key
+      ),
+    });
   };
 
   const renderContent = () => {
@@ -95,13 +123,27 @@ function NewRouteForm({ stations }: { stations: Station[] }) {
             fromStation={fromStation!}
             toStation={toStation!}
             handleSubmit={handleSubmitRoutePhase}
-            isValid={selectedRoute !== null} // TODO
+            isValid={
+              selectedRoute !== null &&
+              selectedSeatClasses.length > 0 &&
+              (autopurchase ? selectedTariff !== null : true) // if autopurchase is enabled, tariff must be selected
+            }
             selectedRoute={selectedRoute}
             setSelectedRoute={setSelectedRoute}
+            selectedSeatClasses={selectedSeatClasses}
+            selectedTariff={selectedTariff}
+            setSelectedSeatClasses={setSelectedSeatClasses}
+            setSelectedTariff={setSelectedTariff}
+            autopurchase={autopurchase}
+            setAutopurchase={setAutopurchase}
           />
         );
       case "autopurchase":
-        return <div>world</div>;
+        return (
+          <AutopurchaseInfoSelection
+            handleSubmit={handleSubmitAutopurchasePhase}
+          />
+        );
       default:
         return <div>Unknown phase</div>;
     }

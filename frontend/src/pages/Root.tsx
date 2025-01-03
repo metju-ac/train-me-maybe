@@ -15,7 +15,11 @@ export default function Root() {
       alignItems="flex-start"
       padding={2}
       minHeight="100vh"
-      sx={{ backgroundColor: "#f6f6f6" }}
+      sx={{
+        backgroundColor: "#f6f6f6",
+        border: "1px solid rgb(122, 117, 117)",
+        borderRadius: 2,
+      }}
     >
       <Box component="header" marginY={2} width="100%">
         <Navigation />

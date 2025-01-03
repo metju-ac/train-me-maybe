@@ -1,5 +1,12 @@
 import { Station } from "@models/Station";
-import { Autocomplete, Box, Button, TextField, Tooltip } from "@mui/material";
+import {
+  Autocomplete,
+  Box,
+  Button,
+  TextField,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -40,6 +47,9 @@ export default function StationAndDateSelection({
         gap: 2,
       }}
     >
+      <Box>
+        <Typography variant="h5">Select stations and date</Typography>
+      </Box>
       <Autocomplete
         options={stations!}
         getOptionLabel={(option) => option.stationName}

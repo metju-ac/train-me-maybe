@@ -104,13 +104,13 @@ All POST bodies are JSON.
 
 === BEGIN endpoints accessible only for authorized users (probably middleware) ===
 
-- GET /api/auth/station
+- GET /api/station
 
   - returns a list of all stations (locations mapped to our DTO)
   - sets the correct HTTP headers so that the browser caches this response for a long time
   - the server caches these locations in-memory (probably on startup)
 
-- GET /api/auth/route
+- GET /api/route
 
   - URL params: fromStationId, toStationId, date (date only, without time)
   - returns routes for the given date
@@ -129,13 +129,13 @@ All POST bodies are JSON.
   - body: autoPurchase (bool), fromStationId (int64), toStationId (int64), routeId (string), tariffClass (string), selectedSeatClasses, creditUser (optional string), creditPassword (optional string), cutOffTime (optional int), minimalCredit (optional int)
     - if autoPurchase is true, creditUser and creditPassword and tarriff class must be filled in
 
-- GET /api/auth/user
+- GET /api/user
 
   - gets details about the current logged in user (from the cookie)
 
-- PUT /api/auth/user
+- PUT /api/user
 
-  - body: cutOffTime (int), minimalCredit (int), creditUser (string), creditPassword (string), tarriffClass (string)
+  - body: cutOffTime (int), minimalCredit (int), creditUser (string), creditPassword (string)
   - modifies the current logged in user (from the cookie)
 
 - GET /api/watchedRoute

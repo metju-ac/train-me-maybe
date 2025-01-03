@@ -5,7 +5,7 @@ meta {
 }
 
 get {
-  url: {{baseUrl}}/routes/search?fromLocationId=10202002&fromLocationType=CITY&toLocationId=10202003&toLocationType=CITY
+  url: {{baseUrl}}/routes/search?fromLocationId=10202002&fromLocationType=CITY&toLocationId=10202003&toLocationType=CITY&departureTime=2025-01-21
   body: none
   auth: none
 }
@@ -15,7 +15,7 @@ params:query {
   fromLocationType: CITY
   toLocationId: 10202003
   toLocationType: CITY
-  ~departureTime: 2025-01-21
+  departureTime: 2025-01-21
   ~tariffs: CZECH_STUDENT_PASS_26
   ~actionPrice: 
 }

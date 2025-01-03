@@ -23,9 +23,9 @@ This mode is harder to set up and maintain, but it allows multiple inexperienced
 To avoid the need for a database, the application is designed to store its state fully in-memory.
 However, if the application crashes, all watched routes are of course lost.
 
-- There is a web interface for end-users. 
+- There is a web interface for end-users.
 - Users have to register themselves.
-- Users log in using the email (which should receive the notifications) and password. 
+- Users log in using the email (which should receive the notifications) and password.
 - Once logged in, users can configure a single route to watch.
 - If the user wants, they can also opt-in for "automatic purchase" of the ticket via a checkbox.
   - In this case, they have to fill in the Regiojet account (Kreditová jízdenka) credentials.
@@ -41,12 +41,14 @@ However, if the application crashes, all watched routes are of course lost.
   - purchase cutoff time - how much time before the departure should the ticket be purchased
   - jmeno a heslo do kreditove jizdenky
   - castka, kdyz mam mensi kredit nez tohle, tak mi posli email
+  - default tariff class
 
 ### DB design
 
 Watch out - every int should be (int64) in Go.
 
 - Table `User` for registered user
+
   - email (PK)
   - password hash (password hash)
   - vielleicht salz
@@ -54,6 +56,7 @@ Watch out - every int should be (int64) in Go.
   - OPTIONAL - heslo kreditove jizdenky (plaintext)
   - OPTIONAL - cut-off time
   - OPTIONAL - minimalni kredit
+  - OPTIONAL - default tariff key (string)
   - mozna created_at
   - mozna updated_at
   - mozna deleted_at
@@ -61,6 +64,7 @@ Watch out - every int should be (int64) in Go.
 
 - Table `WatchedRoute` for currently watched routes - so that re-creation of the watched routes is possible after a crash.
   When a free seat is found, a row is deleted from this table. The user can also delete the row manually (must also cancel the goroutine).
+
   - ID (PK)
   - user_email (FK)
   - from station ID
@@ -87,6 +91,7 @@ Watch out - every int should be (int64) in Go.
 All POST bodies are JSON.
 
 - POST /api/register
+
   - body: email, password
   - returns 200 OK, if easy to implement, also automatically logs in the user
 
@@ -97,29 +102,41 @@ All POST bodies are JSON.
 === BEGIN endpoints accessible only for authorized users (probably middleware) ===
 
 - GET /api/station
+
   - returns a list of all stations (locations mapped to our DTO)
   - sets the correct HTTP headers so that the browser caches this response for a long time
   - the server caches these locations in-memory (probably on startup)
 
 - GET /api/route
+
   - URL params: fromStationId, toStationId, date (date only, without time)
   - returns routes for the given date
-  - also sets HTTP headers for browser caching, probably not necessary to cache on server 
+  - also sets HTTP headers for browser caching, probably not necessary to cache on server
 
 - GET /api/seatClass
+
   - NOT needed - we will hardcode this on the front end
 
 - GET /api/tariffClass
+
   - NOT needed - we will hardcode this on the front end
 
 - POST /api/watchedRoute
-  - body: autoPurchase (bool), fromStationId (int64), toStationId (int64), routeId (int64), tariffClass, selectedSeatClasses
+
+  - body: autoPurchase (bool), fromStationId (int64), toStationId (int64), routeId (string), tariffClass (string), selectedSeatClasses, creditUser (optional string), creditPassword (optional string), cutOffTime (optional int), minimalCredit (optional int)
+    - if autoPurchase is true, creditUser and creditPassword and tarriff class must be filled in
+
+- GET /api/user
+
+  - gets details about the current logged in user (from the cookie)
 
 - PUT /api/user
+
   - body: cutOffTime (int), minimalCredit (int), creditUser (string), creditPassword (string)
   - modifies the current logged in user (from the cookie)
 
 - GET /api/watchedRoute
+
   - returns all watched routes for the current user
 
 - DELETE /api/watchedRoute/:id

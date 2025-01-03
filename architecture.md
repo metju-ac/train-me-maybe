@@ -70,8 +70,11 @@ Watch out - every int should be (int64) in Go.
   - from station ID
   - to station ID
   - route ID
-  - tariff class (e.g. STUDENT, SENIOR, ADULT)
   - selected seat classes (LOW_COST atd)
+  - auto purchase (bool)
+  - OPTIONAL - tariff class (e.g. STUDENT, SENIOR, ADULT)
+  - OPTIONAL - credit user
+  - OPTIONAL - credit password
 
 - OPTIONAL - Table `SuccessfulPurchase` for successful purchases
   - ID (PK)
@@ -82,8 +85,8 @@ Watch out - every int should be (int64) in Go.
   - tariff class
   - selected seat classes
   - purchase time
-  - price (??? if we have this)
-  - seat number
+  - price
+  - currency
   - seat class
 
 ### API and Front end
@@ -101,13 +104,13 @@ All POST bodies are JSON.
 
 === BEGIN endpoints accessible only for authorized users (probably middleware) ===
 
-- GET /api/station
+- GET /api/auth/station
 
   - returns a list of all stations (locations mapped to our DTO)
   - sets the correct HTTP headers so that the browser caches this response for a long time
   - the server caches these locations in-memory (probably on startup)
 
-- GET /api/route
+- GET /api/auth/route
 
   - URL params: fromStationId, toStationId, date (date only, without time)
   - returns routes for the given date
@@ -126,13 +129,13 @@ All POST bodies are JSON.
   - body: autoPurchase (bool), fromStationId (int64), toStationId (int64), routeId (string), tariffClass (string), selectedSeatClasses, creditUser (optional string), creditPassword (optional string), cutOffTime (optional int), minimalCredit (optional int)
     - if autoPurchase is true, creditUser and creditPassword and tarriff class must be filled in
 
-- GET /api/user
+- GET /api/auth/user
 
   - gets details about the current logged in user (from the cookie)
 
-- PUT /api/user
+- PUT /api/auth/user
 
-  - body: cutOffTime (int), minimalCredit (int), creditUser (string), creditPassword (string)
+  - body: cutOffTime (int), minimalCredit (int), creditUser (string), creditPassword (string), tarriffClass (string)
   - modifies the current logged in user (from the cookie)
 
 - GET /api/watchedRoute

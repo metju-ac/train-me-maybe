@@ -16,5 +16,6 @@ RUN apk --no-cache add ca-certificates
 WORKDIR /root/
 COPY --from=builder /train-me-maybe-app .
 COPY config.toml .
+COPY migrations ./migrations
 
 CMD ["./train-me-maybe-app"]

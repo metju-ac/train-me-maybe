@@ -41,8 +41,8 @@ function getComparator<Key extends keyof any>(
   order: Order,
   orderBy: Key
 ): (
-  a: { [key in Key]: number | string },
-  b: { [key in Key]: number | string }
+  a: Record<Key, number | string>,
+  b: Record<Key, number | string>
 ) => number {
   return order === "desc"
     ? (a, b) => descendingComparator(a, b, orderBy)
@@ -287,7 +287,7 @@ export default function EnhancedTable() {
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows!.length) : 0;
 
   const visibleRows = [...rows!]
-    .sort(getComparator(order, orderBy) as any)
+    .sort(getComparator(order, orderBy) as never)
     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   return (
@@ -295,15 +295,17 @@ export default function EnhancedTable() {
       <Paper sx={{ width: "100%", mb: 2 }}>
         <EnhancedTableToolbar
           numSelected={selected.length}
-          onDelete={() =>
-            { mutation.mutate(selected, {
+          onDelete={() => {
+            mutation.mutate(selected, {
               onSuccess: () => {
                 console.log("Deleted successfully ids", selected);
                 setSelected([]);
               },
-              onError: (error) => { console.error("Error while deleting", error); },
-            }); }
-          }
+              onError: (error) => {
+                console.error("Error while deleting", error);
+              },
+            });
+          }}
         />
         <TableContainer>
           <Table
@@ -327,7 +329,9 @@ export default function EnhancedTable() {
                 return (
                   <TableRow
                     hover
-                    onClick={(event) => { handleClick(event, row.id); }}
+                    onClick={(event) => {
+                      handleClick(event, row.id);
+                    }}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}

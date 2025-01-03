@@ -1,4 +1,4 @@
-import { ToastBarContext } from "@components/ToastBarProvider";
+import ToastBarContext from "@components/ToastBarContext";
 import userService from "@services/userService";
 import { useMutation } from "@tanstack/react-query";
 import { useContext } from "react";
@@ -14,7 +14,7 @@ export default function useLoginUser() {
     onSuccess: (data) => {
       console.log("User logged in successfully", data);
       setToast("Successfully logged in", "success");
-      navigate("/account");
+      void navigate("/account");
     },
     onError: (error) => {
       console.error("Error logging in", error);

@@ -18,7 +18,7 @@ import CutOffTime from "./CutOffTime";
 import MinimalCredit from "./MinimalCredit";
 import SelectTariff from "./SelectTariff";
 import SubmitButton from "./SubmitButton";
-import { ToastBarContext } from "./ToastBarProvider";
+import ToastBarContext from "./ToastBarContext";
 
 export interface AutopurchaseInfoSelectionProps {
   handleSubmit: (
@@ -61,16 +61,18 @@ function AutopurchaseInfoSelectionForm({
   tariffs,
   ...props
 }: AutopurchaseInfoSelectionProps & { user: User; tariffs: Tariff[] }) {
-  const [creditUser, setCreditUser] = useState(user.creditUser || "");
+  const [creditUser, setCreditUser] = useState(user.creditUser ?? "");
   const [creditPassword, setCreditPassword] = useState(
-    user.creditPassword || ""
+    user.creditPassword ?? ""
   );
   const [selectedTariff, setSelectedTariff] = useState<Tariff | null>(
     tariffs.find((t) => t.key === user.tariffKey) ?? null
   );
-  const [cutOffTime, setCutOffTime] = useState(`${user.cutOffTime}` || "");
+  const [cutOffTime, setCutOffTime] = useState(
+    user.cutOffTime ? `${user.cutOffTime}` : ""
+  );
   const [minimalCredit, setMinimalCredit] = useState(
-    `${user.minimalCredit}` || ""
+    user.minimalCredit ? `${user.minimalCredit}` : ""
   );
 
   const [saveInfoToAccount, setSaveInfoToAccount] = useState(false);
@@ -90,14 +92,17 @@ function AutopurchaseInfoSelectionForm({
 
     if (saveInfoToAccount) {
       updateUserDetails.mutate(data, {
-        onSuccess: () => { props.handleSubmit(e, data); },
+        onSuccess: () => {
+          props.handleSubmit(e, data);
+        },
         onError: (err) => {
           setToast(
             "Failed to save details to account: " + err.message,
             "error"
           );
         },
-      }); return;
+      });
+      return;
     }
 
     props.handleSubmit(e, data);
@@ -156,7 +161,9 @@ function AutopurchaseInfoSelectionForm({
           control={
             <Checkbox
               checked={saveInfoToAccount}
-              onChange={(e) => { setSaveInfoToAccount(e.target.checked); }}
+              onChange={(e) => {
+                setSaveInfoToAccount(e.target.checked);
+              }}
               inputProps={{ "aria-label": "controlled" }}
             />
           }

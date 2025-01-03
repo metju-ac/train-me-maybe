@@ -1,4 +1,4 @@
-import { ToastBarContext } from "@components/ToastBarProvider";
+import ToastBarContext from "@components/ToastBarContext";
 import watchedRouteService from "@services/watchedRouteService";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useContext } from "react";
@@ -14,11 +14,11 @@ export default function useCreateWatchedRoute() {
     mutationFn: watchedRouteService.createWatchedRoute.fn,
     onSuccess: () => {
       // Invalidate and refetch
-      queryClient.invalidateQueries({
+      void queryClient.invalidateQueries({
         queryKey: [watchedRouteService.getWatchedRoutes.key],
       });
       setToast("Route created successfully!", "success");
-      navigate("/");
+      void navigate("/");
     },
     onError: (err) => {
       setToast("Failed to create route: " + err.message, "error");

@@ -17,16 +17,18 @@ export default function AccountForm({
   user: User;
   tariffs: Tariff[];
 }) {
-  const [creditUser, setCreditUser] = useState(user.creditUser || "");
+  const [creditUser, setCreditUser] = useState(user.creditUser ?? "");
   const [creditPassword, setCreditPassword] = useState(
-    user.creditPassword || ""
+    user.creditPassword ?? ""
   );
   const [selectedTariff, setSelectedTariff] = useState<Tariff | null>(
     tariffs.find((t) => t.key === user.tariffKey) ?? null
   );
-  const [cutOffTime, setCutOffTime] = useState(`${user.cutOffTime}` || "");
+  const [cutOffTime, setCutOffTime] = useState(
+    user.cutOffTime ? `${user.cutOffTime}` : ""
+  );
   const [minimalCredit, setMinimalCredit] = useState(
-    `${user.minimalCredit}` || ""
+    user.minimalCredit ? `${user.minimalCredit}` : ""
   );
 
   const hasChanged =

@@ -1,11 +1,10 @@
 import { Alert, Snackbar } from "@mui/material";
-import { createContext, PropsWithChildren, useState } from "react";
+import { PropsWithChildren, useState } from "react";
+import ToastBarContext from "./ToastBarContext";
 
-export const ToastBarContext = createContext({
-  setToast: (_message: string, _severity: "success" | "error") => {},
-});
-
-export default function ToastBarProvider(props: PropsWithChildren<{}>) {
+export default function ToastBarProvider(
+  props: PropsWithChildren<Record<never, never>>
+) {
   const [state, setState] = useState({
     open: false,
     message: "",

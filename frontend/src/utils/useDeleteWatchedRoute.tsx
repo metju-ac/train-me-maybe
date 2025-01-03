@@ -1,4 +1,4 @@
-import { ToastBarContext } from "@components/ToastBarProvider";
+import ToastBarContext from "@components/ToastBarContext";
 import watchedRouteService from "@services/watchedRouteService";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useContext } from "react";
@@ -13,7 +13,7 @@ export default function useDeleteWatchedRoute() {
     mutationFn: watchedRouteService.deleteWatchedRoute.fn,
     onSuccess: () => {
       // Invalidate and refetch
-      queryClient.invalidateQueries({
+      void queryClient.invalidateQueries({
         queryKey: [watchedRouteService.getWatchedRoutes.key],
       });
 

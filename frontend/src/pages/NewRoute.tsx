@@ -25,7 +25,7 @@ export default function NewRoute() {
     return <div>Error while fetching data</div>;
   }
 
-  return <NewRouteForm stations={stations as Station[]} />;
+  return <NewRouteForm stations={stations!} />;
 }
 
 function NewRouteForm({ stations }: { stations: Station[] }) {

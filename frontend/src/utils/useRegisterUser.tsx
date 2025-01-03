@@ -1,4 +1,4 @@
-import { ToastBarContext } from "@components/ToastBarProvider";
+import ToastBarContext from "@components/ToastBarContext";
 import userService from "@services/userService";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useContext } from "react";
@@ -15,12 +15,12 @@ export default function useRegisterUser() {
     mutationFn: userService.registerUser.fn,
     onSuccess: (data) => {
       // Invalidate and refetch
-      queryClient.invalidateQueries({
+      void queryClient.invalidateQueries({
         queryKey: [userService.getUserDetails.key],
       });
       console.log("User registered successfully", data);
       setToast("Successfully registered user", "success");
-      navigate("/account");
+      void navigate("/account");
     },
     onError: (error) => {
       console.error("Error registering user", error);

@@ -21,7 +21,7 @@ import useRoutes from "@utils/useRoutes";
 import useSeatClasses from "@utils/useSeatClasses";
 import dayjs, { Dayjs } from "dayjs";
 import utc from "dayjs/plugin/utc";
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, ReactNode, SetStateAction } from "react";
 import SubmitButton from "./SubmitButton";
 
 dayjs.extend(utc);
@@ -29,7 +29,7 @@ dayjs.extend(utc);
 function formatRoute(route: Route) {
   return `${dayjs(route.departureTime).format("HH:mm:ss")} - ${dayjs(
     route.arrivalTime
-  ).format("HH:mm:ss")} (${route.vehicleTypes}, price from ${
+  ).format("HH:mm:ss")} (${route.vehicleTypes.join(", ")}, price from ${
     route.creditPriceFrom
   })`;
 }
@@ -117,9 +117,10 @@ function RouteAndSeatSelectionForm({
   routes: Route[];
   seatClasses: SeatClass[];
 }) {
-  const handleChange: React.ChangeEventHandler<
-    HTMLInputElement | HTMLTextAreaElement
-  > = (event) => {
+  const handleChange: (
+    event: SelectChangeEvent<string>,
+    child: ReactNode
+  ) => void = (event) => {
     const id = event.target.value;
 
     const route = routes.find((route) => route.id === id) ?? null;
@@ -176,7 +177,7 @@ function RouteAndSeatSelectionForm({
           name="option"
           label="Route"
           value={selectedRoute?.id ?? ""}
-          onChange={handleChange as any}
+          onChange={handleChange}
         >
           {routes.map((route) => (
             <MenuItem value={route.id} key={route.id}>
@@ -214,7 +215,9 @@ function RouteAndSeatSelectionForm({
           control={
             <Checkbox
               checked={autopurchase}
-              onChange={(e) => { setAutopurchase(e.target.checked); }}
+              onChange={(e) => {
+                setAutopurchase(e.target.checked);
+              }}
               inputProps={{ "aria-label": "controlled" }}
             />
           }

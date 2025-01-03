@@ -122,7 +122,7 @@ function RouteAndSeatSelectionForm({
   > = (event) => {
     const id = event.target.value;
 
-    const route = routes?.find((route) => route.id === id) ?? null;
+    const route = routes.find((route) => route.id === id) ?? null;
 
     setSelectedRoute(route);
   };
@@ -214,7 +214,7 @@ function RouteAndSeatSelectionForm({
           control={
             <Checkbox
               checked={autopurchase}
-              onChange={(e) => setAutopurchase(e.target.checked)}
+              onChange={(e) => { setAutopurchase(e.target.checked); }}
               inputProps={{ "aria-label": "controlled" }}
             />
           }

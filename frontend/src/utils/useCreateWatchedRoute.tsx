@@ -7,7 +7,7 @@ import { useNavigate } from "react-router";
 export default function useCreateWatchedRoute() {
   const queryClient = useQueryClient();
   const { setToast } = useContext(ToastBarContext);
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   return useMutation({
     mutationKey: [watchedRouteService.createWatchedRoute.key],

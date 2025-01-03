@@ -25,9 +25,9 @@ export default function SelectTariff({
         value={selectedTariff?.key ?? ""}
         label="Tariff"
         onChange={(e) =>
-          setSelectedTariff(
+          { setSelectedTariff(
             tariffs.find((t) => t.key === e.target.value) ?? null
-          )
+          ); }
         }
         {...props}
       >

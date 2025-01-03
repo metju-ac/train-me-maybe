@@ -18,7 +18,7 @@ export default function CreditNumber({
     <TextField
       label="Credit Number"
       value={creditUser}
-      onChange={(e) => setCreditUser(e.target.value)}
+      onChange={(e) => { setCreditUser(e.target.value); }}
       fullWidth
       slotProps={{
         input: {

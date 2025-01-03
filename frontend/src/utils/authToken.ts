@@ -23,12 +23,12 @@ export const getAuthToken = () => {
 
 export const setAuthToken = (token: string) => {
   localStorage.setItem(AUTH_TOKEN_KEY, token);
-  listeners.forEach((listener) => listener());
+  listeners.forEach((listener) => { listener(); });
 };
 
 export const removeAuthToken = () => {
   localStorage.removeItem(AUTH_TOKEN_KEY);
-  listeners.forEach((listener) => listener());
+  listeners.forEach((listener) => { listener(); });
 };
 
 export const isUserLoggedIn = () => {

@@ -36,7 +36,7 @@ export default function Register() {
         label="Email"
         type="email"
         value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={(e) => { setEmail(e.target.value); }}
         required
         fullWidth
       />
@@ -44,7 +44,7 @@ export default function Register() {
         label="Password"
         type="password"
         value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={(e) => { setPassword(e.target.value); }}
         required
         fullWidth
       />

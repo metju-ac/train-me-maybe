@@ -19,7 +19,7 @@ export default function CutOffTime({
       label="Cut Off Time"
       type="number"
       value={cutOffTime}
-      onChange={(e) => setCutOffTime(e.target.value)}
+      onChange={(e) => { setCutOffTime(e.target.value); }}
       fullWidth
       slotProps={{
         input: {

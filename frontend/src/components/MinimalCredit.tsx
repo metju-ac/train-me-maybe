@@ -19,7 +19,7 @@ export default function MinimalCredit({
       label="Minimal Credit"
       type="number"
       value={minimalCredit}
-      onChange={(e) => setMinimalCredit(e.target.value)}
+      onChange={(e) => { setMinimalCredit(e.target.value); }}
       fullWidth
       slotProps={{
         input: {

@@ -296,13 +296,13 @@ export default function EnhancedTable() {
         <EnhancedTableToolbar
           numSelected={selected.length}
           onDelete={() =>
-            mutation.mutate(selected, {
+            { mutation.mutate(selected, {
               onSuccess: () => {
                 console.log("Deleted successfully ids", selected);
                 setSelected([]);
               },
-              onError: (error) => console.error("Error while deleting", error),
-            })
+              onError: (error) => { console.error("Error while deleting", error); },
+            }); }
           }
         />
         <TableContainer>
@@ -327,7 +327,7 @@ export default function EnhancedTable() {
                 return (
                   <TableRow
                     hover
-                    onClick={(event) => handleClick(event, row.id)}
+                    onClick={(event) => { handleClick(event, row.id); }}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}

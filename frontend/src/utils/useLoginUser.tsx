@@ -6,7 +6,7 @@ import { useNavigate } from "react-router";
 
 export default function useLoginUser() {
   const { setToast } = useContext(ToastBarContext);
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   return useMutation({
     mutationKey: [userService.loginUser.key],

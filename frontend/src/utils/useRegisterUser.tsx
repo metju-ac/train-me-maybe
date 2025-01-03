@@ -8,7 +8,7 @@ export default function useRegisterUser() {
   const queryClient = useQueryClient();
 
   const { setToast } = useContext(ToastBarContext);
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   return useMutation({
     mutationKey: [userService.registerUser.key],

@@ -34,7 +34,7 @@ export default function CreditPassword({
       label="Credit Password"
       type={showPassword ? "text" : "password"}
       value={creditPassword}
-      onChange={(e) => setCreditPassword(e.target.value)}
+      onChange={(e) => { setCreditPassword(e.target.value); }}
       fullWidth
       slotProps={{
         input: {

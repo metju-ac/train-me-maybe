@@ -45,20 +45,20 @@ export default function StationAndDateSelection({
         <Typography variant="h5">Select stations and date</Typography>
       </Box>
       <Autocomplete
-        options={stations!}
+        options={stations}
         getOptionLabel={(option) => option.stationName}
         value={fromStation}
-        onChange={(_, newValue) => setFromStation(newValue)}
+        onChange={(_, newValue) => { setFromStation(newValue); }}
         renderInput={(params) => (
           <TextField {...params} label="From Station" variant="outlined" />
         )}
         fullWidth
       />
       <Autocomplete
-        options={stations!}
+        options={stations}
         getOptionLabel={(option) => option.stationName}
         value={toStation}
-        onChange={(_, newValue) => setToStation(newValue)}
+        onChange={(_, newValue) => { setToStation(newValue); }}
         renderInput={(params) => (
           <TextField {...params} label="To Station" variant="outlined" />
         )}
@@ -68,7 +68,7 @@ export default function StationAndDateSelection({
         <DatePicker
           label="Date"
           value={date}
-          onChange={(newValue) => setDate(newValue)}
+          onChange={(newValue) => { setDate(newValue); }}
           disablePast
           sx={{ width: "100%" }}
           timezone="UTC"

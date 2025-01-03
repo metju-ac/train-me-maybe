@@ -115,7 +115,7 @@ function NewRouteForm({ stations }: { stations: Station[] }) {
             setDate={setDate}
             setFromStation={setFromStation}
             setToStation={setToStation}
-            stations={stations as Station[]}
+            stations={stations}
             toStation={toStation}
             isValid={
               toStation !== null && fromStation !== null && date !== null

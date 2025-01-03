@@ -89,15 +89,15 @@ function AutopurchaseInfoSelectionForm({
       };
 
     if (saveInfoToAccount) {
-      return updateUserDetails.mutate(data, {
-        onSuccess: () => props.handleSubmit(e, data),
+      updateUserDetails.mutate(data, {
+        onSuccess: () => { props.handleSubmit(e, data); },
         onError: (err) => {
           setToast(
             "Failed to save details to account: " + err.message,
             "error"
           );
         },
-      });
+      }); return;
     }
 
     props.handleSubmit(e, data);
@@ -156,7 +156,7 @@ function AutopurchaseInfoSelectionForm({
           control={
             <Checkbox
               checked={saveInfoToAccount}
-              onChange={(e) => setSaveInfoToAccount(e.target.checked)}
+              onChange={(e) => { setSaveInfoToAccount(e.target.checked); }}
               inputProps={{ "aria-label": "controlled" }}
             />
           }

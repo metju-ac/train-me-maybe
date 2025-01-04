@@ -104,7 +104,7 @@ All POST bodies are JSON.
 
 === BEGIN endpoints accessible only for authorized users (probably middleware) ===
 
-- GET /api/station
+- GET /api/auth/station
 
   - returns a list of all stations (locations mapped to our DTO)
   - sets the correct HTTP headers so that the browser caches this response for a long time

@@ -1,18 +1,34 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/metju-ac/train-me-maybe/internal/config"
 	"github.com/metju-ac/train-me-maybe/internal/database"
+	"github.com/metju-ac/train-me-maybe/internal/handlers"
 	"github.com/metju-ac/train-me-maybe/internal/handlers/http"
 	"github.com/metju-ac/train-me-maybe/internal/middleware"
+	"github.com/metju-ac/train-me-maybe/internal/models"
 	"github.com/metju-ac/train-me-maybe/internal/repositories"
 	openapiclient "github.com/metju-ac/train-me-maybe/openapi"
 	"os"
 	"time"
 )
+
+func fetchStations(apiClient *openapiclient.APIClient) []models.StationModel {
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+
+	stations, err := handlers.FetchStations(ctx, apiClient)
+	if err != nil {
+		fmt.Println("Error:", err)
+		os.Exit(1)
+	}
+
+	return stations
+}
 
 func main() {
 	config, err := config.LoadConfig()
@@ -32,11 +48,10 @@ func main() {
 	apiConfiguration := openapiclient.NewConfiguration(config.General.ApiBaseUrl)
 	apiClient := openapiclient.NewAPIClient(apiConfiguration)
 
-	fmt.Println("Hello, multi-user!")
-	fmt.Println(apiClient)
+	stations := fetchStations(apiClient)
 
 	userRepo := repositories.NewUserRepository(db)
-	handler := &http.Handler{UserRepo: userRepo}
+	handler := &http.Handler{Stations: stations, UserRepo: userRepo}
 
 	router := gin.Default()
 	router.Use(cors.New(cors.Config{
@@ -54,6 +69,8 @@ func main() {
 	{
 		protectedRoutes.GET("/user", handler.GetUser)
 		protectedRoutes.PUT("/user", handler.UpdateUser)
+
+		protectedRoutes.GET("/station", handler.GetStations)
 	}
 
 	publicRoutes := router.Group("/api")

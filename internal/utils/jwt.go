@@ -4,11 +4,19 @@ import (
 	"fmt"
 	"github.com/golang-jwt/jwt"
 	"log/slog"
+	"os"
 	"time"
 )
 
-// TODO: env var
-var secretKey = []byte("secretpassword")
+var secretKey []byte
+
+func init() {
+	secretKey = []byte(os.Getenv("JWT_SECRET_KEY"))
+	if len(secretKey) == 0 {
+		slog.Error("JWT_SECRET_KEY environment variable is not set")
+		panic("JWT_SECRET_KEY environment variable is not set")
+	}
+}
 
 func GenerateToken(email string) (string, error) {
 	claims := jwt.MapClaims{}

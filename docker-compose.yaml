@@ -42,6 +42,7 @@ services:
       REGIOJET_SMTP_RECIPIENT: recipient@gmail.com
       REGIOJET_AUTH_CREDIT_USER: 123456789
       REGIOJET_AUTH_CREDIT_PASSWORD: password
+      JWT_SECRET_KEY: secretkey
     ports:
       - "8080:8080"
 

@@ -14,7 +14,7 @@ export default function useLoginUser() {
     onSuccess: (data) => {
       console.log("User logged in successfully", data);
       setToast("Successfully logged in", "success");
-      void navigate("/account");
+      void navigate("/");
     },
     onError: (error) => {
       console.error("Error logging in", error);

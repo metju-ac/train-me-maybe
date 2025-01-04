@@ -24,10 +24,7 @@ export default function Root() {
       <Box component="header" marginY={2} width="100%">
         <Navigation />
       </Box>
-      <Box
-        component="main"
-        sx={{ flexGrow: 1, width: "100%", overflow: "scroll" }}
-      >
+      <Box component="main" sx={{ flexGrow: 1, width: "100%" }}>
         <Outlet />
       </Box>
       <Box component="footer" alignSelf="center">

@@ -69,8 +69,12 @@ func selectDepartureDate() (string, error) {
 	return departureDate, nil
 }
 
-func fetchRoutes(ctx context.Context, apiClient *openapiclient.APIClient, departingStation, arrivingStation int64, departureDate string) ([]openapiclient.SimpleRoute, error) {
+func FetchRoutes(apiClient *openapiclient.APIClient, departingStation, arrivingStation int64, departureDate string) ([]openapiclient.SimpleRoute, error) {
 	slog.Info("Fetching routes", "departingStation", departingStation, "arrivingStation", arrivingStation, "departureDate", departureDate)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+
 	routes, httpRes, err := apiClient.RoutesAPI.SimpleSearchRoutes(ctx).
 		FromLocationId(departingStation).
 		FromLocationType("STATION").
@@ -133,7 +137,7 @@ func HandleRouteSelection(apiClient *openapiclient.APIClient) (*HandleRouteSelec
 		return nil, err
 	}
 
-	routes, err := fetchRoutes(ctx, apiClient, departingStation.StationID, arrivingStation.StationID, departureDate)
+	routes, err := FetchRoutes(apiClient, departingStation.StationID, arrivingStation.StationID, departureDate)
 	if err != nil {
 		return nil, err
 	}

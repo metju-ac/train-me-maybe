@@ -51,7 +51,11 @@ func main() {
 	stations := fetchStations(apiClient)
 
 	userRepo := repositories.NewUserRepository(db)
-	handler := &http.Handler{Stations: stations, UserRepo: userRepo}
+	handler := &http.Handler{
+		Stations:  stations,
+		UserRepo:  userRepo,
+		ApiClient: apiClient,
+	}
 
 	router := gin.Default()
 	router.Use(cors.New(cors.Config{
@@ -71,6 +75,7 @@ func main() {
 		protectedRoutes.PUT("/user", handler.UpdateUser)
 
 		protectedRoutes.GET("/station", handler.GetStations)
+		protectedRoutes.GET("/route", handler.GetRoutes)
 	}
 
 	publicRoutes := router.Group("/api")

@@ -110,7 +110,7 @@ All POST bodies are JSON.
   - sets the correct HTTP headers so that the browser caches this response for a long time
   - the server caches these locations in-memory (probably on startup)
 
-- GET /api/route
+- GET /api/auth/route
 
   - URL params: fromStationId, toStationId, date (date only, without time)
   - returns routes for the given date

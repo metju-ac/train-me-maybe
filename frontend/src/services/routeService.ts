@@ -43,7 +43,7 @@ const routeService = {
         throw new Error("No routes found");
       }
 
-      const response = await client.get<Route[]>("/route", {
+      const response = await client.get<Route[]>("/auth/route", {
         params: {
           fromStationId: params.fromStation.stationID,
           toStationId: params.toStation.stationID,

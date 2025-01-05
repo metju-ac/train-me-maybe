@@ -51,10 +51,13 @@ func main() {
 	stations := fetchStations(apiClient)
 
 	userRepo := repositories.NewUserRepository(db)
+	watchedRouteRepo := repositories.NewWatchedRouteRepository(db)
+
 	handler := &http.Handler{
-		Stations:  stations,
-		UserRepo:  userRepo,
-		ApiClient: apiClient,
+		Stations:         stations,
+		UserRepo:         userRepo,
+		WatchedRouteRepo: watchedRouteRepo,
+		ApiClient:        apiClient,
 	}
 
 	router := gin.Default()
@@ -76,6 +79,10 @@ func main() {
 
 		protectedRoutes.GET("/station", handler.GetStations)
 		protectedRoutes.GET("/route", handler.GetRoutes)
+
+		protectedRoutes.POST("/watchedRoute", handler.CreateWatchedRoute)
+		protectedRoutes.GET("/watchedRoute", handler.GetWatchedRoutes)
+		protectedRoutes.DELETE("/watchedRoute/:id", handler.DeleteWatchedRoute)
 	}
 
 	publicRoutes := router.Group("/api")

@@ -7,7 +7,8 @@ import (
 )
 
 type Handler struct {
-	Stations  []models.StationModel
-	UserRepo  repositories.UserRepository
-	ApiClient *openapiclient.APIClient
+	Stations         []models.StationModel
+	UserRepo         repositories.UserRepository
+	WatchedRouteRepo repositories.WatchedRouteRepository
+	ApiClient        *openapiclient.APIClient
 }

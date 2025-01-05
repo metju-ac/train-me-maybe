@@ -124,7 +124,7 @@ All POST bodies are JSON.
 
   - NOT needed - we will hardcode this on the front end
 
-- POST /api/watchedRoute
+- POST /api/auth/watchedRoute
 
   - body: autoPurchase (bool), fromStationId (int64), toStationId (int64), routeId (string), tariffClass (string), selectedSeatClasses, creditUser (optional string), creditPassword (optional string), cutOffTime (optional int), minimalCredit (optional int)
     - if autoPurchase is true, creditUser and creditPassword and tarriff class must be filled in
@@ -138,9 +138,9 @@ All POST bodies are JSON.
   - body: cutOffTime (int), minimalCredit (int), creditUser (string), creditPassword (string), tarriffClass (string)
   - modifies the current logged in user (from the cookie)
 
-- GET /api/watchedRoute
+- GET /api/auth/watchedRoute
 
   - returns all watched routes for the current user
 
-- DELETE /api/watchedRoute/:id
+- DELETE /api/auth/watchedRoute/:id
   - deletes the watched route with the given ID

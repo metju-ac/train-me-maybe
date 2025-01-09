@@ -13,5 +13,7 @@ type WatchedRoute struct {
 	TariffClass         string         `json:"tariffClass"`
 	CreditUserNumber    string         `json:"creditUser"`
 	CreditUserPassword  string         `json:"creditPassword"`
+	CutOffTime          *int           `json:"cutOffTime"`
+	MinimalCredit       *int           `json:"minimalCredit"`
 	User                User           `gorm:"foreignKey:UserEmail;references:Email" json:"-"`
 }

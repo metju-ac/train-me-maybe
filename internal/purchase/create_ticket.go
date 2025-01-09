@@ -21,7 +21,7 @@ type CreateRegisteredTicketRequest struct {
 func createTicket(ctx context.Context, config *config.Config, input *models.UserInput, seats *handlers.CheckFreeSeatsResponse, user *openapiclient.User, authToken string) (*openapiclient.Ticket, error) {
 	payload := openapiclient.CreateTicketRequest{
 		Route: openapiclient.CreateTicketRouteRequest{
-			RouteId:     input.SelectedRoute.Id,
+			RouteId:     input.SelectedRouteIds,
 			SeatClass:   seats.SeatClass,
 			PriceSource: input.RouteDetail.PriceClasses[0].PriceSource,
 			ActionPrice: nil,
@@ -42,7 +42,7 @@ func createTicket(ctx context.Context, config *config.Config, input *models.User
 		PercentualDiscountIds: []int64{},
 		Passengers: []openapiclient.Passenger{
 			{
-				Tariff: *input.Tariff.Key,
+				Tariff: input.TariffKey,
 				Phone:  user.PhoneNumber,
 				Email:  user.Email,
 			},

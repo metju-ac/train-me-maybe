@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"github.com/metju-ac/train-me-maybe/internal/models"
 	"github.com/metju-ac/train-me-maybe/internal/notification"
 	"log/slog"
 	"net/http"
@@ -63,7 +64,7 @@ func generateTxToken() string {
 	return encoded
 }
 
-func payTicket(ctx context.Context, config *config.Config, authToken string, ticket *openapiclient.Ticket, user *openapiclient.User) (*PayTicketResponse, error) {
+func payTicket(ctx context.Context, config *config.Config, input *models.UserInput, authToken string, ticket *openapiclient.Ticket, user *openapiclient.User) (*PayTicketResponse, error) {
 	body := PayTicketRequest{
 		Tickets: []Ticket{
 			{
@@ -231,7 +232,7 @@ func payTicket(ctx context.Context, config *config.Config, authToken string, tic
 
 	if resp.StatusCode != http.StatusOK {
 		slog.Error("Failed to pay ticket", "status", resp.Status)
-		notification.EmailNotificationTicketNotPaid(&config.Smtp, ticket.Price, string(ticket.Currency))
+		notification.EmailNotificationTicketNotPaid(&config.Smtp, input, ticket.Price, string(ticket.Currency))
 		return nil, errors.New("Failed to pay ticket")
 	}
 

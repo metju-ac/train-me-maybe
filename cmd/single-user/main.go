@@ -46,13 +46,16 @@ func main() {
 	}
 
 	userInput := &models.UserInput{
-		DepartingStation: route.DepartingStation,
-		ArrivingStation:  route.ArrivingStation,
-		SelectedRoute:    route.SelectedRoute,
-		SeatClasses:      seatClasses,
-		Tariff:           tariff,
-		Section:          nil,
-		RouteDetail:      nil,
+		DepartingStation:   route.DepartingStation,
+		ArrivingStation:    route.ArrivingStation,
+		SelectedRouteIds:   route.SelectedRoute.Id,
+		SeatClasses:        seatClasses,
+		TariffKey:          *tariff.Key,
+		Section:            nil,
+		RouteDetail:        nil,
+		CreditUserNumber:   config.Auth.CreditUser,
+		CreditUserPassword: config.Auth.CreditPassword,
+		UserEmail:          config.Smtp.Recipient,
 	}
 
 	routeDetail, err := handlers.FetchRouteDetail(apiClient, userInput)
@@ -72,7 +75,7 @@ func main() {
 	purchaseCutoffDuration := time.Duration(config.General.PurchaseCutoffMinutes) * time.Minute
 
 	for {
-		if time.Now().After(userInput.SelectedRoute.DepartureTime) {
+		if time.Now().After(userInput.RouteDetail.DepartureTime) {
 			fmt.Println("The train has already departed.")
 			break
 		}
@@ -91,7 +94,7 @@ func main() {
 
 		fmt.Println("Free seats found!")
 
-		if config.Auth.CreditEnabled && time.Now().Add(purchaseCutoffDuration).Before(userInput.SelectedRoute.DepartureTime) {
+		if config.Auth.CreditEnabled && time.Now().Add(purchaseCutoffDuration).Before(userInput.RouteDetail.DepartureTime) {
 			response, err := purchase.AutoPurchaseTicket(apiClient, config, userInput, freeSeatsResp)
 			if err != nil {
 				fmt.Println("Error purchasing ticket:", err)
@@ -101,7 +104,7 @@ func main() {
 			notification.EmailNotificationTicketBought(&config.Smtp, userInput)
 
 			if config.General.LowCreditThreshold.Value != nil && *config.General.LowCreditThreshold.Value >= int(response.Amount) {
-				notification.EmailNotificationLowCredit(&config.Smtp, response.Amount, response.Currency)
+				notification.EmailNotificationLowCredit(&config.Smtp, userInput, response.Amount, response.Currency)
 			}
 
 			break

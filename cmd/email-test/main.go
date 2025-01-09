@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
+	"github.com/metju-ac/train-me-maybe/openapi"
 	"os"
+	"time"
 
 	"github.com/metju-ac/train-me-maybe/internal/config"
 	"github.com/metju-ac/train-me-maybe/internal/models"
 	"github.com/metju-ac/train-me-maybe/internal/notification"
-	"github.com/metju-ac/train-me-maybe/openapi"
 )
 
 func main() {
@@ -26,12 +27,18 @@ func main() {
 		IsBusStation:   false,
 	}
 
+	testRoute := openapi.Route{
+		DepartureTime: time.Date(2023, time.November, 10, 15, 0, 0, 0, time.UTC),
+	}
+
 	notification.EmailNotificationFreeSeats(&config.Smtp, &models.UserInput{
 		DepartingStation: test_station,
 		ArrivingStation:  test_station,
-		SelectedRoute:    openapi.NewSimpleRouteWithDefaults(),
+		SelectedRouteIds: "123",
 		SeatClasses:      []string{"SEAT_CLASS"},
-		Tariff:           nil,
+		TariffKey:        "TARIFF_KEY",
 		Section:          nil,
+		RouteDetail:      &testRoute,
+		UserEmail:        config.Smtp.Recipient,
 	})
 }

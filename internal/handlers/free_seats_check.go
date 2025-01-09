@@ -22,11 +22,16 @@ func freeSeats(res *openapiclient.RouteSeatsResponse) bool {
 }
 
 func GetFreeSeatsOnRoute(apiClient *openapiclient.APIClient, userInput *models.UserInput, seatClass string) (*openapiclient.RouteSeatsResponse, error) {
-	slog.Info("Checking for free seats", "departingStation", userInput.DepartingStation.StationID, "arrivingStation", userInput.ArrivingStation.StationID, "selectedRoutes", userInput.SelectedRoute.Id, "seatClasses", userInput.SeatClasses)
+	slog.Info("Checking for free seats", "departingStation", userInput.DepartingStation.StationID, "arrivingStation", userInput.ArrivingStation.StationID, "selectedRoutes", userInput.SelectedRouteIds, "seatClasses", userInput.SeatClasses)
 
 	sections := []openapiclient.SimpleSection{*userInput.Section}
-	tariffs := []string{*userInput.Tariff.Key}
 
+	var tariffs []string
+	if userInput.TariffKey == "" {
+		tariffs = append(tariffs, "REGULAR")
+	} else {
+		tariffs = append(tariffs, userInput.TariffKey)
+	}
 	routeSeatsRequest := openapiclient.NewRouteSeatsRequest(sections, tariffs, seatClass)
 
 	route, httpResponse, err := apiClient.RoutesAPI.GetRouteFreeSeats(context.Background()).Request(*routeSeatsRequest).Execute()

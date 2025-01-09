@@ -48,16 +48,21 @@ func main() {
 	apiConfiguration := openapiclient.NewConfiguration(config.General.ApiBaseUrl)
 	apiClient := openapiclient.NewAPIClient(apiConfiguration)
 
-	stations := fetchStations(apiClient)
-
 	userRepo := repositories.NewUserRepository(db)
 	watchedRouteRepo := repositories.NewWatchedRouteRepository(db)
 
 	handler := &http.Handler{
-		Stations:         stations,
-		UserRepo:         userRepo,
-		WatchedRouteRepo: watchedRouteRepo,
-		ApiClient:        apiClient,
+		Stations:          make(map[int64]models.StationModel),
+		UserRepo:          userRepo,
+		WatchedRouteRepo:  watchedRouteRepo,
+		ApiClient:         apiClient,
+		GoroutineContexts: make(map[uint]context.CancelFunc),
+		Config:            *config,
+	}
+
+	stations := fetchStations(apiClient)
+	for _, station := range stations {
+		handler.Stations[station.StationID] = station
 	}
 
 	router := gin.Default()

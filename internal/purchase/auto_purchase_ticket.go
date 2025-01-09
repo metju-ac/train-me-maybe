@@ -35,7 +35,7 @@ func AutoPurchaseTicket(apiClient *openapiclient.APIClient, config *config.Confi
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
-	token, err := lib.LoginWithCreditTicket(ctx, config.General.ApiBaseUrl, config.Auth.CreditUser, config.Auth.CreditPassword)
+	token, err := lib.LoginWithCreditTicket(ctx, config.General.ApiBaseUrl, input.CreditUserNumber, input.CreditUserPassword)
 	if err != nil {
 		slog.Error("Failed to login with credit ticket", "error", err)
 		return nil, err
@@ -53,7 +53,7 @@ func AutoPurchaseTicket(apiClient *openapiclient.APIClient, config *config.Confi
 		return nil, err
 	}
 
-	payment, err := payTicket(ctx, config, token, ticket, user)
+	payment, err := payTicket(ctx, config, input, token, ticket, user)
 	if err != nil {
 		slog.Error("Failed to pay ticket", "error", err)
 		return nil, err

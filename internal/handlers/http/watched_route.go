@@ -161,6 +161,15 @@ func (h *Handler) CreateWatchedRoute(c *gin.Context) {
 		return
 	}
 
+	if req.AutoPurchase {
+		_, err := lib.LoginWithCreditTicket(h.Config.General.ApiBaseUrl, req.CreditUserNumber, req.CreditUserPassword)
+		if err != nil {
+			slog.Error("Failed to login with credit ticket", "error", err)
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to login with credit ticket"})
+			return
+		}
+	}
+
 	watchedRoute := &dbmodels.WatchedRoute{
 		UserEmail:           email.(string),
 		FromStationID:       req.FromStationID,
@@ -174,8 +183,6 @@ func (h *Handler) CreateWatchedRoute(c *gin.Context) {
 		CutOffTime:          req.CutOffTime,
 		MinimalCredit:       req.MinimalCredit,
 	}
-
-	//TODO check login to regiojet
 
 	if err := h.WatchedRouteRepo.Create(watchedRoute); err != nil {
 		slog.Error("Error creating watched route", "error", err)

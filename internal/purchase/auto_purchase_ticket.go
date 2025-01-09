@@ -35,7 +35,7 @@ func AutoPurchaseTicket(apiClient *openapiclient.APIClient, config *config.Confi
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
-	token, err := lib.LoginWithCreditTicket(ctx, config.General.ApiBaseUrl, input.CreditUserNumber, input.CreditUserPassword)
+	token, err := lib.LoginWithCreditTicket(config.General.ApiBaseUrl, input.CreditUserNumber, input.CreditUserPassword)
 	if err != nil {
 		slog.Error("Failed to login with credit ticket", "error", err)
 		return nil, err

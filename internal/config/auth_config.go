@@ -1,14 +1,11 @@
 package config
 
 import (
-	"context"
 	"errors"
-	"log/slog"
-	"os"
-	"time"
-
 	"github.com/google/uuid"
 	"github.com/metju-ac/train-me-maybe/internal/lib"
+	"log/slog"
+	"os"
 )
 
 type AuthConfig struct {
@@ -57,10 +54,7 @@ func validateAuthConfig(config *Config) error {
 		return errors.New("The Credit password must be set")
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
-	defer cancel()
-
-	token, err := lib.LoginWithCreditTicket(ctx, config.General.ApiBaseUrl, config.Auth.CreditUser, config.Auth.CreditPassword)
+	token, err := lib.LoginWithCreditTicket(config.General.ApiBaseUrl, config.Auth.CreditUser, config.Auth.CreditPassword)
 	if err != nil {
 		return err
 	}

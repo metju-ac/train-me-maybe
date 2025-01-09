@@ -2,6 +2,7 @@ package http
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/metju-ac/train-me-maybe/internal/lib"
 	"log/slog"
 	"net/http"
 )
@@ -53,6 +54,15 @@ func (h *Handler) UpdateUser(c *gin.Context) {
 		slog.Error("Error retrieving user", "email", email, "error", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error retrieving user"})
 		return
+	}
+
+	if req.CreditUser != nil && req.CreditPassword != nil {
+		_, err := lib.LoginWithCreditTicket(h.Config.General.ApiBaseUrl, *req.CreditUser, *req.CreditPassword)
+		if err != nil {
+			slog.Error("Failed to login with credit ticket", "error", err)
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to login with credit ticket"})
+			return
+		}
 	}
 
 	user.CutOffTime = req.CutOffTime

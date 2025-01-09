@@ -6,6 +6,7 @@ import (
 	"github.com/metju-ac/train-me-maybe/internal/utils"
 	"log/slog"
 	"net/http"
+	"strings"
 )
 
 type UserCredentials struct {
@@ -21,6 +22,7 @@ func (h *Handler) Login(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid data"})
 		return
 	}
+	credentials.Email = strings.ToLower(credentials.Email)
 
 	user, err := h.UserRepo.FindByEmail(credentials.Email)
 	if err != nil {
@@ -55,6 +57,7 @@ func (h *Handler) Register(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid data"})
 		return
 	}
+	credentials.Email = strings.ToLower(credentials.Email)
 
 	if _, err := h.UserRepo.FindByEmail(credentials.Email); err == nil {
 		slog.Warn("User with given email already exists", "email", credentials.Email)

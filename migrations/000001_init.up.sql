@@ -27,6 +27,8 @@ CREATE TABLE watched_routes
     tariff_class          VARCHAR(255),
     credit_user_number    VARCHAR(255),
     credit_user_password  VARCHAR(255),
+    cut_off_time          INT,
+    minimal_credit        INT,
     FOREIGN KEY (user_email) REFERENCES users (email)
 );
 

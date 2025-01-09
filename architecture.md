@@ -75,6 +75,8 @@ Watch out - every int should be (int64) in Go.
   - OPTIONAL - tariff class (e.g. STUDENT, SENIOR, ADULT)
   - OPTIONAL - credit user
   - OPTIONAL - credit password
+  - OPTIONAL - cut-off time
+  - OPTIONAL - minimal credit
 
 - OPTIONAL - Table `SuccessfulPurchase` for successful purchases
   - ID (PK)

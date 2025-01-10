@@ -14,13 +14,13 @@ Incrementally, we will add these features:
 
 ### Automatic purchase
 
-- [ ] allow the user to enter a regojet login (kreditová jízdenka)
-- [ ] authenticate against the regiojet API
-- [ ] if there is a free seat and the user has enough credit, buy the seat automatically and notify the user
+- ✅ allow the user to enter a regojet login (kreditová jízdenka)
+- ✅ authenticate against the regiojet API
+- ✅ if there is a free seat and the user has enough credit, buy the seat automatically and notify the user
 
 ### Usability features
 
-- [ ] notify the user if they have low credit
+- ✅ notify the user if they have low credit
 - [ ] allow the user to put an upper limit on the price of the automatically-purchased ticket
 - [ ] notify the user on their Discord channel
 - ✅ allow the user to enter/choose the name of the stations, instead of its IDs (can be some simple terminal UI when starting the app)
@@ -30,8 +30,8 @@ Incrementally, we will add these features:
 ### Multi-tenancy features
 
 - [ ] deploy the application to a server
-- [ ] allow the user to configure the application via a web interface
-- [ ] allow multiple users to use the deployed application
+- ✅ allow the user to configure the application via a web interface
+- ✅ allow multiple users to use the deployed application
 
 ## Configuration
 

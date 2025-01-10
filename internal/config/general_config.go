@@ -45,6 +45,9 @@ type GeneralConfig struct {
 
 	// Base URL of the regiojet API. E.g. 'https://brn-ybus-pubapi.sa.cz/restapi'
 	ApiBaseUrl string `toml:"api_base_url"`
+
+	// Whether to run in single user mode
+	SingleUserMode bool `toml:"single_user_mode"`
 }
 
 func mergeGeneralConfigs(config *GeneralConfig) error {

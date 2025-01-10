@@ -42,7 +42,7 @@ func mergeAuthConfigs(config *AuthConfig) error {
 
 func validateAuthConfig(config *Config) error {
 
-	if !config.Auth.CreditEnabled {
+	if !config.Auth.CreditEnabled || !config.General.SingleUserMode {
 		return nil
 	}
 

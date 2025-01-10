@@ -56,7 +56,7 @@ func LoadConfig() (*Config, error) {
 	// more sections will go here
 
 	// validate the configs
-	if err := validateSmtpConfig(&config.Smtp); err != nil {
+	if err := validateSmtpConfig(&config); err != nil {
 		slog.Error("Failed to validate SMTP config", "error", err)
 		return nil, err
 	}

@@ -7,6 +7,7 @@ poll_interval = 120
 purchase_cutoff_minutes = 120
 low_credit_threshold = 400
 api_base_url = "https://brn-ybus-pubapi.sa.cz/restapi"
+single_user_mode = false
 
 [auth]
 credit_enabled = true

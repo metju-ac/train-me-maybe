@@ -43,24 +43,24 @@ func mergeSmtpConfigs(config *SmtpConfig) error {
 	return nil
 }
 
-func validateSmtpConfig(config *SmtpConfig) error {
-	if config.Server == "" {
+func validateSmtpConfig(config *Config) error {
+	if config.Smtp.Server == "" {
 		return errors.New("SMTP server not set")
 	}
 
-	if config.Port == 0 {
+	if config.Smtp.Port == 0 {
 		return errors.New("SMTP port not set")
 	}
 
-	if config.Username == "" {
+	if config.Smtp.Username == "" {
 		return errors.New("SMTP username not set")
 	}
 
-	if config.Password == "" {
+	if config.Smtp.Password == "" {
 		return errors.New("SMTP password not set")
 	}
 
-	if config.Recipient == "" {
+	if config.General.SingleUserMode && config.Smtp.Recipient == "" {
 		return errors.New("SMTP recipient not set")
 	}
 

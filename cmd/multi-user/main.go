@@ -65,6 +65,12 @@ func main() {
 		handler.Stations[station.StationID] = station
 	}
 
+	err = handler.RestartWatchedRoutes()
+	if err != nil {
+		fmt.Println("Error:", err)
+		os.Exit(1)
+	}
+
 	router := gin.Default()
 	router.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"http://localhost:5173"}, // Update with your frontend URL

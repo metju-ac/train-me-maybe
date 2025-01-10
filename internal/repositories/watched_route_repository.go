@@ -9,6 +9,7 @@ type WatchedRouteRepository interface {
 	Create(watchedRoute *dbmodels.WatchedRoute) error
 	Delete(id uint) error
 	GetAllForEmail(email string) ([]dbmodels.WatchedRoute, error)
+	GetAll() ([]dbmodels.WatchedRoute, error)
 }
 
 type watchedRouteRepository struct {
@@ -30,5 +31,11 @@ func (r *watchedRouteRepository) Delete(id uint) error {
 func (r *watchedRouteRepository) GetAllForEmail(email string) ([]dbmodels.WatchedRoute, error) {
 	var watchedRoutes []dbmodels.WatchedRoute
 	err := r.db.Where("user_email = ?", email).Find(&watchedRoutes).Error
+	return watchedRoutes, err
+}
+
+func (r *watchedRouteRepository) GetAll() ([]dbmodels.WatchedRoute, error) {
+	var watchedRoutes []dbmodels.WatchedRoute
+	err := r.db.Find(&watchedRoutes).Error
 	return watchedRoutes, err
 }

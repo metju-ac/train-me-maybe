@@ -18,13 +18,14 @@ import (
 )
 
 type Handler struct {
-	Stations          map[int64]models.StationModel
-	UserRepo          repositories.UserRepository
-	WatchedRouteRepo  repositories.WatchedRouteRepository
-	ApiClient         *openapiclient.APIClient
-	GoroutineContexts map[uint]context.CancelFunc
-	mu                sync.Mutex
-	Config            config.Config
+	Stations               map[int64]models.StationModel
+	UserRepo               repositories.UserRepository
+	WatchedRouteRepo       repositories.WatchedRouteRepository
+	SuccessfulPurchaseRepo repositories.SuccessfulPurchaseRepository
+	ApiClient              *openapiclient.APIClient
+	GoroutineContexts      map[uint]context.CancelFunc
+	mu                     sync.Mutex
+	Config                 config.Config
 }
 
 func (h *Handler) cancelWatchedRoute(id uint) error {
@@ -35,7 +36,7 @@ func (h *Handler) cancelWatchedRoute(id uint) error {
 	}
 	h.mu.Unlock()
 
-	err := h.WatchedRouteRepo.Delete(uint(id))
+	err := h.WatchedRouteRepo.Delete(id)
 	if err != nil {
 		slog.Error("Error deleting watched route", "id", id, "error", err)
 		return err
@@ -120,7 +121,7 @@ func (h *Handler) watchRoute(userInput *models.UserInput, watchedRoute *dbmodels
 	}
 
 	slog.Info("Purchasing ticket", "watchedRouteID", watchedRoute.RouteID)
-	response, err := purchase.AutoPurchaseTicket(h.ApiClient, &h.Config, userInput, checkFreeSeatsResponse)
+	response, ticket, err := purchase.AutoPurchaseTicket(h.ApiClient, &h.Config, userInput, checkFreeSeatsResponse)
 	if err != nil {
 		slog.Error("Error purchasing ticket", "error", err)
 		_ = h.cancelWatchedRoute(watchedRoute.ID)
@@ -128,13 +129,31 @@ func (h *Handler) watchRoute(userInput *models.UserInput, watchedRoute *dbmodels
 	}
 
 	slog.Info("Ticket purchased successfully", "watchedRouteID", watchedRoute.RouteID, "response", response)
-	notification.EmailNotificationTicketBought(&h.Config.Smtp, userInput)
 
 	if watchedRoute.MinimalCredit != nil && *watchedRoute.MinimalCredit >= int(response.Amount) {
 		slog.Info("Low credit", "watchedRouteID", watchedRoute.RouteID)
 		notification.EmailNotificationLowCredit(&h.Config.Smtp, userInput, response.Amount, response.Currency)
 	}
 
+	successfulPurchase := &dbmodels.SuccessfulPurchase{
+		UserEmail:           watchedRoute.UserEmail,
+		FromStationID:       watchedRoute.FromStationID,
+		ToStationID:         watchedRoute.ToStationID,
+		RouteID:             watchedRoute.RouteID,
+		TariffClass:         watchedRoute.TariffClass,
+		SelectedSeatClasses: watchedRoute.SelectedSeatClasses,
+		PurchaseTime:        time.Now(),
+		Price:               ticket.Price,
+		Currency:            string(ticket.Currency),
+		SeatClass:           ticket.SeatClassKey,
+	}
+
+	beersOwed, err := h.SuccessfulPurchaseRepo.CreateWithBeerUpdate(successfulPurchase, h.Config.General.TicketBeerPrice)
+	if err != nil {
+		slog.Error("Error creating successful purchase", "error", err)
+	}
+
+	notification.EmailNotificationTicketBoughtWithBeers(&h.Config.Smtp, userInput, ticket, beersOwed)
 	_ = h.cancelWatchedRoute(watchedRoute.ID)
 }
 

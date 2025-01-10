@@ -48,6 +48,9 @@ type GeneralConfig struct {
 
 	// Whether to run in single user mode
 	SingleUserMode bool `toml:"single_user_mode"`
+
+	// Price of a successfull ticket purchase in beers
+	TicketBeerPrice float32 `toml:"ticket_beer_price"`
 }
 
 func mergeGeneralConfigs(config *GeneralConfig) error {
@@ -102,6 +105,10 @@ func validateGeneralConfig(config *GeneralConfig) error {
 
 	if config.ApiBaseUrl == "" {
 		return errors.New("API base URL must be set")
+	}
+
+	if config.TicketBeerPrice <= 0 {
+		return errors.New("Ticket beer price must be greater than 0")
 	}
 
 	return nil

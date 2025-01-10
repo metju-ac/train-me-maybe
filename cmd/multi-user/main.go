@@ -50,14 +50,16 @@ func main() {
 
 	userRepo := repositories.NewUserRepository(db)
 	watchedRouteRepo := repositories.NewWatchedRouteRepository(db)
+	successfullPurchaseRepo := repositories.NewSuccessfulPurchaseRepository(db)
 
 	handler := &http.Handler{
-		Stations:          make(map[int64]models.StationModel),
-		UserRepo:          userRepo,
-		WatchedRouteRepo:  watchedRouteRepo,
-		ApiClient:         apiClient,
-		GoroutineContexts: make(map[uint]context.CancelFunc),
-		Config:            *config,
+		Stations:               make(map[int64]models.StationModel),
+		UserRepo:               userRepo,
+		WatchedRouteRepo:       watchedRouteRepo,
+		SuccessfulPurchaseRepo: successfullPurchaseRepo,
+		ApiClient:              apiClient,
+		GoroutineContexts:      make(map[uint]context.CancelFunc),
+		Config:                 *config,
 	}
 
 	stations := fetchStations(apiClient)

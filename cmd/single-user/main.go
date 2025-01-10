@@ -95,13 +95,13 @@ func main() {
 		fmt.Println("Free seats found!")
 
 		if config.Auth.CreditEnabled && time.Now().Add(purchaseCutoffDuration).Before(userInput.RouteDetail.DepartureTime) {
-			response, err := purchase.AutoPurchaseTicket(apiClient, config, userInput, freeSeatsResp)
+			response, ticket, err := purchase.AutoPurchaseTicket(apiClient, config, userInput, freeSeatsResp)
 			if err != nil {
 				fmt.Println("Error purchasing ticket:", err)
 				os.Exit(1)
 			}
 
-			notification.EmailNotificationTicketBought(&config.Smtp, userInput)
+			notification.EmailNotificationTicketBought(&config.Smtp, userInput, ticket)
 
 			if config.General.LowCreditThreshold.Value != nil && *config.General.LowCreditThreshold.Value >= int(response.Amount) {
 				notification.EmailNotificationLowCredit(&config.Smtp, userInput, response.Amount, response.Currency)

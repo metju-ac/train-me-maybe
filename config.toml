@@ -8,6 +8,7 @@ purchase_cutoff_minutes = 120
 low_credit_threshold = 400
 api_base_url = "https://brn-ybus-pubapi.sa.cz/restapi"
 single_user_mode = false
+ticket_beer_price = 0.2
 
 [auth]
 credit_enabled = true

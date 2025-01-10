@@ -58,14 +58,31 @@ func EmailNotificationFreeSeats(config *config.SmtpConfig, input *models.UserInp
 	return
 }
 
-func EmailNotificationTicketBought(config *config.SmtpConfig, input *models.UserInput) {
+func generateTicketBoughtEmailBody(input *models.UserInput, ticket *openapiclient.Ticket, beersOwed *float32) string {
+	body := `Your ticket has been successfully purchased for the route from <b>` +
+		cli.FormatStation(input.DepartingStation) + `</b> to <b>` + cli.FormatStation(input.ArrivingStation) +
+		`</b> on the selected route: ` + formatRoute(input.RouteDetail) + ` for <b>` +
+		fmt.Sprintf("%.2f", ticket.Price) + ` ` + string(ticket.Currency) + `</b>.`
+	if beersOwed != nil {
+		body += `<br><br> You now owe us ` + fmt.Sprintf("%.2f", *beersOwed) + ` beers for our amazing service. Thanks for keeping Robert and Matěj hydrated 🍻.`
+	}
+	return body
+}
+
+func EmailNotificationTicketBought(config *config.SmtpConfig, input *models.UserInput, ticket *openapiclient.Ticket) {
 	slog.Info("Preparing bought ticket email notification", "departingStation", input.DepartingStation.StationID, "arrivingStation", input.ArrivingStation.StationID, "selectedRoutes", input.SelectedRouteIds)
 
 	subject := `[TRAIN ME MAYBE] Ticket purchase successful for ` + formatConnectionShort(input)
-	body := `Your ticket has been successfully purchased for the route from <b>` + cli.FormatStation(input.DepartingStation) + `</b> to <b>` + cli.FormatStation(input.ArrivingStation) + `</b> on the selected route: ` + formatRoute(input.RouteDetail)
+	body := generateTicketBoughtEmailBody(input, ticket, nil)
 	sendEmail(config, input, subject, body)
+}
 
-	return
+func EmailNotificationTicketBoughtWithBeers(config *config.SmtpConfig, input *models.UserInput, ticket *openapiclient.Ticket, beersOwed float32) {
+	slog.Info("Preparing bought ticket email notification with beers owed", "departingStation", input.DepartingStation.StationID, "arrivingStation", input.ArrivingStation.StationID, "selectedRoutes", input.SelectedRouteIds)
+
+	subject := `[TRAIN ME MAYBE] Ticket purchase successful for ` + formatConnectionShort(input)
+	body := generateTicketBoughtEmailBody(input, ticket, &beersOwed)
+	sendEmail(config, input, subject, body)
 }
 
 func EmailNotificationTicketNotPaid(config *config.SmtpConfig, input *models.UserInput, price float32, currency string) {

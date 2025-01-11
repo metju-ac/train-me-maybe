@@ -1,10 +1,10 @@
 package models
 
 type StationModel struct {
-	Country        string // Country name
-	City           string // City name
-	StationID      int64  // Station ID
-	StationName    string // Station name
-	IsTrainStation bool   // Indicates if the station is a train station
-	IsBusStation   bool   // Indicates if the station is a bus station
+	Country        string `json:"country"`        // Country name
+	City           string `json:"city"`           // City name
+	StationID      int64  `json:"stationID"`      // Station ID
+	StationName    string `json:"stationName"`    // Station name
+	IsTrainStation bool   `json:"isTrainStation"` // Indicates if the station is a train station
+	IsBusStation   bool   `json:"isBusStation"`   // Indicates if the station is a bus station
 }

@@ -21,6 +21,11 @@ import (
 // checks if the Route type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &Route{}
 
+type CarbonOffset struct {
+	Amount   float64 `json:"amount"`
+	Currency string  `json:"currency"`
+}
+
 // Route struct for Route
 type Route struct {
 	// Unique identifier of a route. Consists of unique sections identifiers separated by commas.
@@ -59,7 +64,7 @@ type Route struct {
 	// Textual information about the travel time on the route
 	TravelTime *string `json:"travelTime,omitempty"`
 	// comes additionaly in API
-	CarbonOffset *string `json:"carbonOffset,omitempty"`
+	CarbonOffset *CarbonOffset `json:"carbonOffset,omitempty"`
 }
 
 type _Route Route

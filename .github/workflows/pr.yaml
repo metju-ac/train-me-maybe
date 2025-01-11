@@ -16,8 +16,10 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: '1.23'
-      - name: Build
-        run: go build
+      - name: Build single user
+        run: go build cmd/single-user/main.go
+      - name: Build multi user
+        run: go build cmd/multi-user/main.go
 
   format:
     name: Format

@@ -75,7 +75,7 @@ const staticDataService = {
         return transformStationsFromRaw();
       }
       try {
-        const response = await client.get<Station[]>("/station");
+        const response = await client.get<Station[]>("/auth/station");
         return response.data;
       } catch (error) {
         console.error(error);

@@ -1,5 +1,6 @@
 import { WatchedRoute } from "@/models/WatchedRoute";
 import { Station } from "@models/Station";
+import { formatStation } from "@/utils/formatStation";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
@@ -58,7 +59,7 @@ interface HeadCell {
 
 const renderStation = (id: number, stations: Station[]) => {
   const station = stations.find((station) => station.stationID === id);
-  return station ? station.stationName : id;
+  return station ? formatStation(station) : id;
 };
 
 const headCells: readonly HeadCell[] = [

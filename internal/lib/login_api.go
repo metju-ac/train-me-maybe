@@ -7,6 +7,7 @@ import (
 	"errors"
 	"log/slog"
 	"net/http"
+	"time"
 )
 
 type LoginRequest struct {
@@ -14,7 +15,7 @@ type LoginRequest struct {
 	Password    string `json:"password"`
 }
 
-func LoginWithCreditTicket(ctx context.Context, baseUrl string, username string, password string) (string, error) {
+func LoginWithCreditTicket(baseUrl string, username string, password string) (string, error) {
 	body := LoginRequest{
 		AccountCode: username,
 		Password:    password,
@@ -25,6 +26,9 @@ func LoginWithCreditTicket(ctx context.Context, baseUrl string, username string,
 		slog.Error("Failed to marshal login request", "error", err)
 		return "", err
 	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
 
 	buffer := bytes.NewBuffer(bodyJson)
 

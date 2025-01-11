@@ -10,10 +10,10 @@ import (
 	openapiclient "github.com/metju-ac/train-me-maybe/openapi"
 )
 
-func getSectionIdsFromRoute(route *openapiclient.SimpleRoute) ([]int64, error) {
+func getSectionIdsFromRoute(routeIds string) ([]int64, error) {
 	intIds := make([]int64, 0)
 
-	ids := strings.Split(route.Id, ",")
+	ids := strings.Split(routeIds, ",")
 	for _, idStr := range ids {
 		id, err := strconv.ParseInt(idStr, 10, 64)
 		if err != nil {
@@ -27,7 +27,7 @@ func getSectionIdsFromRoute(route *openapiclient.SimpleRoute) ([]int64, error) {
 
 func GetSection(input *models.UserInput) (*openapiclient.SimpleSection, error) {
 
-	sectionIds, err := getSectionIdsFromRoute(input.SelectedRoute)
+	sectionIds, err := getSectionIdsFromRoute(input.SelectedRouteIds)
 	if err != nil {
 		slog.Error("Error getting section IDs", "error", err)
 		return nil, fmt.Errorf("error getting section IDs: %v", err)

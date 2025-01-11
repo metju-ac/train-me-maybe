@@ -1,6 +1,7 @@
 import config from "@/config";
 import { Route } from "@models/Route";
 import { Station } from "@models/Station";
+import { formatStation } from "@/utils/formatStation";
 import client from "@services/axiosClient";
 import routes from "./data/routes.json";
 
@@ -14,9 +15,9 @@ const routeService = {
     }): Promise<Route[]> => {
       console.log(
         "getRoutes: getting routes from station",
-        params.fromStation.stationName,
+         formatStation(params.fromStation),
         "to station",
-        params.toStation.stationName,
+         formatStation(params.toStation),
         "on date",
         params.date
       );
@@ -42,7 +43,7 @@ const routeService = {
         throw new Error("No routes found");
       }
 
-      const response = await client.get<Route[]>("/route", {
+      const response = await client.get<Route[]>("/auth/route", {
         params: {
           fromStationId: params.fromStation.stationID,
           toStationId: params.toStation.stationID,

@@ -2,6 +2,7 @@ package notification
 
 import (
 	"fmt"
+	openapiclient "github.com/metju-ac/train-me-maybe/openapi"
 	"log/slog"
 
 	"github.com/metju-ac/train-me-maybe/internal/cli"
@@ -11,17 +12,21 @@ import (
 )
 
 func formatConnectionShort(input *models.UserInput) string {
-	return fmt.Sprintf("%s -> %s on %s", input.DepartingStation.City, input.ArrivingStation.City, input.SelectedRoute.DepartureTime.Format("02.01. 15:04"))
+	return fmt.Sprintf("%s -> %s on %s", input.DepartingStation.City, input.ArrivingStation.City, input.RouteDetail.DepartureTime.Format("02.01. 15:04"))
 }
 
-func sendEmail(config *config.SmtpConfig, subject string, body string) {
+func formatRoute(route *openapiclient.Route) string {
+	return fmt.Sprintf("%s - %s (Transfers: %d)", route.DepartureTime.Format("02.01. 15:04"), route.ArrivalTime.Format("02.01. 15:04"), len(route.GetTransfersInfo().Transfers))
+}
+
+func sendEmail(config *config.SmtpConfig, input *models.UserInput, subject string, body string) {
 	m := gomail.NewMessage()
 
 	// Set E-Mail sender
 	m.SetHeader("From", config.Username)
 
 	// Set E-Mail receivers
-	m.SetHeader("To", config.Recipient)
+	m.SetHeader("To", input.UserEmail)
 
 	// Set E-Mail subject
 	m.SetHeader("Subject", subject)
@@ -44,41 +49,58 @@ func sendEmail(config *config.SmtpConfig, subject string, body string) {
 
 // partly taken from https://www.loginradius.com/blog/engineering/sending-emails-with-golang/
 func EmailNotificationFreeSeats(config *config.SmtpConfig, input *models.UserInput) {
-	slog.Info("Preparing free seats email notification", "departingStation", input.DepartingStation.StationID, "arrivingStation", input.ArrivingStation.StationID, "selectedRoutes", input.SelectedRoute.Id)
+	slog.Info("Preparing free seats email notification", "departingStation", input.DepartingStation.StationID, "arrivingStation", input.ArrivingStation.StationID, "selectedRoutes", input.SelectedRouteIds)
 
 	subject := `[TRAIN ME MAYBE] Free seats found on ` + formatConnectionShort(input)
-	body := `There are free seats on the route from <b>` + cli.FormatStation(input.DepartingStation) + `</b> to <b>` + cli.FormatStation(input.ArrivingStation) + `</b> on the selected route: ` + cli.FormatRoute(input.SelectedRoute)
-	sendEmail(config, subject, body)
+	body := `There are free seats on the route from <b>` + cli.FormatStation(input.DepartingStation) + `</b> to <b>` + cli.FormatStation(input.ArrivingStation) + `</b> on the selected route: ` + formatRoute(input.RouteDetail)
+	sendEmail(config, input, subject, body)
 
 	return
 }
 
-func EmailNotificationTicketBought(config *config.SmtpConfig, input *models.UserInput) {
-	slog.Info("Preparing bought ticket email notification", "departingStation", input.DepartingStation.StationID, "arrivingStation", input.ArrivingStation.StationID, "selectedRoutes", input.SelectedRoute.Id)
+func generateTicketBoughtEmailBody(input *models.UserInput, ticket *openapiclient.Ticket, beersOwed *float32) string {
+	body := `Your ticket has been successfully purchased for the route from <b>` +
+		cli.FormatStation(input.DepartingStation) + `</b> to <b>` + cli.FormatStation(input.ArrivingStation) +
+		`</b> on the selected route: ` + formatRoute(input.RouteDetail) + ` for <b>` +
+		fmt.Sprintf("%.2f", ticket.Price) + ` ` + string(ticket.Currency) + `</b>.`
+	if beersOwed != nil {
+		body += `<br><br> You now owe us ` + fmt.Sprintf("%.2f", *beersOwed) + ` beers for our amazing service. Thanks for keeping Robert and Matěj hydrated 🍻.`
+	}
+	return body
+}
+
+func EmailNotificationTicketBought(config *config.SmtpConfig, input *models.UserInput, ticket *openapiclient.Ticket) {
+	slog.Info("Preparing bought ticket email notification", "departingStation", input.DepartingStation.StationID, "arrivingStation", input.ArrivingStation.StationID, "selectedRoutes", input.SelectedRouteIds)
 
 	subject := `[TRAIN ME MAYBE] Ticket purchase successful for ` + formatConnectionShort(input)
-	body := `Your ticket has been successfully purchased for the route from <b>` + cli.FormatStation(input.DepartingStation) + `</b> to <b>` + cli.FormatStation(input.ArrivingStation) + `</b> on the selected route: ` + cli.FormatRoute(input.SelectedRoute)
-	sendEmail(config, subject, body)
-
-	return
+	body := generateTicketBoughtEmailBody(input, ticket, nil)
+	sendEmail(config, input, subject, body)
 }
 
-func EmailNotificationTicketNotPaid(config *config.SmtpConfig, price float32, currency string) {
+func EmailNotificationTicketBoughtWithBeers(config *config.SmtpConfig, input *models.UserInput, ticket *openapiclient.Ticket, beersOwed float32) {
+	slog.Info("Preparing bought ticket email notification with beers owed", "departingStation", input.DepartingStation.StationID, "arrivingStation", input.ArrivingStation.StationID, "selectedRoutes", input.SelectedRouteIds)
+
+	subject := `[TRAIN ME MAYBE] Ticket purchase successful for ` + formatConnectionShort(input)
+	body := generateTicketBoughtEmailBody(input, ticket, &beersOwed)
+	sendEmail(config, input, subject, body)
+}
+
+func EmailNotificationTicketNotPaid(config *config.SmtpConfig, input *models.UserInput, price float32, currency string) {
 	slog.Info("Preparing not paid ticket email notification", "price", price, "currency", currency)
 
 	subject := `[TRAIN ME MAYBE] Ticket purchase failed`
 	body := `Your ticket purchase has failed. The ticket for <b>` + fmt.Sprintf("%.2f", price) + ` ` + currency + `</b> has been booked but not been paid. Please, check that you have enough credit. If you do, please report this issue to the support.`
-	sendEmail(config, subject, body)
+	sendEmail(config, input, subject, body)
 
 	return
 }
 
-func EmailNotificationLowCredit(config *config.SmtpConfig, remainingCredit float64, currency string) {
+func EmailNotificationLowCredit(config *config.SmtpConfig, input *models.UserInput, remainingCredit float64, currency string) {
 	slog.Info("Preparing low credit email notification", "remainingCredit", remainingCredit, "currency", currency)
 
 	subject := `[TRAIN ME MAYBE] Low credit alert`
 	body := `Your credit is running low. Your remaining credit is <b>` + fmt.Sprintf("%.2f", remainingCredit) + ` ` + currency + `</b>.`
-	sendEmail(config, subject, body)
+	sendEmail(config, input, subject, body)
 
 	return
 }

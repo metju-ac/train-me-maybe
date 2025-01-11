@@ -2,6 +2,7 @@ package config
 
 import (
 	"log/slog"
+	"os"
 
 	"github.com/BurntSushi/toml"
 	"github.com/joho/godotenv"
@@ -11,6 +12,7 @@ type Config struct {
 	Smtp    SmtpConfig
 	General GeneralConfig
 	Auth    AuthConfig
+	Db      DbConfig
 }
 
 func LoadConfig() (*Config, error) {
@@ -24,11 +26,16 @@ func LoadConfig() (*Config, error) {
 		return nil, err
 	}
 
-	// Load .env file
-	err := godotenv.Load()
-	if err != nil {
-		slog.Error("Failed to load .env file", "error", err)
-		return nil, err
+	// Check if .env file exists and load it if present
+	if _, err := os.Stat(".env"); err == nil {
+		err := godotenv.Load()
+		if err != nil {
+			slog.Error("Failed to load .env file", "error", err)
+			return nil, err
+		}
+		slog.Info("Loaded .env file")
+	} else {
+		slog.Info(".env file not found, using environment variables from the system")
 	}
 
 	// then, if something is in the environment variables, overwrite the config
@@ -47,10 +54,15 @@ func LoadConfig() (*Config, error) {
 		return nil, err
 	}
 
+	if err := mergeDbConfigs(&config.Db); err != nil {
+		slog.Error("Failed to merge db configs", "error", err)
+		return nil, err
+	}
+
 	// more sections will go here
 
 	// validate the configs
-	if err := validateSmtpConfig(&config.Smtp); err != nil {
+	if err := validateSmtpConfig(&config); err != nil {
 		slog.Error("Failed to validate SMTP config", "error", err)
 		return nil, err
 	}
@@ -62,6 +74,11 @@ func LoadConfig() (*Config, error) {
 
 	if err := validateAuthConfig(&config); err != nil {
 		slog.Error("Failed to validate auth config", "error", err)
+		return nil, err
+	}
+
+	if err := validateDbConfig(&config); err != nil {
+		slog.Error("Failed to validate db config", "error", err)
 		return nil, err
 	}
 

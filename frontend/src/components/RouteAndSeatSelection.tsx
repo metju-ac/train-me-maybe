@@ -27,11 +27,11 @@ import SubmitButton from "./SubmitButton";
 dayjs.extend(utc);
 
 function formatRoute(route: Route) {
-  return `${dayjs(route.departureTime).format("HH:mm:ss")} - ${dayjs(
+  return `${dayjs(route.departureTime).format("MM-DD HH:mm")} - ${dayjs(
     route.arrivalTime
-  ).format("HH:mm:ss")} (${route.vehicleTypes.join(", ")}, price from ${
+  ).format("MM-DD HH:mm")} (${route.vehicleTypes.join(" + ")}, full price from ${
     route.creditPriceFrom
-  })`;
+  } EUR)`;
 }
 
 interface RouteAndSeatSelectionProps {

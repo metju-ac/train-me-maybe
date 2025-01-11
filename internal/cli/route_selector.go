@@ -7,7 +7,7 @@ import (
 	openapiclient "github.com/metju-ac/train-me-maybe/openapi"
 )
 
-func FormatRoute(route *openapiclient.SimpleRoute) string {
+func formatRoute(route *openapiclient.SimpleRoute) string {
 	return fmt.Sprintf("%s - %s (Transfers: %d)", route.DepartureTime.Format("02.01. 15:04"), route.ArrivalTime.Format("02.01. 15:04"), route.GetTransfersCount())
 }
 
@@ -16,7 +16,7 @@ func SelectRoute(routes []openapiclient.SimpleRoute) (*openapiclient.SimpleRoute
 
 	formattedRoutes := make([]string, 0, len(routes))
 	for _, route := range routes {
-		formattedRoutes = append(formattedRoutes, FormatRoute(&route))
+		formattedRoutes = append(formattedRoutes, formatRoute(&route))
 	}
 
 	selectPrompt := &survey.Select{
@@ -29,7 +29,7 @@ func SelectRoute(routes []openapiclient.SimpleRoute) (*openapiclient.SimpleRoute
 	}
 
 	for _, route := range routes {
-		formatted := FormatRoute(&route)
+		formatted := formatRoute(&route)
 		if formatted == selectedRoute {
 			return &route, nil
 		}

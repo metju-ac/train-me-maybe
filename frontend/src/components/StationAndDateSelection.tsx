@@ -1,4 +1,5 @@
 import { Station } from "@models/Station";
+import { formatStation } from "@/utils/formatStation";
 import { Autocomplete, Box, TextField, Typography } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -46,7 +47,7 @@ export default function StationAndDateSelection({
       </Box>
       <Autocomplete
         options={stations}
-        getOptionLabel={(option) => option.stationName}
+        getOptionLabel={(option) => formatStation(option)}
         value={fromStation}
         onChange={(_, newValue) => { setFromStation(newValue); }}
         renderInput={(params) => (
@@ -56,7 +57,7 @@ export default function StationAndDateSelection({
       />
       <Autocomplete
         options={stations}
-        getOptionLabel={(option) => option.stationName}
+        getOptionLabel={(option) => formatStation(option)}
         value={toStation}
         onChange={(_, newValue) => { setToStation(newValue); }}
         renderInput={(params) => (

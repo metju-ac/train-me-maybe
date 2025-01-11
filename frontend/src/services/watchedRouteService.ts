@@ -37,7 +37,7 @@ const watchedRouteService = {
         return rows;
       }
       try {
-        const response = await client.get<WatchedRoute[]>("/watchedRoute");
+        const response = await client.get<WatchedRoute[]>("/auth/watchedRoute");
         return response.data;
       } catch (error) {
         console.error(error);
@@ -53,7 +53,7 @@ const watchedRouteService = {
         return;
       }
       try {
-        const promises = ids.map((id) => client.delete(`/watchedRoute/${id}`));
+        const promises = ids.map((id) => client.delete(`/auth/watchedRoute/${id}`));
 
         await Promise.all(promises);
       } catch (error) {
@@ -96,7 +96,7 @@ const watchedRouteService = {
         return newRow;
       }
 
-      const response = await client.post<WatchedRoute>("/watchedRoute", body);
+      const response = await client.post<WatchedRoute>("/auth/watchedRoute", body);
       return response.data;
     },
   },

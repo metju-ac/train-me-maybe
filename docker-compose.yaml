@@ -32,14 +32,14 @@ services:
       postgres:
         condition: service_healthy
     environment:
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_USER: postgres
-      DB_PASSWORD: postgres
-      DB_NAME: train_me_maybe_db
-      REGIOJET_SMTP_USERNAME: username@gmail.com
-      REGIOJET_SMTP_PASSWORD: password
-      JWT_SECRET_KEY: secretkey
+      REGIOJET_DB_HOST: ${REGIOJET_DB_HOST:-localhost}
+      REGIOJET_DB_PORT: ${REGIOJET_DB_PORT:-5432}
+      REGIOJET_DB_USER: ${REGIOJET_DB_USER:-user}
+      REGIOJET_DB_PASSWORD: ${REGIOJET_DB_PASSWORD:-password}
+      REGIOJET_DB_NAME: ${REGIOJET_DB_NAME:-train_me_maybe_db}
+      REGIOJET_SMTP_USERNAME: ${REGIOJET_SMTP_USERNAME:-username@gmail.com}
+      REGIOJET_SMTP_PASSWORD: ${REGIOJET_SMTP_PASSWORD:-app_password}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-secretkey}
     ports:
       - "8080:8080"
 

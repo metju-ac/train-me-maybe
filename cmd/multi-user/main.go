@@ -37,7 +37,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	db, err := database.ConnectAndMigrate()
+	db, err := database.ConnectAndMigrate(config.Db)
 	if err != nil {
 		fmt.Println("Error:", err)
 		os.Exit(1)
@@ -75,7 +75,7 @@ func main() {
 
 	router := gin.Default()
 	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:5173"}, // Update with your frontend URL
+		AllowOrigins:     config.General.AllowedOrigins,
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
@@ -104,5 +104,5 @@ func main() {
 		publicRoutes.POST("/register", handler.Register)
 	}
 
-	router.Run(":8080")
+	router.Run(fmt.Sprintf(":%d", config.General.ServerPort))
 }

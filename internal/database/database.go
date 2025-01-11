@@ -6,21 +6,15 @@ import (
 	"github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
+	"github.com/metju-ac/train-me-maybe/internal/config"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"log/slog"
-	"os"
 )
 
-func ConnectAndMigrate() (*gorm.DB, error) {
-	dbHost := os.Getenv("DB_HOST")
-	dbPort := os.Getenv("DB_PORT")
-	dbUser := os.Getenv("DB_USER")
-	dbPassword := os.Getenv("DB_PASSWORD")
-	dbName := os.Getenv("DB_NAME")
-
-	dsn := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=disable",
-		dbHost, dbPort, dbUser, dbName, dbPassword)
+func ConnectAndMigrate(config config.DbConfig) (*gorm.DB, error) {
+	dsn := fmt.Sprintf("host=%s port=%d user=%s dbname=%s password=%s",
+		config.Host, config.Port, config.User, config.Name, config.Password)
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		slog.Error("Failed to connect to database", "error", err)
@@ -28,7 +22,8 @@ func ConnectAndMigrate() (*gorm.DB, error) {
 	}
 	slog.Info("Connected to database", "db", db)
 
-	dbURL := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", dbUser, dbPassword, dbHost, dbPort, dbName)
+	dbURL := fmt.Sprintf("postgres://%s:%s@%s:%d/%s?sslmode=disable",
+		config.User, config.Password, config.Host, config.Port, config.Name)
 	m, err := migrate.New(
 		"file://migrations",
 		dbURL,

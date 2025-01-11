@@ -51,6 +51,12 @@ type GeneralConfig struct {
 
 	// Price of a successfull ticket purchase in beers
 	TicketBeerPrice float32 `toml:"ticket_beer_price"`
+
+	// Allowed origins for CORS
+	AllowedOrigins []string `toml:"allowed_origins"`
+
+	// Port of the server
+	ServerPort int `toml:"server_port"`
 }
 
 func mergeGeneralConfigs(config *GeneralConfig) error {
@@ -83,6 +89,34 @@ func mergeGeneralConfigs(config *GeneralConfig) error {
 		config.ApiBaseUrl = url
 	}
 
+	if mode := os.Getenv("REGIOJET_SINGLE_USER_MODE"); mode != "" {
+		modeBool, err := strconv.ParseBool(mode)
+		if err != nil {
+			return err
+		}
+		config.SingleUserMode = modeBool
+	}
+
+	if price := os.Getenv("REGIOJET_TICKET_BEER_PRICE"); price != "" {
+		priceFloat, err := strconv.ParseFloat(price, 32)
+		if err != nil {
+			return err
+		}
+		config.TicketBeerPrice = float32(priceFloat)
+	}
+
+	if origins := os.Getenv("REGIOJET_ALLOWED_ORIGINS"); origins != "" {
+		config.AllowedOrigins = append(config.AllowedOrigins, origins)
+	}
+
+	if port := os.Getenv("REGIOJET_SERVER_PORT"); port != "" {
+		portInt, err := strconv.Atoi(port)
+		if err != nil {
+			return err
+		}
+		config.ServerPort = portInt
+	}
+
 	return nil
 }
 
@@ -109,6 +143,14 @@ func validateGeneralConfig(config *GeneralConfig) error {
 
 	if config.TicketBeerPrice <= 0 {
 		return errors.New("Ticket beer price must be greater than 0")
+	}
+
+	if len(config.AllowedOrigins) == 0 {
+		return errors.New("Allowed origins must be set")
+	}
+
+	if config.ServerPort <= 0 {
+		return errors.New("Server port must be greater than 0")
 	}
 
 	return nil

@@ -1,13 +1,15 @@
 import AuthenticatedOnly from "@components/AuthenticatedOnly";
 import ToastBarProvider from "@components/ToastBarProvider";
-import About from "@pages/About.tsx";
-import Account from "@pages/Account.tsx";
-import Home from "@pages/Home.tsx";
-import Login from "@pages/Login";
-import Logout from "@pages/Logout";
-import NewRoute from "@pages/NewRoute";
-import NotFound from "@pages/NotFound";
-import Register from "@pages/Register";
+import {
+  LazyAbout,
+  LazyAccount,
+  LazyHome,
+  LazyLogin,
+  LazyLogout,
+  LazyNewRoute,
+  LazyNotFound,
+  LazyRegister,
+} from "@pages/lazy";
 import Root from "@pages/Root.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { StrictMode } from "react";
@@ -18,10 +20,10 @@ import "./index.css";
 // Create a client
 const queryClient = new QueryClient();
 
-const home = <AuthenticatedOnly element={<Home />} />;
-const account = <AuthenticatedOnly element={<Account />} />;
-const logout = <AuthenticatedOnly element={<Logout />} />;
-const newRoute = <AuthenticatedOnly element={<NewRoute />} />;
+const home = <AuthenticatedOnly element={<LazyHome />} />;
+const account = <AuthenticatedOnly element={<LazyAccount />} />;
+const logout = <AuthenticatedOnly element={<LazyLogout />} />;
+const newRoute = <AuthenticatedOnly element={<LazyNewRoute />} />;
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -32,12 +34,12 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/" element={<Root />}>
               <Route index element={home} />
               <Route path="routes/new" element={newRoute} />
-              <Route path="about" element={<About />} />
+              <Route path="about" element={<LazyAbout />} />
               <Route path="account" element={account} />
-              <Route path="login" element={<Login />} />
-              <Route path="register" element={<Register />} />
+              <Route path="login" element={<LazyLogin />} />
+              <Route path="register" element={<LazyRegister />} />
               <Route path="logout" element={logout} />
-              <Route path="*" element={<NotFound />} />
+              <Route path="*" element={<LazyNotFound />} />
             </Route>
           </Routes>
         </BrowserRouter>

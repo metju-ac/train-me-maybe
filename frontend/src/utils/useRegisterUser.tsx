@@ -3,6 +3,7 @@ import userService from "@services/userService";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useContext } from "react";
 import { useNavigate } from "react-router";
+import printError from "./printError";
 
 export default function useRegisterUser() {
   const queryClient = useQueryClient();
@@ -24,7 +25,7 @@ export default function useRegisterUser() {
     },
     onError: (error) => {
       console.error("Error registering user", error);
-      setToast("Error registering user: " + error.message, "error");
+      printError(setToast, error, "Error registering user");
     },
   });
 }

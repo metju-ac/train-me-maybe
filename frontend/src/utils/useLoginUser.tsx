@@ -3,6 +3,7 @@ import userService from "@services/userService";
 import { useMutation } from "@tanstack/react-query";
 import { useContext } from "react";
 import { useNavigate } from "react-router";
+import printError from "./printError";
 
 export default function useLoginUser() {
   const { setToast } = useContext(ToastBarContext);
@@ -18,7 +19,7 @@ export default function useLoginUser() {
     },
     onError: (error) => {
       console.error("Error logging in", error);
-      setToast("Error logging in: " + error.message, "error");
+      printError(setToast, error, "Error logging in");
     },
   });
 }

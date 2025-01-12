@@ -5,9 +5,15 @@ if (!baseUrl || baseUrl === "") {
 
 const useMocks = import.meta.env.VITE_USE_MOCKS === "true";
 
+const supportEmail = import.meta.env.VITE_SUPPORT_EMAIL;
+if (!supportEmail || supportEmail === "") {
+  throw new Error("VITE_SUPPORT_EMAIL is not set");
+}
+
 const config = {
   baseUrl,
   useMocks,
+  supportEmail,
 };
 
 export default config;

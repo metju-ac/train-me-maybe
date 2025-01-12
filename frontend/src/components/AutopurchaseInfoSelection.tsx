@@ -8,6 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Tariff } from "@services/staticDataService";
+import printError from "@utils/printError";
 import useTariffs from "@utils/useTariffs";
 import useUpdateUserDetails from "@utils/useUpdateUserDetails";
 import useUserDetails from "@utils/useUserDetails";
@@ -96,10 +97,7 @@ function AutopurchaseInfoSelectionForm({
           props.handleSubmit(e, data);
         },
         onError: (err) => {
-          setToast(
-            "Failed to save details to account: " + err.message,
-            "error"
-          );
+          printError(setToast, err, "Failed to save details to account");
         },
       });
       return;

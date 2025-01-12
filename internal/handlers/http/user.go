@@ -1,10 +1,11 @@
 package http
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/metju-ac/train-me-maybe/internal/lib"
 	"log/slog"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
+	"github.com/metju-ac/train-me-maybe/internal/lib"
 )
 
 type UpdateUserRequest struct {
@@ -56,7 +57,7 @@ func (h *Handler) UpdateUser(c *gin.Context) {
 		return
 	}
 
-	if req.CreditUser != nil && req.CreditPassword != nil {
+	if req.CreditUser != nil && (*req.CreditUser) != "" && req.CreditPassword != nil && (*req.CreditPassword) != "" {
 		_, err := lib.LoginWithCreditTicket(h.Config.General.ApiBaseUrl, *req.CreditUser, *req.CreditPassword)
 		if err != nil {
 			slog.Error("Failed to login with credit ticket", "error", err)

@@ -1,5 +1,8 @@
+ARG GOLANG_VERSION="1.23.4-alpine"
+ARG NODE_VERSION="22-alpine"
+
 # Step 1: Build the Backend
-FROM golang:1.23.4-alpine AS backend-builder
+FROM golang:${GOLANG_VERSION} AS backend-builder
 
 WORKDIR /app
 
@@ -12,12 +15,16 @@ WORKDIR /app/cmd/multi-user
 RUN go build -o /train-me-maybe-app
 
 # Step 2: Build the Frontend
-FROM node:20-alpine AS frontend-builder
+ARG NODE_VERSION
+FROM node:${NODE_VERSION} AS frontend-builder
 
 WORKDIR /frontend
 
-COPY ./frontend/package.json ./
-RUN npm install
+ARG NODE_ENV=production
+ENV NODE_ENV $NODE_ENV
+COPY package*.json ./
+ENV NODE_ENV=production
+RUN --mount=type=cache,target=~/.npm npm ci
 
 COPY ./frontend ./
 RUN npm run build

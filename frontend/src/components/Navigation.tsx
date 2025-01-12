@@ -4,12 +4,14 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import useIsLoggedIn from "@utils/useIsLoggedIn";
+import { useTranslation } from "react-i18next";
 
 /**
  *  See https://reactrouter.com/start/library/navigating
  */
 export default function ButtonAppBar() {
   const isLoggedIn = useIsLoggedIn();
+  const { t } = useTranslation("default");
 
   return (
     <nav>
@@ -23,20 +25,20 @@ export default function ButtonAppBar() {
           >
             <Box sx={{ display: "flex", gap: "1rem" }}>
               <NavLink to="/" end>
-                Home
+                {t("Home")}
               </NavLink>
-              <NavLink to="/about">About</NavLink>
+              <NavLink to="/about">{t("About")}</NavLink>
             </Box>
             <Box sx={{ display: "flex", gap: "1rem" }}>
               {isLoggedIn ? (
                 <>
-                  <NavLink to="/account">Account</NavLink>
-                  <NavLink to="/logout">Logout</NavLink>
+                  <NavLink to="/account">{t("Account")}</NavLink>
+                  <NavLink to="/logout">{t("Logout")}</NavLink>
                 </>
               ) : (
                 <>
-                  <NavLink to="/login">Login</NavLink>
-                  <NavLink to="/register">Register</NavLink>
+                  <NavLink to="/login">{t("Login")}</NavLink>
+                  <NavLink to="/register">{t("Register")}</NavLink>
                 </>
               )}
             </Box>

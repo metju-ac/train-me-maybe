@@ -1,6 +1,6 @@
 import { WatchedRoute } from "@/models/WatchedRoute";
-import { Station } from "@models/Station";
 import { formatStation } from "@/utils/formatStation";
+import { Station } from "@models/Station";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
@@ -24,7 +24,9 @@ import { visuallyHidden } from "@mui/utils";
 import useDeleteWatchedRoute from "@utils/useDeleteWatchedRoute";
 import useStations from "@utils/useStations";
 import useWatchedRoutes from "@utils/useWatchedRoutes";
+import { TFunction } from "i18next";
 import * as React from "react";
+import { useTranslation } from "react-i18next";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -62,32 +64,39 @@ const renderStation = (id: number, stations: Station[]) => {
   return station ? formatStation(station) : id;
 };
 
-const headCells: readonly HeadCell[] = [
-  {
-    id: "id",
-    numeric: false,
-    disablePadding: true,
-    label: "ID",
-  },
-  {
-    id: "fromStationId",
-    numeric: false,
-    disablePadding: false,
-    label: "From station",
-  },
-  {
-    id: "toStationId",
-    numeric: false,
-    disablePadding: false,
-    label: "To Station",
-  },
-  {
-    id: "tariffClass",
-    numeric: false,
-    disablePadding: false,
-    label: "Tariff Class",
-  },
-];
+const useHeadCells = (t: TFunction<"default", undefined>) => {
+  const cells: readonly HeadCell[] = React.useMemo(
+    () => [
+      {
+        id: "id",
+        numeric: false,
+        disablePadding: true,
+        label: "ID",
+      },
+      {
+        id: "fromStationId",
+        numeric: false,
+        disablePadding: false,
+        label: t("From Station"),
+      },
+      {
+        id: "toStationId",
+        numeric: false,
+        disablePadding: false,
+        label: t("To Station"),
+      },
+      {
+        id: "tariffClass",
+        numeric: false,
+        disablePadding: false,
+        label: t("Tariff Class"),
+      },
+    ],
+    [t]
+  );
+
+  return cells;
+};
 
 interface EnhancedTableProps {
   numSelected: number;
@@ -102,6 +111,8 @@ interface EnhancedTableProps {
 }
 
 function EnhancedTableHead(props: EnhancedTableProps) {
+  const { t } = useTranslation("default");
+
   const {
     onSelectAllClick,
     order,
@@ -114,6 +125,8 @@ function EnhancedTableHead(props: EnhancedTableProps) {
     (property: keyof WatchedRoute) => (event: React.MouseEvent<unknown>) => {
       onRequestSort(event, property);
     };
+
+  const headCells = useHeadCells(t);
 
   return (
     <TableHead>
@@ -160,6 +173,8 @@ interface EnhancedTableToolbarProps {
 }
 function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   const { numSelected, onDelete } = props;
+  const { t } = useTranslation("default");
+
   return (
     <Toolbar
       sx={[
@@ -183,7 +198,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           variant="subtitle1"
           component="div"
         >
-          {numSelected} selected
+          {numSelected} {t("selected")}
         </Typography>
       ) : (
         <Typography
@@ -192,11 +207,11 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           id="tableTitle"
           component="div"
         >
-          Currently watched routes
+          {t("Currently watched routes")}
         </Typography>
       )}
       {numSelected > 0 ? (
-        <Tooltip arrow title="Delete">
+        <Tooltip arrow title={t("Delete")}>
           <IconButton onClick={onDelete}>
             <DeleteIcon />
           </IconButton>
@@ -212,6 +227,7 @@ export default function EnhancedTable() {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const { t } = useTranslation("default");
 
   // Queries
   const { data: rows, isLoading, isError } = useWatchedRoutes();
@@ -224,11 +240,11 @@ export default function EnhancedTable() {
   const mutation = useDeleteWatchedRoute();
 
   if (isLoading || areStationsLoading) {
-    return <div>Loading...</div>;
+    return <div>{t("Loading...")}</div>;
   }
 
   if (isError || areStationsError) {
-    return <div>Error while loading data</div>;
+    return <div>{t("Error while loading data")}</div>;
   }
 
   const handleRequestSort = (
@@ -391,7 +407,7 @@ export default function EnhancedTable() {
       </Paper>
       <FormControlLabel
         control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
+        label={t("Dense padding")}
       />
     </Box>
   );

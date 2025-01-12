@@ -8,6 +8,7 @@ import {
   Tooltip,
 } from "@mui/material";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function CreditPassword({
   creditPassword,
@@ -28,21 +29,24 @@ export default function CreditPassword({
   ) => {
     event.preventDefault();
   };
+  const { t } = useTranslation("default");
 
   return (
     <TextField
-      label="Credit Password"
+      label={t("Credit Password")}
       type={showPassword ? "text" : "password"}
       value={creditPassword}
-      onChange={(e) => { setCreditPassword(e.target.value); }}
+      onChange={(e) => {
+        setCreditPassword(e.target.value);
+      }}
       fullWidth
       slotProps={{
         input: {
           endAdornment: (
             <InputAdornment position="end">
-              <Tooltip arrow title="Toggle password visibility">
+              <Tooltip arrow title={t("Toggle password visibility")}>
                 <IconButton
-                  aria-label="toggle password visibility"
+                  aria-label={t("Toggle password visibility")}
                   onClick={handleClickShowPassword}
                   onMouseDown={handleMouseDownPassword}
                   edge="end"

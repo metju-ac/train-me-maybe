@@ -2,10 +2,12 @@ import SubmitButton from "@components/SubmitButton";
 import { Box, TextField, Typography } from "@mui/material";
 import useLoginUser from "@utils/useLoginUser";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { t } = useTranslation("default");
 
   // Mutations
   const mutation = useLoginUser();
@@ -30,10 +32,10 @@ export default function Login() {
       }}
     >
       <Typography variant="h4" component="h1" gutterBottom>
-        Login
+        {t("Login")}
       </Typography>
       <TextField
-        label="Email"
+        label={t("Email")}
         type="email"
         value={email}
         onChange={(e) => {
@@ -43,7 +45,7 @@ export default function Login() {
         fullWidth
       />
       <TextField
-        label="Password"
+        label={t("Password")}
         type="password"
         value={password}
         onChange={(e) => {
@@ -54,9 +56,9 @@ export default function Login() {
       />
       <SubmitButton
         isValid={email !== "" && password !== ""}
-        tooltipTitle="First fill out the form"
+        tooltipTitle={t("First fill out the form")}
       >
-        Login
+        {t("Login")}
       </SubmitButton>
     </Box>
   );

@@ -1,11 +1,12 @@
-import { Station } from "@models/Station";
 import { formatStation } from "@/utils/formatStation";
+import { Station } from "@models/Station";
 import { Autocomplete, Box, TextField, Typography } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { Dayjs } from "dayjs";
 import React, { Dispatch, SetStateAction } from "react";
+import { useTranslation } from "react-i18next";
 import SubmitButton from "./SubmitButton";
 
 export default function StationAndDateSelection({
@@ -29,6 +30,8 @@ export default function StationAndDateSelection({
   handleSubmit: (event: React.FormEvent) => void;
   isValid: boolean;
 }) {
+  const { t } = useTranslation("default");
+
   return (
     <Box
       component="form"
@@ -43,15 +46,17 @@ export default function StationAndDateSelection({
       }}
     >
       <Box>
-        <Typography variant="h5">Select stations and date</Typography>
+        <Typography variant="h5">{t("Select stations and date")}</Typography>
       </Box>
       <Autocomplete
         options={stations}
         getOptionLabel={(option) => formatStation(option)}
         value={fromStation}
-        onChange={(_, newValue) => { setFromStation(newValue); }}
+        onChange={(_, newValue) => {
+          setFromStation(newValue);
+        }}
         renderInput={(params) => (
-          <TextField {...params} label="From Station" variant="outlined" />
+          <TextField {...params} label={t("From Station")} variant="outlined" />
         )}
         fullWidth
       />
@@ -59,17 +64,21 @@ export default function StationAndDateSelection({
         options={stations}
         getOptionLabel={(option) => formatStation(option)}
         value={toStation}
-        onChange={(_, newValue) => { setToStation(newValue); }}
+        onChange={(_, newValue) => {
+          setToStation(newValue);
+        }}
         renderInput={(params) => (
-          <TextField {...params} label="To Station" variant="outlined" />
+          <TextField {...params} label={t("To Station")} variant="outlined" />
         )}
         fullWidth
       />
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
-          label="Date"
+          label={t("Date")}
           value={date}
-          onChange={(newValue) => { setDate(newValue); }}
+          onChange={(newValue) => {
+            setDate(newValue);
+          }}
           disablePast
           sx={{ width: "100%" }}
           timezone="UTC"
@@ -78,9 +87,9 @@ export default function StationAndDateSelection({
 
       <SubmitButton
         isValid={isValid}
-        tooltipTitle="First fill out all necessary info"
+        tooltipTitle={t("First fill out all necessary info")}
       >
-        Search
+        {t("Search")}
       </SubmitButton>
     </Box>
   );

@@ -5,6 +5,7 @@ import {
   TextFieldProps,
   Tooltip,
 } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 export default function CutOffTime({
   cutOffTime,
@@ -14,6 +15,7 @@ export default function CutOffTime({
   cutOffTime: string;
   setCutOffTime: (cutOffTime: string) => void;
 } & TextFieldProps) {
+  const { t } = useTranslation("default");
   return (
     <TextField
       label="Cut Off Time"
@@ -29,7 +31,9 @@ export default function CutOffTime({
             <InputAdornment position="end">
               <Tooltip
                 arrow
-                title="Time in minutes before the train departure when the last autopurchase can be made. E.g. 120 means that watched routes will be purchased no less than 2 hours before the train departure."
+                title={t(
+                  "Time in minutes before the train departure when the last autopurchase can be made. E.g. 120 means that watched routes will be purchased no less than 2 hours before the train departure."
+                )}
               >
                 <Help />
               </Tooltip>

@@ -2,10 +2,13 @@ import SubmitButton from "@components/SubmitButton";
 import { Box, TextField, Typography } from "@mui/material";
 import useRegisterUser from "@utils/useRegisterUser";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const { t } = useTranslation("default");
 
   // Mutations
   const mutation = useRegisterUser();
@@ -30,10 +33,10 @@ export default function Register() {
       }}
     >
       <Typography variant="h4" component="h1" gutterBottom>
-        Register
+        {t("Register")}
       </Typography>
       <TextField
-        label="Email"
+        label={t("Email")}
         type="email"
         value={email}
         onChange={(e) => {
@@ -43,7 +46,7 @@ export default function Register() {
         fullWidth
       />
       <TextField
-        label="Password"
+        label={t("Password")}
         type="password"
         value={password}
         onChange={(e) => {
@@ -54,9 +57,9 @@ export default function Register() {
       />
       <SubmitButton
         isValid={email !== "" && password !== ""}
-        tooltipTitle="First fill out the form"
+        tooltipTitle={t("First fill out the form")}
       >
-        Register
+        {t("Register")}
       </SubmitButton>
     </Box>
   );

@@ -5,6 +5,7 @@ import {
   TextFieldProps,
   Tooltip,
 } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 export default function MinimalCredit({
   minimalCredit,
@@ -14,12 +15,16 @@ export default function MinimalCredit({
   minimalCredit: string;
   setMinimalCredit: (minimalCredit: string) => void;
 } & TextFieldProps) {
+  const { t } = useTranslation("default");
+
   return (
     <TextField
-      label="Minimal Credit"
+      label={t("Minimal Credit")}
       type="number"
       value={minimalCredit}
-      onChange={(e) => { setMinimalCredit(e.target.value); }}
+      onChange={(e) => {
+        setMinimalCredit(e.target.value);
+      }}
       fullWidth
       slotProps={{
         input: {
@@ -27,7 +32,9 @@ export default function MinimalCredit({
             <InputAdornment position="end">
               <Tooltip
                 arrow
-                title="The minimal credit you want to have on your account. If your credit falls below this value, you will be notified by email."
+                title={t(
+                  "The minimal credit you want to have on your account. If your credit falls below this value, you will be notified by email."
+                )}
               >
                 <Help />
               </Tooltip>

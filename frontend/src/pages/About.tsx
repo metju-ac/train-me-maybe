@@ -1,13 +1,12 @@
+import { useTranslation } from "react-i18next";
+
 export default function About() {
+  const { t } = useTranslation("default");
+
   return (
     <>
-      <h1>About</h1>
-      <p>
-        Train-me-maybe is a watchdog for regiojet trains. You can configure it
-        to watch for a specific train and it will notify you by email when a
-        free seat occurs. You can also use it to purchase the tickets
-        automatically for you.
-      </p>
+      <h1>{t("About")}</h1>
+      <p>{t("Train me maybe about detailed description")}</p>
     </>
   );
 }

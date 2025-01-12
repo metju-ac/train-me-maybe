@@ -13,6 +13,7 @@ import useTariffs from "@utils/useTariffs";
 import useUpdateUserDetails from "@utils/useUpdateUserDetails";
 import useUserDetails from "@utils/useUserDetails";
 import React, { useContext, useState } from "react";
+import { useTranslation } from "react-i18next";
 import CreditNumber from "./CreditNumber";
 import CreditPassword from "./CreditPassword";
 import CutOffTime from "./CutOffTime";
@@ -80,6 +81,7 @@ function AutopurchaseInfoSelectionForm({
 
   const updateUserDetails = useUpdateUserDetails();
   const { setToast } = useContext(ToastBarContext);
+  const { t } = useTranslation("default");
 
   const handleSubmit = (e: React.FormEvent) => {
     const data: Parameters<AutopurchaseInfoSelectionProps["handleSubmit"]>[1] =
@@ -97,7 +99,7 @@ function AutopurchaseInfoSelectionForm({
           props.handleSubmit(e, data);
         },
         onError: (err) => {
-          printError(setToast, err, "Failed to save details to account");
+          printError(setToast, err, t("Failed to save details to account"));
         },
       });
       return;
@@ -122,7 +124,7 @@ function AutopurchaseInfoSelectionForm({
       }}
     >
       <Box>
-        <Typography variant="h5">Review purchase options</Typography>
+        <Typography variant="h5">{t("Review purchase options")}</Typography>
       </Box>
 
       <CreditNumber
@@ -165,15 +167,15 @@ function AutopurchaseInfoSelectionForm({
               inputProps={{ "aria-label": "controlled" }}
             />
           }
-          label="Save info to account?"
+          label={t("Save info to account?")}
         />
       </FormControl>
 
       <SubmitButton
         isValid={isValid}
-        tooltipTitle="First fill out all necessary info"
+        tooltipTitle={t("First fill out all necessary info")}
       >
-        Start watching route
+        {t("Start watching route")}
       </SubmitButton>
     </Box>
   );

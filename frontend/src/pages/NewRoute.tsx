@@ -10,25 +10,29 @@ import useCreateWatchedRoute from "@utils/useCreateWatchedRoute";
 import useStations from "@utils/useStations";
 import dayjs, { Dayjs } from "dayjs";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import RouteAndSeatSelection from "../components/RouteAndSeatSelection";
 import StationAndDateSelection from "../components/StationAndDateSelection";
 
 export default function NewRoute() {
   // First, there is a form with selection of stations and a date of departure
   const { data: stations, isLoading, isError } = useStations();
+  const { t } = useTranslation("default");
 
   if (isLoading) {
     return <CircularProgress />;
   }
 
   if (isError) {
-    return <div>Error while fetching data</div>;
+    return <div>{t("Error while loading data")}</div>;
   }
 
   return <NewRouteForm stations={stations!} />;
 }
 
 function NewRouteForm({ stations }: { stations: Station[] }) {
+  const { t } = useTranslation("default");
+
   // we will mimick the regiojet mobile app search
   const [fromStation, setFromStation] = useState<Station | null>(() => {
     if (config.useMocks) {
@@ -145,7 +149,7 @@ function NewRouteForm({ stations }: { stations: Station[] }) {
           />
         );
       default:
-        return <div>Unknown phase</div>;
+        return <div>{t("Unknown phase")}</div>;
     }
   };
 

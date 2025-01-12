@@ -22,6 +22,7 @@ import useSeatClasses from "@utils/useSeatClasses";
 import dayjs, { Dayjs } from "dayjs";
 import utc from "dayjs/plugin/utc";
 import React, { Dispatch, ReactNode, SetStateAction } from "react";
+import { useTranslation } from "react-i18next";
 import SubmitButton from "./SubmitButton";
 
 dayjs.extend(utc);
@@ -51,6 +52,8 @@ interface RouteAndSeatSelectionProps {
 export default function RouteAndSeatSelection(
   props: RouteAndSeatSelectionProps
 ) {
+  const { t } = useTranslation("default");
+
   const {
     data: routes,
     isLoading,
@@ -73,7 +76,7 @@ export default function RouteAndSeatSelection(
   }
 
   if (isError || isErrorSeatClasses) {
-    return <div>Error while loading routes</div>;
+    return t("Error while loading routes");
   }
 
   return (
@@ -117,6 +120,8 @@ function RouteAndSeatSelectionForm({
   routes: Route[];
   seatClasses: SeatClass[];
 }) {
+  const { t } = useTranslation("default");
+
   const handleChange: (
     event: SelectChangeEvent<string>,
     child: ReactNode
@@ -160,11 +165,11 @@ function RouteAndSeatSelectionForm({
     >
       <Box>
         <Typography variant="h5">
-          Select route, seat classes and tariff
+          {t("Select route, seat classes and tariff")}
         </Typography>
       </Box>
       <TextField
-        label="Selected date"
+        label={t("Selected date")}
         value={date.format("YYYY-MM-DD")}
         fullWidth
         aria-readonly
@@ -172,11 +177,11 @@ function RouteAndSeatSelectionForm({
       />
       {routes.length > 0 && (
         <FormControl fullWidth>
-          <InputLabel id="select-label">Route</InputLabel>
+          <InputLabel id="select-label">{t("Route")}</InputLabel>
           <Select
             labelId="select-label"
             name="option"
-            label="Route"
+            label={t("Route")}
             value={selectedRoute?.id ?? ""}
             onChange={handleChange}
           >
@@ -193,17 +198,19 @@ function RouteAndSeatSelectionForm({
           <TextField
             disabled
             aria-readonly
-            value="No routes available for this date 😢 - please try different stations and date 👉👈"
+            value={t(
+              "No routes available for this date 😢 - please try different stations and date 👉👈"
+            )}
           />
         </FormControl>
       )}
 
       <FormControl fullWidth>
-        <InputLabel id="select-seat-classes">Seat classes</InputLabel>
+        <InputLabel id="select-seat-classes">{t("Seat classes")}</InputLabel>
         <Select
           labelId="select-seat-classes"
           multiple
-          label="Seat classes"
+          label={t("Seat classes")}
           value={selectedSeatClasses.map((s) => s.key)}
           onChange={handleChangeSeatClasses}
           input={<OutlinedInput label="Tag" />}
@@ -235,9 +242,11 @@ function RouteAndSeatSelectionForm({
           label={
             <Tooltip
               arrow
-              title="If checked, we will try to purchase the ticket for you. You will need to provide Regiojet credentials, and you need to have sufficient credit."
+              title={t(
+                "If checked, we will try to purchase the ticket for you. You will need to provide Regiojet credentials, and you need to have sufficient credit."
+              )}
             >
-              <Typography>Autopurchase ticket?</Typography>
+              <Typography>{t("Autopurchase ticket?")}</Typography>
             </Tooltip>
           }
         />
@@ -245,9 +254,9 @@ function RouteAndSeatSelectionForm({
 
       <SubmitButton
         isValid={isValid}
-        tooltipTitle="First fill out all necessary info"
+        tooltipTitle={t("First fill out all necessary info")}
       >
-        {autopurchase ? "Review payment options" : "Start watching route"}
+        {autopurchase ? t("Review payment options") : t("Start watching route")}
       </SubmitButton>
     </Box>
   );

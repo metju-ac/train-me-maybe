@@ -3,6 +3,7 @@ import { Box, Typography } from "@mui/material";
 import { Tariff } from "@services/staticDataService";
 import useUpdateUserDetails from "@utils/useUpdateUserDetails";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import CreditNumber from "./CreditNumber";
 import CreditPassword from "./CreditPassword";
 import CutOffTime from "./CutOffTime";
@@ -51,6 +52,8 @@ export default function AccountForm({
     });
   };
 
+  const { t } = useTranslation("default");
+
   return (
     <Box
       component="form"
@@ -65,7 +68,7 @@ export default function AccountForm({
       }}
     >
       <Typography variant="h4" component="h1" gutterBottom>
-        Account Details
+        {t("Account Details")}
       </Typography>
       <Typography variant="h6" component="h2" gutterBottom>
         Email: {user.email}
@@ -90,8 +93,11 @@ export default function AccountForm({
         setMinimalCredit={setMinimalCredit}
       />
 
-      <SubmitButton isValid={hasChanged} tooltipTitle="No changes were made">
-        Update Details
+      <SubmitButton
+        isValid={hasChanged}
+        tooltipTitle={t("No changes were made")}
+      >
+        {t("Update Details")}
       </SubmitButton>
     </Box>
   );

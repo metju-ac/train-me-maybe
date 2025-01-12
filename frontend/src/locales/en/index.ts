@@ -75,6 +75,8 @@ const enTranlation = {
   "Error registering user": "Error registering user",
   "Details updated successfully!": "Details updated successfully!",
   "Failed to update user details": "Failed to update user details",
+
+  "Choose language": "Choose language",
 } as const;
 
 export default enTranlation;

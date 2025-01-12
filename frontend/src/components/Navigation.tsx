@@ -5,6 +5,7 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import useIsLoggedIn from "@utils/useIsLoggedIn";
 import { useTranslation } from "react-i18next";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 
 /**
  *  See https://reactrouter.com/start/library/navigating
@@ -29,14 +30,16 @@ export default function ButtonAppBar() {
               </NavLink>
               <NavLink to="/about">{t("About")}</NavLink>
             </Box>
-            <Box sx={{ display: "flex", gap: "1rem" }}>
+            <Box sx={{ display: "flex", gap: "1rem", alignItems: "center" }}>
               {isLoggedIn ? (
                 <>
+                  <LanguageSwitcher />
                   <NavLink to="/account">{t("Account")}</NavLink>
                   <NavLink to="/logout">{t("Logout")}</NavLink>
                 </>
               ) : (
                 <>
+                  <LanguageSwitcher />
                   <NavLink to="/login">{t("Login")}</NavLink>
                   <NavLink to="/register">{t("Register")}</NavLink>
                 </>

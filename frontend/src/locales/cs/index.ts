@@ -1,5 +1,5 @@
 const csTranlation = {
-  "Account Details": "Detaily účtu",
+  "Account Details": "Detail účtu",
   "No changes were made": "Žádné změny nebyly provedeny",
   "Update Details": "Aktualizovat detaily",
   "Add a new watched route": "Přidat novou sledovanou trasu",
@@ -54,7 +54,7 @@ const csTranlation = {
   Delete: "Smazat",
   "Loading...": "Načítání...",
   "Error while loading data": "Chyba při načítání dat",
-  "Dense padding": "Husté polstrování",
+  "Dense padding": "Kompaktnější zobrazení",
   "Train me maybe about detailed description":
     "Train-me-maybe je hlídač pro vlaky Regiojet. Můžete jej nakonfigurovat tak, aby sledoval konkrétní vlak a upozornil vás e-mailem, když se objeví volné místo. Můžete jej také použít k automatickému zakoupení jízdenek.",
   Email: "E-mail",
@@ -76,6 +76,7 @@ const csTranlation = {
   "Details updated successfully!": "Detaily úspěšně aktualizovány!",
   "Failed to update user details":
     "Nepodařilo se aktualizovat detaily uživatele",
+  "Choose language": "Vyberte jazyk",
 } as const;
 
 export default csTranlation;

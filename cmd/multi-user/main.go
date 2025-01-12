@@ -104,5 +104,10 @@ func main() {
 		publicRoutes.POST("/register", handler.Register)
 	}
 
+	router.Static("assets", "./static/assets")
+	router.NoRoute(func(c *gin.Context) {
+		c.File("./static/index.html")
+	})
+
 	router.Run(fmt.Sprintf(":%d", config.General.ServerPort))
 }

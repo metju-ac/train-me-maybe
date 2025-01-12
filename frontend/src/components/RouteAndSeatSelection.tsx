@@ -29,9 +29,9 @@ dayjs.extend(utc);
 function formatRoute(route: Route) {
   return `${dayjs(route.departureTime).format("MM-DD HH:mm")} - ${dayjs(
     route.arrivalTime
-  ).format("MM-DD HH:mm")} (${route.vehicleTypes.join(" + ")}, full price from ${
-    route.creditPriceFrom
-  } EUR)`;
+  ).format("MM-DD HH:mm")} (${route.vehicleTypes.join(
+    " + "
+  )}, full price from ${route.creditPriceFrom} EUR)`;
 }
 
 interface RouteAndSeatSelectionProps {
@@ -167,25 +167,36 @@ function RouteAndSeatSelectionForm({
         label="Selected date"
         value={date.format("YYYY-MM-DD")}
         fullWidth
-        aria-readonly={true}
+        aria-readonly
         disabled
       />
-      <FormControl fullWidth>
-        <InputLabel id="select-label">Route</InputLabel>
-        <Select
-          labelId="select-label"
-          name="option"
-          label="Route"
-          value={selectedRoute?.id ?? ""}
-          onChange={handleChange}
-        >
-          {routes.map((route) => (
-            <MenuItem value={route.id} key={route.id}>
-              {formatRoute(route)}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+      {routes.length > 0 && (
+        <FormControl fullWidth>
+          <InputLabel id="select-label">Route</InputLabel>
+          <Select
+            labelId="select-label"
+            name="option"
+            label="Route"
+            value={selectedRoute?.id ?? ""}
+            onChange={handleChange}
+          >
+            {routes.map((route) => (
+              <MenuItem value={route.id} key={route.id}>
+                {formatRoute(route)}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      )}
+      {routes.length <= 0 && (
+        <FormControl fullWidth>
+          <TextField
+            disabled
+            aria-readonly
+            value="No routes available for this date 😢 - please try different stations and date 👉👈"
+          />
+        </FormControl>
+      )}
 
       <FormControl fullWidth>
         <InputLabel id="select-seat-classes">Seat classes</InputLabel>

@@ -4,6 +4,7 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import useIsLoggedIn from "@utils/useIsLoggedIn";
+import useScreenWidth from "@utils/useScreenWidth";
 import { useTranslation } from "react-i18next";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 
@@ -13,6 +14,7 @@ import { LanguageSwitcher } from "./LanguageSwitcher";
 export default function ButtonAppBar() {
   const isLoggedIn = useIsLoggedIn();
   const { t } = useTranslation("default");
+  const width = useScreenWidth();
 
   return (
     <nav>
@@ -33,13 +35,13 @@ export default function ButtonAppBar() {
             <Box sx={{ display: "flex", gap: "1rem", alignItems: "center" }}>
               {isLoggedIn ? (
                 <>
-                  <LanguageSwitcher />
+                  {width > 500 ? <LanguageSwitcher /> : null}
                   <NavLink to="/account">{t("Account")}</NavLink>
                   <NavLink to="/logout">{t("Logout")}</NavLink>
                 </>
               ) : (
                 <>
-                  <LanguageSwitcher />
+                  {width > 500 ? <LanguageSwitcher /> : null}
                   <NavLink to="/login">{t("Login")}</NavLink>
                   <NavLink to="/register">{t("Register")}</NavLink>
                 </>

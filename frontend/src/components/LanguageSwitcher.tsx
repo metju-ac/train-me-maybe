@@ -54,6 +54,7 @@ export const LanguageSwitcher = (
           {...props}
         >
           <img loading="lazy" width="20" src={languageToFlagUrl[option]} />
+          {option}
         </Box>
       )}
     />

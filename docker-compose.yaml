@@ -26,8 +26,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        - NODE_ENV=${NODE_ENV:-development}
     depends_on:
       postgres:
         condition: service_healthy

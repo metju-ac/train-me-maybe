@@ -7,23 +7,20 @@ FROM golang:${GOLANG_VERSION} AS backend-builder
 WORKDIR /app
 
 COPY go.mod go.sum ./
-RUN --mount=type=cache,target=/go/pkg/mod go mod download
+RUN --mount=type=cache,target=/go/pkg/mod go mod download -x
 
 COPY . ./
 
 WORKDIR /app/cmd/multi-user
-RUN go build -o /train-me-maybe-app
-
+RUN go build -mod=readonly -v -o /train-me-maybe-app
+ 
 # Step 2: Build the Frontend
 ARG NODE_VERSION
 FROM node:${NODE_VERSION} AS frontend-builder
 
 WORKDIR /frontend
 
-ARG NODE_ENV=production
-ENV NODE_ENV $NODE_ENV
-COPY package*.json ./
-ENV NODE_ENV=production
+COPY ./frontend/package*.json ./
 RUN --mount=type=cache,target=~/.npm npm ci
 
 COPY ./frontend ./

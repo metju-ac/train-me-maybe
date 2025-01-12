@@ -19,13 +19,18 @@ export default function CutOffTime({
       label="Cut Off Time"
       type="number"
       value={cutOffTime}
-      onChange={(e) => { setCutOffTime(e.target.value); }}
+      onChange={(e) => {
+        setCutOffTime(e.target.value);
+      }}
       fullWidth
       slotProps={{
         input: {
           endAdornment: (
             <InputAdornment position="end">
-              <Tooltip title="Time in minutes before the train departure when the last autopurchase can be made. E.g. 120 means that watched routes will be purchased no less than 2 hours before the train departure.">
+              <Tooltip
+                arrow
+                title="Time in minutes before the train departure when the last autopurchase can be made. E.g. 120 means that watched routes will be purchased no less than 2 hours before the train departure."
+              >
                 <Help />
               </Tooltip>
             </InputAdornment>

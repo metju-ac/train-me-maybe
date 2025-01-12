@@ -2,6 +2,7 @@ import ToastBarContext from "@components/ToastBarContext";
 import watchedRouteService from "@services/watchedRouteService";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useContext } from "react";
+import printError from "./printError";
 
 export default function useDeleteWatchedRoute() {
   const queryClient = useQueryClient();
@@ -20,7 +21,7 @@ export default function useDeleteWatchedRoute() {
       setToast("Route deleted successfully!", "success");
     },
     onError: (err) => {
-      setToast("Failed to delete route: " + err.message, "error");
+      printError(setToast, err, "Failed to delete route");
     },
   });
 }

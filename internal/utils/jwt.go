@@ -2,19 +2,20 @@ package utils
 
 import (
 	"fmt"
-	"github.com/golang-jwt/jwt"
 	"log/slog"
 	"os"
 	"time"
+
+	"github.com/golang-jwt/jwt"
 )
 
 var secretKey []byte
 
 func init() {
-	secretKey = []byte(os.Getenv("JWT_SECRET_KEY"))
+	secretKey = []byte(os.Getenv("REGIOJET_JWT_SECRET_KEY"))
 	if len(secretKey) == 0 {
-		slog.Error("JWT_SECRET_KEY environment variable is not set")
-		panic("JWT_SECRET_KEY environment variable is not set")
+		slog.Error("REGIOJET_JWT_SECRET_KEY environment variable is not set")
+		panic("REGIOJET_JWT_SECRET_KEY environment variable is not set")
 	}
 }
 

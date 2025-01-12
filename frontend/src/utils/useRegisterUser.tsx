@@ -24,7 +24,7 @@ export default function useRegisterUser() {
       });
       console.log("User registered successfully", data);
       setToast(t("Successfully registered user"), "success");
-      void navigate("/account");
+      void navigate("/routes/new");
     },
     onError: (error) => {
       console.error("Error registering user", error);

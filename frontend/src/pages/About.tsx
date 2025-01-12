@@ -8,7 +8,7 @@ export default function About() {
       <h1>{t("About")}</h1>
       <p>{t("Train me maybe about detailed description")}</p>
       <img
-        src="/regiojet.jpg"
+        src="/regiojet-large.jpg"
         alt="RegioJet"
         style={{
           maxWidth: "100%",

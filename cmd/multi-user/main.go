@@ -48,7 +48,7 @@ func main() {
 	apiConfiguration := openapiclient.NewConfiguration(config.General.ApiBaseUrl)
 	apiClient := openapiclient.NewAPIClient(apiConfiguration)
 
-	userRepo := repositories.NewUserRepository(db)
+	userRepo := repositories.NewUserRepository(db, []byte(config.General.EncryptionKey))
 	watchedRouteRepo := repositories.NewWatchedRouteRepository(db)
 	successfullPurchaseRepo := repositories.NewSuccessfulPurchaseRepository(db)
 

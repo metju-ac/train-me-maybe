@@ -57,6 +57,9 @@ type GeneralConfig struct {
 
 	// Port of the server
 	ServerPort int `toml:"server_port"`
+
+	// Encryption key for user RJ passwords
+	EncryptionKey string `toml:"encryption_key"`
 }
 
 func mergeGeneralConfigs(config *GeneralConfig) error {
@@ -117,6 +120,10 @@ func mergeGeneralConfigs(config *GeneralConfig) error {
 		config.ServerPort = portInt
 	}
 
+	if key := os.Getenv("REGIOJET_ENCRYPTION_KEY"); key != "" {
+		config.EncryptionKey = key
+	}
+
 	return nil
 }
 
@@ -151,6 +158,10 @@ func validateGeneralConfig(config *GeneralConfig) error {
 
 	if config.ServerPort <= 0 {
 		return errors.New("Server port must be greater than 0")
+	}
+
+	if len([]byte(config.EncryptionKey)) != 32 {
+		return errors.New("Encryption key must be 32 bytes")
 	}
 
 	return nil

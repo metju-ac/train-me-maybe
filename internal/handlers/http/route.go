@@ -3,6 +3,8 @@ package http
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/metju-ac/train-me-maybe/internal/handlers"
+	"github.com/metju-ac/train-me-maybe/internal/lib"
+	"github.com/metju-ac/train-me-maybe/openapi"
 	"log/slog"
 	"net/http"
 	"strconv"
@@ -48,11 +50,15 @@ func (h *Handler) GetRoutes(c *gin.Context) {
 		return
 	}
 
+	filteredRoutes := lib.FilterFunc(routes, func(route openapi.SimpleRoute) bool {
+		return *route.TransfersCount == 0
+	})
+
 	slog.Info("Successfully fetched routes", "fromStationID", fromStationID, "toStationID", toStationID, "date", date)
 
 	// Cache for 1 hour
-	c.Header("Cache-Control", "max-age=3600, public") // Cache for 1 hour
+	c.Header("Cache-Control", "max-age=3600, public")
 	c.Header("Expires", time.Now().Add(1*time.Hour).Format(http.TimeFormat))
 
-	c.JSON(http.StatusOK, routes)
+	c.JSON(http.StatusOK, filteredRoutes)
 }

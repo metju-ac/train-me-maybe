@@ -19,6 +19,7 @@ import (
 
 type Handler struct {
 	Stations               map[int64]models.StationModel
+	LangStations           map[string][]models.StationModel
 	UserRepo               repositories.UserRepository
 	WatchedRouteRepo       repositories.WatchedRouteRepository
 	SuccessfulPurchaseRepo repositories.SuccessfulPurchaseRepository

@@ -108,6 +108,7 @@ All POST bodies are JSON.
 
 - GET /api/auth/station
 
+  - URL params: lang
   - returns a list of all stations (locations mapped to our DTO)
   - sets the correct HTTP headers so that the browser caches this response for a long time
   - the server caches these locations in-memory (probably on startup)

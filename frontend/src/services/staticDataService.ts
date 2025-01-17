@@ -69,13 +69,17 @@ const staticDataService = {
 
   getStations: {
     key: "getStations",
-    fn: async (): Promise<Station[]> => {
+    fn: async (lang: string = "en"): Promise<Station[]> => {
       console.log("getStations: Getting all stations");
       if (config.useMocks) {
         return transformStationsFromRaw();
       }
       try {
-        const response = await client.get<Station[]>("/auth/station");
+        const response = await client.get<Station[]>("/auth/station", {
+            params: {
+                lang,
+            },
+        });
         return response.data;
       } catch (error) {
         console.error(error);

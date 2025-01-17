@@ -17,17 +17,23 @@ import (
 	"time"
 )
 
-func fetchStations(apiClient *openapiclient.APIClient) []models.StationModel {
+func fetchStations(apiClient *openapiclient.APIClient, languages []string) map[string][]models.StationModel {
+	stationsMap := make(map[string][]models.StationModel)
+
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
-	stations, err := handlers.FetchStations(ctx, apiClient)
-	if err != nil {
-		fmt.Println("Error:", err)
-		os.Exit(1)
+	for _, lang := range languages {
+		stations, err := handlers.FetchStations(ctx, apiClient, lang)
+		if err != nil {
+			fmt.Println("Error fetching stations for language", lang, ":", err)
+			os.Exit(1)
+		}
+
+		stationsMap[lang] = stations
 	}
 
-	return stations
+	return stationsMap
 }
 
 func main() {
@@ -52,8 +58,11 @@ func main() {
 	watchedRouteRepo := repositories.NewWatchedRouteRepository(db)
 	successfullPurchaseRepo := repositories.NewSuccessfulPurchaseRepository(db)
 
+	stations := fetchStations(apiClient, config.General.Languages)
+
 	handler := &http.Handler{
 		Stations:               make(map[int64]models.StationModel),
+		LangStations:           stations,
 		UserRepo:               userRepo,
 		WatchedRouteRepo:       watchedRouteRepo,
 		SuccessfulPurchaseRepo: successfullPurchaseRepo,
@@ -62,9 +71,11 @@ func main() {
 		Config:                 *config,
 	}
 
-	stations := fetchStations(apiClient)
-	for _, station := range stations {
-		handler.Stations[station.StationID] = station
+	for _, stationList := range stations {
+		for _, station := range stationList {
+			handler.Stations[station.StationID] = station
+		}
+		break
 	}
 
 	err = handler.RestartWatchedRoutes()

@@ -121,7 +121,9 @@ All POST bodies are JSON.
 
 - GET /api/seatClass
 
-  - NOT needed - we will hardcode this on the front end
+  - URL params: fromStationId, toStationId, routeId
+  - Returns the available seat classes for the specified route section
+
 
 - GET /api/tariffClass
 

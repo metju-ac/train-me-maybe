@@ -107,6 +107,8 @@ func main() {
 		protectedRoutes.POST("/watchedRoute", handler.CreateWatchedRoute)
 		protectedRoutes.GET("/watchedRoute", handler.GetWatchedRoutes)
 		protectedRoutes.DELETE("/watchedRoute/:id", handler.DeleteWatchedRoute)
+
+		protectedRoutes.GET("/seatClass", handler.GetSeatClasses)
 	}
 
 	publicRoutes := router.Group("/api")

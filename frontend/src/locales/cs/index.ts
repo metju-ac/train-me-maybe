@@ -55,8 +55,12 @@ const csTranlation = {
   "Loading...": "Načítání...",
   "Error while loading data": "Chyba při načítání dat",
   "Dense padding": "Kompaktnější zobrazení",
-  "Train me maybe about detailed description":
-    "Train-me-maybe je hlídač pro vlaky Regiojet. Můžete jej nakonfigurovat tak, aby sledoval konkrétní vlak a upozornil vás e-mailem, když se objeví volné místo. Můžete jej také použít k automatickému zakoupení jízdenek.",
+  "Train me maybe about detailed description paragraph 1":
+    "Train Me Maybe sleduje obsazenost RegioJet vlaků a autobusů za vás. Stačí vybrat, které spoje má monitorovat, budete upozorněni, jakmile se uvolní místo. Navíc za vás může jízdenku i zakoupit!",
+  "Train me maybe about detailed description paragraph 2":
+    "Aplikace je momentálně v beta verzi a podporuje pouze přímé trasy bez přestupů. Pokud narazíte na jakýkoliv problém, dejte nám prosím vědět na ",
+  "Train me maybe about detailed description paragraph 3":
+    "Aplikace vznikla jako studentský open-source projekt v rámci předmětu PB173 na FI MUNI. Zdrojový kód můžete najít na Githubu: ",
   Email: "E-mail",
   Password: "Heslo",
   "First fill out the form": "Nejprve vyplňte potřebné údaje",
@@ -80,6 +84,8 @@ const csTranlation = {
   "full price from": "plná cena od",
   "First select a route to see available seat classes":
     "Nejprve vyberte trasu, abyste viděli dostupné třídy sedadel",
+  "Our app finds free seats with flying colors!":
+    "S naší aplikací se letem světem dostanete všude!",
 } as const;
 
 export default csTranlation;

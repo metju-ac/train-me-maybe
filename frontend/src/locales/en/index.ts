@@ -54,9 +54,12 @@ const enTranlation = {
   "Loading...": "Loading...",
   "Error while loading data": "Error while loading data",
   "Dense padding": "Dense padding",
-  "Train me maybe about detailed description":
-    "Train-me-maybe is a watchdog for regiojet trains. You can configure it to watch for a specific train and it will notify you by email when a free seat occurs. You can also use it to purchase the tickets automatically for you.",
-
+  "Train me maybe about detailed description paragraph 1":
+    "Train Me Maybe watches occupied RegioJet trains and buses for you. Simply tell it which routes it should watch, and you will get notified once a free seat is found. Even better, it can purchase the ticket for you!",
+  "Train me maybe about detailed description paragraph 2":
+    "The app is currently in beta version. Only routes without transfers are supported. In case something is not working, definitely let us know at ",
+  "Train me maybe about detailed description paragraph 3":
+    "The app was created as a student open-source project during the course PB173 at FI MUNI (Brno, Czech Republic). You can find the source code at Github: ",
   Email: "Email",
   Password: "Password",
   "First fill out the form": "First fill out the form",
@@ -80,6 +83,8 @@ const enTranlation = {
   "full price from": "full price from",
   "First select a route to see available seat classes":
     "First select a route to see available seat classes",
+  "Our app finds free seats with flying colors!":
+    "Our app finds free seats with flying colors!",
 } as const;
 
 export default enTranlation;

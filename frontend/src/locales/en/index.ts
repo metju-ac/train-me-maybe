@@ -11,10 +11,10 @@ const enTranlation = {
   "Save info to account?": "Save info to account?",
   "First fill out all necessary info": "First fill out all necessary info",
   "Start watching route": "Start watching route",
-  "Credit Number": "Credit Number",
+  "Credit Number": "RJ Credit Number",
   "The Regiojet number of your credit ticket (e.g. 123456789). A.k.a. 'číslo kreditové jizdenky'":
     "The Regiojet number of your credit ticket (e.g. 123456789). A.k.a. 'číslo kreditové jizdenky'",
-  "Credit Password": "Credit Password",
+  "Credit Password": "RJ Credit Password",
   "Toggle password visibility": "Toggle password visibility",
   "Time in minutes before the train departure when the last autopurchase can be made. E.g. 120 means that watched routes will be purchased no less than 2 hours before the train departure.":
     "Time in minutes before the train departure when the last autopurchase can be made. E.g. 120 means that watched routes will be purchased no less than 2 hours before the train departure.",
@@ -65,18 +65,18 @@ const enTranlation = {
   "404 Not Found": "404 Not Found",
   "The page you want to see is not there 😢.":
     "The page you want to see is not there 😢.",
-  "Route created successfully!": "Route created successfully!",
-  "Failed to create route": "Failed to create route",
-  "Route deleted successfully!": "Route deleted successfully!",
-  "Failed to delete route": "Failed to delete route",
+  "Route created successfully!": "Watched route created successfully!",
+  "Failed to create route": "Failed to create watched route",
+  "Route deleted successfully!": "Watched route deleted successfully!",
+  "Failed to delete route": "Failed to delete watched route",
   "Successfully logged in": "Successfully logged in",
   "Error logging in": "Error logging in",
   "Successfully registered user": "Successfully registered user",
   "Error registering user": "Error registering user",
   "Details updated successfully!": "Details updated successfully!",
   "Failed to update user details": "Failed to update user details",
-
   "Choose language": "Choose language",
+  "Cut Off Time": "Cut Off Time for Autopurchase",
 } as const;
 
 export default enTranlation;

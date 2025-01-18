@@ -77,6 +77,7 @@ const enTranlation = {
   "Failed to update user details": "Failed to update user details",
   "Choose language": "Choose language",
   "Cut Off Time": "Cut Off Time for Autopurchase",
+  "full price from": "full price from",
 } as const;
 
 export default enTranlation;

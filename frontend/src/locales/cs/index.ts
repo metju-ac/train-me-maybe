@@ -74,10 +74,10 @@ const csTranlation = {
   "Successfully registered user": "Uživatel úspěšně zaregistrován",
   "Error registering user": "Chyba při registraci uživatele",
   "Details updated successfully!": "Účet úspěšně aktualizován!",
-  "Failed to update user details":
-    "Nepodařilo se aktualizovat účet",
+  "Failed to update user details": "Nepodařilo se aktualizovat účet",
   "Choose language": "Vyberte jazyk",
   "Cut Off Time": "Časový limit pro nákup jízdenky",
+  "full price from": "plná cena od",
 } as const;
 
 export default csTranlation;

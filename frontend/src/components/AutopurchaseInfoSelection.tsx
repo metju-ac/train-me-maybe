@@ -84,6 +84,7 @@ function AutopurchaseInfoSelectionForm({
   const { t } = useTranslation("default");
 
   const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
     const data: Parameters<AutopurchaseInfoSelectionProps["handleSubmit"]>[1] =
       {
         creditPassword,

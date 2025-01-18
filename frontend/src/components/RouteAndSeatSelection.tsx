@@ -27,14 +27,6 @@ import SubmitButton from "./SubmitButton";
 
 dayjs.extend(utc);
 
-function formatRoute(route: Route) {
-  return `${dayjs(route.departureTime).format("MM-DD HH:mm")} - ${dayjs(
-    route.arrivalTime
-  ).format("MM-DD HH:mm")} (${route.vehicleTypes.join(
-    " + "
-  )}, full price from ${route.creditPriceFrom} EUR)`;
-}
-
 interface RouteAndSeatSelectionProps {
   fromStation: Station;
   toStation: Station;
@@ -122,6 +114,14 @@ function RouteAndSeatSelectionForm({
 }) {
   const { t } = useTranslation("default");
 
+  function formatRoute(route: Route) {
+    return `${dayjs(route.departureTime).format("HH:mm")} - ${dayjs(
+      route.arrivalTime
+    ).format("HH:mm")} (${route.vehicleTypes.join(" + ")}, ${t(
+      "full price from"
+    )} ${route.creditPriceFrom} EUR)`;
+  }
+
   const handleChange: (
     event: SelectChangeEvent<string>,
     child: ReactNode
@@ -181,6 +181,7 @@ function RouteAndSeatSelectionForm({
           <Select
             labelId="select-label"
             name="option"
+            required
             label={t("Route")}
             value={selectedRoute?.id ?? ""}
             onChange={handleChange}
@@ -210,6 +211,7 @@ function RouteAndSeatSelectionForm({
         <Select
           labelId="select-seat-classes"
           multiple
+          required
           label={t("Seat classes")}
           value={selectedSeatClasses.map((s) => s.key)}
           onChange={handleChangeSeatClasses}

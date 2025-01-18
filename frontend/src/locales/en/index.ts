@@ -88,6 +88,8 @@ const enTranlation = {
   "Selected action": "Selected action",
   "Autopurchase ticket": "Autopurchase ticket",
   "Notify only": "Notify only",
+  "Rows per page": "Rows per page",
+  of: " of ",
 } as const;
 
 export default enTranlation;

@@ -89,6 +89,8 @@ const csTranlation = {
   "Selected action": "Zvolená akce",
   "Autopurchase ticket": "Automaticky zakoupit jízdenku",
   "Notify only": "Pouze upozorní na volné místo",
+  "Rows per page": "Řádků na stránku",
+  of: " z ",
 } as const;
 
 export default csTranlation;

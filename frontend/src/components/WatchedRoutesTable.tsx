@@ -222,7 +222,7 @@ export default function EnhancedTable() {
   const [orderBy, setOrderBy] = React.useState<string>("departureDateTime");
   const [selected, setSelected] = React.useState<readonly number[]>([]);
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const { t } = useTranslation("default");
 
   // Queries
@@ -400,6 +400,10 @@ export default function EnhancedTable() {
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
+          labelDisplayedRows={({ from, to, count }) => {
+            return "" + from + "-" + to + t("of") + count;
+          }}
+          labelRowsPerPage={t("Rows per page")}
         />
       </Paper>
     </Box>

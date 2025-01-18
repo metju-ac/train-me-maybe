@@ -27,14 +27,6 @@ import SubmitButton from "./SubmitButton";
 
 dayjs.extend(utc);
 
-function formatRoute(route: Route) {
-  return `${dayjs(route.departureTime).format("MM-DD HH:mm")} - ${dayjs(
-    route.arrivalTime
-  ).format("MM-DD HH:mm")} (${route.vehicleTypes.join(
-    " + "
-  )}, full price from ${route.creditPriceFrom} EUR)`;
-}
-
 interface RouteAndSeatSelectionProps {
   fromStation: Station;
   toStation: Station;
@@ -69,9 +61,13 @@ export default function RouteAndSeatSelection(
     data: seatClasses,
     isLoading: isLoadingSeatClasses,
     isError: isErrorSeatClasses,
-  } = useSeatClasses();
+  } = useSeatClasses({
+    fromStationId: props.fromStation.stationID,
+    toStationId: props.toStation.stationID,
+    routeId: props.selectedRoute?.id,
+  });
 
-  if (isLoading || isLoadingSeatClasses) {
+  if (isLoading) {
     return <CircularProgress />;
   }
 
@@ -83,7 +79,8 @@ export default function RouteAndSeatSelection(
     <RouteAndSeatSelectionForm
       {...props}
       routes={routes!}
-      seatClasses={seatClasses!}
+      seatClasses={seatClasses ?? []}
+      isLoadingSeatClasses={isLoadingSeatClasses}
     />
   );
 }
@@ -116,13 +113,23 @@ function RouteAndSeatSelectionForm({
   seatClasses,
   autopurchase,
   setAutopurchase,
+  isLoadingSeatClasses,
 }: RouteAndSeatSelectionProps & {
   routes: Route[];
   seatClasses: SeatClass[];
+  isLoadingSeatClasses: boolean;
 }) {
   const { t } = useTranslation("default");
 
-  const handleChange: (
+  function formatRoute(route: Route) {
+    return `${dayjs(route.departureTime).format("HH:mm")} - ${dayjs(
+      route.arrivalTime
+    ).format("HH:mm")} (${route.vehicleTypes.join(" + ")}, ${t(
+      "full price from"
+    )} ${route.creditPriceFrom} EUR)`;
+  }
+
+  const handleChangeSelectedRoute: (
     event: SelectChangeEvent<string>,
     child: ReactNode
   ) => void = (event) => {
@@ -131,6 +138,7 @@ function RouteAndSeatSelectionForm({
     const route = routes.find((route) => route.id === id) ?? null;
 
     setSelectedRoute(route);
+    setSelectedSeatClasses([]); // unselect seat classes when route changes
   };
 
   const handleChangeSeatClasses = (
@@ -181,9 +189,10 @@ function RouteAndSeatSelectionForm({
           <Select
             labelId="select-label"
             name="option"
+            required
             label={t("Route")}
             value={selectedRoute?.id ?? ""}
-            onChange={handleChange}
+            onChange={handleChangeSelectedRoute}
           >
             {routes.map((route) => (
               <MenuItem value={route.id} key={route.id}>
@@ -205,28 +214,41 @@ function RouteAndSeatSelectionForm({
         </FormControl>
       )}
 
-      <FormControl fullWidth>
-        <InputLabel id="select-seat-classes">{t("Seat classes")}</InputLabel>
-        <Select
-          labelId="select-seat-classes"
-          multiple
-          label={t("Seat classes")}
-          value={selectedSeatClasses.map((s) => s.key)}
-          onChange={handleChangeSeatClasses}
-          input={<OutlinedInput label="Tag" />}
-          renderValue={(selected) =>
-            selected.map((s) => renderSeatClass(s, seatClasses)).join(", ")
-          }
-          MenuProps={MenuProps}
-        >
-          {seatClasses.map((seatClass) => (
-            <MenuItem key={seatClass.key} value={seatClass.key}>
-              <Checkbox checked={selectedSeatClasses.includes(seatClass)} />
-              <ListItemText primary={seatClass.title} />
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+      {isLoadingSeatClasses && <CircularProgress />}
+      {!isLoadingSeatClasses && (!seatClasses || seatClasses.length <= 0) && (
+        <FormControl fullWidth>
+          <TextField
+            disabled
+            aria-readonly
+            value={t("First select a route to see available seat classes")}
+          />
+        </FormControl>
+      )}
+      {!isLoadingSeatClasses && seatClasses && seatClasses.length > 0 && (
+        <FormControl fullWidth>
+          <InputLabel id="select-seat-classes">{t("Seat classes")}</InputLabel>
+          <Select
+            labelId="select-seat-classes"
+            multiple
+            required
+            label={t("Seat classes")}
+            value={selectedSeatClasses.map((s) => s.key)}
+            onChange={handleChangeSeatClasses}
+            input={<OutlinedInput label="Tag" />}
+            renderValue={(selected) =>
+              selected.map((s) => renderSeatClass(s, seatClasses)).join(", ")
+            }
+            MenuProps={MenuProps}
+          >
+            {seatClasses.map((seatClass) => (
+              <MenuItem key={seatClass.key} value={seatClass.key}>
+                <Checkbox checked={selectedSeatClasses.includes(seatClass)} />
+                <ListItemText primary={seatClass.title} />
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      )}
 
       <FormControl fullWidth>
         <FormControlLabel

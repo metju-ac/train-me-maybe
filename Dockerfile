@@ -21,7 +21,7 @@ FROM node:${NODE_VERSION} AS frontend-builder
 WORKDIR /frontend
 
 COPY ./frontend/package*.json ./
-RUN --mount=type=cache,target=~/.npm npm ci
+RUN --mount=type=cache,target=~/.npm npm ci --include=prod
 
 COPY ./frontend ./
 RUN npm run build

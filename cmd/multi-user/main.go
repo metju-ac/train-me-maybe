@@ -3,6 +3,9 @@ package main
 import (
 	"context"
 	"fmt"
+	"os"
+	"time"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/metju-ac/train-me-maybe/internal/config"
@@ -13,21 +16,25 @@ import (
 	"github.com/metju-ac/train-me-maybe/internal/models"
 	"github.com/metju-ac/train-me-maybe/internal/repositories"
 	openapiclient "github.com/metju-ac/train-me-maybe/openapi"
-	"os"
-	"time"
 )
 
-func fetchStations(apiClient *openapiclient.APIClient) []models.StationModel {
+func fetchStations(apiClient *openapiclient.APIClient, languages []string) map[string][]models.StationModel {
+	stationsMap := make(map[string][]models.StationModel)
+
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
-	stations, err := handlers.FetchStations(ctx, apiClient)
-	if err != nil {
-		fmt.Println("Error:", err)
-		os.Exit(1)
+	for _, lang := range languages {
+		stations, err := handlers.FetchStations(ctx, apiClient, lang)
+		if err != nil {
+			fmt.Println("Error fetching stations for language", lang, ":", err)
+			os.Exit(1)
+		}
+
+		stationsMap[lang] = stations
 	}
 
-	return stations
+	return stationsMap
 }
 
 func main() {
@@ -52,8 +59,11 @@ func main() {
 	watchedRouteRepo := repositories.NewWatchedRouteRepository(db)
 	successfullPurchaseRepo := repositories.NewSuccessfulPurchaseRepository(db)
 
+	stations := fetchStations(apiClient, config.General.Languages)
+
 	handler := &http.Handler{
 		Stations:               make(map[int64]models.StationModel),
+		LangStations:           stations,
 		UserRepo:               userRepo,
 		WatchedRouteRepo:       watchedRouteRepo,
 		SuccessfulPurchaseRepo: successfullPurchaseRepo,
@@ -62,9 +72,11 @@ func main() {
 		Config:                 *config,
 	}
 
-	stations := fetchStations(apiClient)
-	for _, station := range stations {
-		handler.Stations[station.StationID] = station
+	for _, stationList := range stations {
+		for _, station := range stationList {
+			handler.Stations[station.StationID] = station
+		}
+		break
 	}
 
 	err = handler.RestartWatchedRoutes()
@@ -96,6 +108,8 @@ func main() {
 		protectedRoutes.POST("/watchedRoute", handler.CreateWatchedRoute)
 		protectedRoutes.GET("/watchedRoute", handler.GetWatchedRoutes)
 		protectedRoutes.DELETE("/watchedRoute/:id", handler.DeleteWatchedRoute)
+
+		protectedRoutes.GET("/seatClass", handler.GetSeatClasses)
 	}
 
 	publicRoutes := router.Group("/api")
@@ -105,6 +119,7 @@ func main() {
 	}
 
 	router.Static("assets", "./static/assets")
+	router.Static("img", "./static/img")
 	router.NoRoute(func(c *gin.Context) {
 		c.File("./static/index.html")
 	})

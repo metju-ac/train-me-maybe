@@ -4,6 +4,7 @@ import (
 	"errors"
 	"os"
 	"strconv"
+	"strings"
 )
 
 type NullableInt struct {
@@ -60,6 +61,9 @@ type GeneralConfig struct {
 
 	// Encryption key for user RJ passwords
 	EncryptionKey string `toml:"encryption_key"`
+
+	// Supported languages
+	Languages []string `toml:"languages"`
 }
 
 func mergeGeneralConfigs(config *GeneralConfig) error {
@@ -124,6 +128,10 @@ func mergeGeneralConfigs(config *GeneralConfig) error {
 		config.EncryptionKey = key
 	}
 
+	if langs := os.Getenv("REGIOJET_LANGUAGES"); langs != "" {
+		config.Languages = strings.Split(langs, ",")
+	}
+
 	return nil
 }
 
@@ -162,6 +170,10 @@ func validateGeneralConfig(config *GeneralConfig) error {
 
 	if len([]byte(config.EncryptionKey)) != 32 {
 		return errors.New("Encryption key must be 32 bytes")
+	}
+
+	if len(config.Languages) == 0 {
+		return errors.New("Languages must be set")
 	}
 
 	return nil

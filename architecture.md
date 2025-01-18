@@ -72,6 +72,7 @@ Watch out - every int should be (int64) in Go.
   - route ID
   - selected seat classes (LOW_COST atd)
   - auto purchase (bool)
+  - departure datetime - datetime
   - OPTIONAL - tariff class (e.g. STUDENT, SENIOR, ADULT)
   - OPTIONAL - credit user
   - OPTIONAL - credit password
@@ -108,6 +109,7 @@ All POST bodies are JSON.
 
 - GET /api/auth/station
 
+  - URL params: lang
   - returns a list of all stations (locations mapped to our DTO)
   - sets the correct HTTP headers so that the browser caches this response for a long time
   - the server caches these locations in-memory (probably on startup)
@@ -120,7 +122,9 @@ All POST bodies are JSON.
 
 - GET /api/seatClass
 
-  - NOT needed - we will hardcode this on the front end
+  - URL params: fromStationId, toStationId, routeId
+  - Returns the available seat classes for the specified route section
+
 
 - GET /api/tariffClass
 

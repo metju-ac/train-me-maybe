@@ -19,6 +19,10 @@ function createData(
     tariffClass,
     toStationId,
     userEmail,
+    departureDateTime: new Date().toISOString(),
+    autoPurchase: false,
+    cutOffTime: null,
+    minimalCredit: 0,
   };
 }
 
@@ -53,7 +57,9 @@ const watchedRouteService = {
         return;
       }
       try {
-        const promises = ids.map((id) => client.delete(`/auth/watchedRoute/${id}`));
+        const promises = ids.map((id) =>
+          client.delete(`/auth/watchedRoute/${id}`)
+        );
 
         await Promise.all(promises);
       } catch (error) {
@@ -70,6 +76,7 @@ const watchedRouteService = {
         toStationId: number;
         routeId: string;
         selectedSeatClasses: string[];
+        departureDateTime: string;
       } & (
         | {
             autoPurchase: true;
@@ -96,7 +103,10 @@ const watchedRouteService = {
         return newRow;
       }
 
-      const response = await client.post<WatchedRoute>("/auth/watchedRoute", body);
+      const response = await client.post<WatchedRoute>(
+        "/auth/watchedRoute",
+        body
+      );
       return response.data;
     },
   },

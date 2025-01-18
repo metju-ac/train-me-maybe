@@ -42,6 +42,7 @@ export const LanguageSwitcher = (
               style: {
                 paddingTop: 0,
                 paddingBottom: 0,
+                color: "white",
               },
             },
           }}

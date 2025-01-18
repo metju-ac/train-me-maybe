@@ -1,6 +1,9 @@
 package dbmodels
 
-import "github.com/lib/pq"
+import (
+	"github.com/lib/pq"
+	"time"
+)
 
 type WatchedRoute struct {
 	ID                  uint           `gorm:"primaryKey" json:"id"`
@@ -15,5 +18,6 @@ type WatchedRoute struct {
 	CreditUserPassword  string         `json:"creditPassword"`
 	CutOffTime          *int           `json:"cutOffTime"`
 	MinimalCredit       *int           `json:"minimalCredit"`
+	DepartureDateTime   time.Time      `gorm:"not null" json:"departureDateTime"`
 	User                User           `gorm:"foreignKey:UserEmail;references:Email" json:"-"`
 }

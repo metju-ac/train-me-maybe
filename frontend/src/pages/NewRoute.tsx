@@ -86,6 +86,7 @@ function NewRouteForm({ stations }: { stations: Station[] }) {
         creditPassword: data.creditPassword,
         cutOffTime: data.cutOffTime,
         minimalCredit: data.minimalCredit,
+        departureDateTime: selectedRoute!.departureTime,
       });
     };
 
@@ -105,6 +106,7 @@ function NewRouteForm({ stations }: { stations: Station[] }) {
       selectedSeatClasses: selectedSeatClasses.map(
         (seatClass) => seatClass.key
       ),
+      departureDateTime: selectedRoute!.departureTime,
     });
   };
 

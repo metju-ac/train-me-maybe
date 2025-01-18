@@ -9,9 +9,10 @@ low_credit_threshold = 400
 api_base_url = "https://brn-ybus-pubapi.sa.cz/restapi"
 single_user_mode = false
 ticket_beer_price = 0.2
-allowed_origins = ["http://localhost:5173", "http://localhost:8080"]
+allowed_origins = ["http://localhost:5173", "http://localhost:5174", "http://localhost:8080"]
 server_port = 8080
 encryption_key = ""
+languages = ["en", "cs"]
 
 [auth]
 credit_enabled = true

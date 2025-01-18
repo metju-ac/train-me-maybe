@@ -11,10 +11,10 @@ const enTranlation = {
   "Save info to account?": "Save info to account?",
   "First fill out all necessary info": "First fill out all necessary info",
   "Start watching route": "Start watching route",
-  "Credit Number": "Credit Number",
+  "Credit Number": "RJ Credit Number",
   "The Regiojet number of your credit ticket (e.g. 123456789). A.k.a. 'číslo kreditové jizdenky'":
     "The Regiojet number of your credit ticket (e.g. 123456789). A.k.a. 'číslo kreditové jizdenky'",
-  "Credit Password": "Credit Password",
+  "Credit Password": "RJ Credit Password",
   "Toggle password visibility": "Toggle password visibility",
   "Time in minutes before the train departure when the last autopurchase can be made. E.g. 120 means that watched routes will be purchased no less than 2 hours before the train departure.":
     "Time in minutes before the train departure when the last autopurchase can be made. E.g. 120 means that watched routes will be purchased no less than 2 hours before the train departure.",
@@ -53,10 +53,12 @@ const enTranlation = {
   Delete: "Delete",
   "Loading...": "Loading...",
   "Error while loading data": "Error while loading data",
-  "Dense padding": "Dense padding",
-  "Train me maybe about detailed description":
-    "Train-me-maybe is a watchdog for regiojet trains. You can configure it to watch for a specific train and it will notify you by email when a free seat occurs. You can also use it to purchase the tickets automatically for you.",
-
+  "Train me maybe about detailed description paragraph 1":
+    "Train Me Maybe watches occupied RegioJet trains and buses for you. Simply tell it which routes it should watch, and you will get notified once a free seat is found. Even better, it can purchase the ticket for you!",
+  "Train me maybe about detailed description paragraph 2":
+    "The app is currently in beta version. Only routes without transfers are supported. In case something is not working, definitely let us know at ",
+  "Train me maybe about detailed description paragraph 3":
+    "The app was created as a student open-source project during the course PB173 at FI MUNI (Brno, Czech Republic). You can find the source code at Github: ",
   Email: "Email",
   Password: "Password",
   "First fill out the form": "First fill out the form",
@@ -65,18 +67,29 @@ const enTranlation = {
   "404 Not Found": "404 Not Found",
   "The page you want to see is not there 😢.":
     "The page you want to see is not there 😢.",
-  "Route created successfully!": "Route created successfully!",
-  "Failed to create route": "Failed to create route",
-  "Route deleted successfully!": "Route deleted successfully!",
-  "Failed to delete route": "Failed to delete route",
+  "Route created successfully!": "Watched route created successfully!",
+  "Failed to create route": "Failed to create watched route",
+  "Route deleted successfully!": "Watched route deleted successfully!",
+  "Failed to delete route": "Failed to delete watched route",
   "Successfully logged in": "Successfully logged in",
   "Error logging in": "Error logging in",
   "Successfully registered user": "Successfully registered user",
   "Error registering user": "Error registering user",
   "Details updated successfully!": "Details updated successfully!",
   "Failed to update user details": "Failed to update user details",
-
   "Choose language": "Choose language",
+  "Cut Off Time": "Cut Off Time for Autopurchase",
+  "full price from": "full price from",
+  "First select a route to see available seat classes":
+    "First select a route to see available seat classes",
+  "Our app finds free seats with flying colors!":
+    "Our app finds free seats with flying colors!",
+  "Departure At": "Departure At",
+  "Selected action": "Selected action",
+  "Autopurchase ticket": "Autopurchase ticket",
+  "Notify only": "Notify only",
+  "Rows per page": "Rows per page",
+  of: " of ",
 } as const;
 
 export default enTranlation;

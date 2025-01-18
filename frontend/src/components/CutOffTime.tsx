@@ -18,7 +18,7 @@ export default function CutOffTime({
   const { t } = useTranslation("default");
   return (
     <TextField
-      label="Cut Off Time"
+      label={t("Cut Off Time")}
       type="number"
       value={cutOffTime}
       onChange={(e) => {

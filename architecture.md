@@ -72,6 +72,7 @@ Watch out - every int should be (int64) in Go.
   - route ID
   - selected seat classes (LOW_COST atd)
   - auto purchase (bool)
+  - departure datetime - datetime
   - OPTIONAL - tariff class (e.g. STUDENT, SENIOR, ADULT)
   - OPTIONAL - credit user
   - OPTIONAL - credit password

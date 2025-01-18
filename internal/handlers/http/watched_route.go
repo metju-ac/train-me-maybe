@@ -2,12 +2,14 @@ package http
 
 import (
 	"context"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/metju-ac/train-me-maybe/internal/dbmodels"
 	"github.com/metju-ac/train-me-maybe/internal/lib"
 	"log/slog"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 type CreateWatchedRouteRequest struct {
@@ -21,10 +23,12 @@ type CreateWatchedRouteRequest struct {
 	CreditUserPassword  string   `json:"creditPassword"`
 	CutOffTime          *int     `json:"cutOffTime"`
 	MinimalCredit       *int     `json:"minimalCredit"`
+	DepartureDateTime   string   `json:"departureDateTime" binding:"required"`
 }
 
 func (h *Handler) CreateWatchedRoute(c *gin.Context) {
 	var req CreateWatchedRouteRequest
+	fmt.Println(c)
 	if err := c.ShouldBindJSON(&req); err != nil {
 		slog.Error("Invalid request body", "error", err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
@@ -53,6 +57,13 @@ func (h *Handler) CreateWatchedRoute(c *gin.Context) {
 		}
 	}
 
+	departureDateTime, err := time.Parse(time.RFC3339, req.DepartureDateTime)
+	if err != nil {
+		slog.Error("Invalid departureDateTime format", "error", err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid departureDateTime format"})
+		return
+	}
+
 	watchedRoute := &dbmodels.WatchedRoute{
 		UserEmail:           email.(string),
 		FromStationID:       req.FromStationID,
@@ -65,6 +76,7 @@ func (h *Handler) CreateWatchedRoute(c *gin.Context) {
 		CreditUserPassword:  req.CreditUserPassword,
 		CutOffTime:          req.CutOffTime,
 		MinimalCredit:       req.MinimalCredit,
+		DepartureDateTime:   departureDateTime,
 	}
 
 	if err := h.WatchedRouteRepo.Create(watchedRoute); err != nil {

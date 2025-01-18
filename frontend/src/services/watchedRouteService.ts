@@ -70,6 +70,7 @@ const watchedRouteService = {
         toStationId: number;
         routeId: string;
         selectedSeatClasses: string[];
+        departureDateTime: string;
       } & (
         | {
             autoPurchase: true;

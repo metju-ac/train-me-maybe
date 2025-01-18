@@ -29,6 +29,7 @@ CREATE TABLE watched_routes
     credit_user_password  VARCHAR(255),
     cut_off_time          INT,
     minimal_credit        INT,
+    departure_date_time   TIMESTAMP     NOT NULL,
     FOREIGN KEY (user_email) REFERENCES users (email)
 );
 

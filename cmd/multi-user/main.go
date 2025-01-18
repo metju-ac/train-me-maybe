@@ -3,6 +3,9 @@ package main
 import (
 	"context"
 	"fmt"
+	"os"
+	"time"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/metju-ac/train-me-maybe/internal/config"
@@ -13,8 +16,6 @@ import (
 	"github.com/metju-ac/train-me-maybe/internal/models"
 	"github.com/metju-ac/train-me-maybe/internal/repositories"
 	openapiclient "github.com/metju-ac/train-me-maybe/openapi"
-	"os"
-	"time"
 )
 
 func fetchStations(apiClient *openapiclient.APIClient, languages []string) map[string][]models.StationModel {
@@ -118,6 +119,7 @@ func main() {
 	}
 
 	router.Static("assets", "./static/assets")
+	router.Static("img", "./static/img")
 	router.NoRoute(func(c *gin.Context) {
 		c.File("./static/index.html")
 	})

@@ -54,7 +54,6 @@ const csTranlation = {
   Delete: "Smazat",
   "Loading...": "Načítání...",
   "Error while loading data": "Chyba při načítání dat",
-  "Dense padding": "Kompaktnější zobrazení",
   "Train me maybe about detailed description paragraph 1":
     "Train Me Maybe sleduje obsazenost RegioJet vlaků a autobusů za vás. Stačí vybrat, které spoje má monitorovat, budete upozorněni, jakmile se uvolní místo. Navíc za vás může jízdenku i zakoupit!",
   "Train me maybe about detailed description paragraph 2":
@@ -86,6 +85,10 @@ const csTranlation = {
     "Nejprve vyberte trasu, abyste viděli dostupné třídy sedadel",
   "Our app finds free seats with flying colors!":
     "S naší aplikací se letem světem dostanete všude!",
+  "Departure At": "Odjezd",
+  "Selected action": "Zvolená akce",
+  "Autopurchase ticket": "Automaticky zakoupit jízdenku",
+  "Notify only": "Pouze upozorní na volné místo",
 } as const;
 
 export default csTranlation;

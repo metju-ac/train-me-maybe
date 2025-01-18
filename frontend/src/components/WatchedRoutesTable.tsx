@@ -1,14 +1,13 @@
-import { WatchedRoute } from "@/models/WatchedRoute";
 import { formatStation } from "@/utils/formatStation";
 import { Station } from "@models/Station";
 import DeleteIcon from "@mui/icons-material/Delete";
+import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
 import { alpha } from "@mui/material/styles";
-import Switch from "@mui/material/Switch";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -24,6 +23,7 @@ import { visuallyHidden } from "@mui/utils";
 import useDeleteWatchedRoute from "@utils/useDeleteWatchedRoute";
 import useStations from "@utils/useStations";
 import useWatchedRoutes from "@utils/useWatchedRoutes";
+import dayjs from "dayjs";
 import { TFunction } from "i18next";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
@@ -54,7 +54,7 @@ function getComparator<Key extends keyof any>(
 
 interface HeadCell {
   disablePadding: boolean;
-  id: keyof WatchedRoute;
+  id: string;
   label: string;
   numeric: boolean;
 }
@@ -68,12 +68,6 @@ const useHeadCells = (t: TFunction<"default", undefined>) => {
   const cells: readonly HeadCell[] = React.useMemo(
     () => [
       {
-        id: "id",
-        numeric: false,
-        disablePadding: true,
-        label: "ID",
-      },
-      {
         id: "fromStationId",
         numeric: false,
         disablePadding: false,
@@ -86,10 +80,16 @@ const useHeadCells = (t: TFunction<"default", undefined>) => {
         label: t("To Station"),
       },
       {
-        id: "tariffClass",
+        id: "departureDateTime",
         numeric: false,
         disablePadding: false,
-        label: t("Tariff Class"),
+        label: t("Departure At"),
+      },
+      {
+        id: "Selected action",
+        numeric: false,
+        disablePadding: false,
+        label: t("Selected action"),
       },
     ],
     [t]
@@ -100,10 +100,7 @@ const useHeadCells = (t: TFunction<"default", undefined>) => {
 
 interface EnhancedTableProps {
   numSelected: number;
-  onRequestSort: (
-    event: React.MouseEvent<unknown>,
-    property: keyof WatchedRoute
-  ) => void;
+  onRequestSort: (event: React.MouseEvent<unknown>, property: string) => void;
   onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
   order: Order;
   orderBy: string;
@@ -122,7 +119,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
     onRequestSort,
   } = props;
   const createSortHandler =
-    (property: keyof WatchedRoute) => (event: React.MouseEvent<unknown>) => {
+    (property: string) => (event: React.MouseEvent<unknown>) => {
       onRequestSort(event, property);
     };
 
@@ -222,7 +219,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
 }
 export default function EnhancedTable() {
   const [order, setOrder] = React.useState<Order>("asc");
-  const [orderBy, setOrderBy] = React.useState<keyof WatchedRoute>("id");
+  const [orderBy, setOrderBy] = React.useState<string>("departureDateTime");
   const [selected, setSelected] = React.useState<readonly number[]>([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
@@ -249,7 +246,7 @@ export default function EnhancedTable() {
 
   const handleRequestSort = (
     _: React.MouseEvent<unknown>,
-    property: keyof WatchedRoute
+    property: string
   ) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -365,21 +362,26 @@ export default function EnhancedTable() {
                         }}
                       />
                     </TableCell>
-                    <TableCell
-                      component="th"
-                      id={labelId}
-                      scope="row"
-                      padding="none"
-                    >
-                      {row.id}
-                    </TableCell>
-                    <TableCell align="left">
+                    <TableCell>
                       {renderStation(row.fromStationId, stations!)}
                     </TableCell>
-                    <TableCell align="left">
+                    <TableCell>
                       {renderStation(row.toStationId, stations!)}
                     </TableCell>
-                    <TableCell align="left">{row.tariffClass}</TableCell>
+                    <TableCell>
+                      {dayjs(row.departureDateTime).format("D. M. H:mm")}
+                    </TableCell>
+                    <TableCell>
+                      {row.autoPurchase ? (
+                        <Tooltip arrow title={t("Autopurchase ticket")}>
+                          <ShoppingCartIcon />
+                        </Tooltip>
+                      ) : (
+                        <Tooltip arrow title={t("Notify only")}>
+                          <NotificationsActiveIcon />
+                        </Tooltip>
+                      )}
+                    </TableCell>
                   </TableRow>
                 );
               })}
@@ -405,10 +407,6 @@ export default function EnhancedTable() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-      <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label={t("Dense padding")}
-      />
     </Box>
   );
 }

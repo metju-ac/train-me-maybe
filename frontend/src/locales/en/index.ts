@@ -53,7 +53,6 @@ const enTranlation = {
   Delete: "Delete",
   "Loading...": "Loading...",
   "Error while loading data": "Error while loading data",
-  "Dense padding": "Dense padding",
   "Train me maybe about detailed description paragraph 1":
     "Train Me Maybe watches occupied RegioJet trains and buses for you. Simply tell it which routes it should watch, and you will get notified once a free seat is found. Even better, it can purchase the ticket for you!",
   "Train me maybe about detailed description paragraph 2":
@@ -85,6 +84,10 @@ const enTranlation = {
     "First select a route to see available seat classes",
   "Our app finds free seats with flying colors!":
     "Our app finds free seats with flying colors!",
+  "Departure At": "Departure At",
+  "Selected action": "Selected action",
+  "Autopurchase ticket": "Autopurchase ticket",
+  "Notify only": "Notify only",
 } as const;
 
 export default enTranlation;

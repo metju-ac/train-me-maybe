@@ -4,6 +4,10 @@ export interface WatchedRoute {
   fromStationId: number;
   toStationId: number;
   routeId: string;
-  tariffClass: string;
   selectedSeatClasses: string[];
+  autoPurchase: boolean;
+  tariffClass: string;
+  cutOffTime: number | null;
+  minimalCredit: number | null;
+  departureDateTime: string;
 }

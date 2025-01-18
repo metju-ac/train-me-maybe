@@ -78,6 +78,8 @@ const enTranlation = {
   "Choose language": "Choose language",
   "Cut Off Time": "Cut Off Time for Autopurchase",
   "full price from": "full price from",
+  "First select a route to see available seat classes":
+    "First select a route to see available seat classes",
 } as const;
 
 export default enTranlation;

@@ -1,5 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
+import { AvailableLanguage } from "@/i18n";
 import staticDataService from "@services/staticDataService";
+import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
 export default function useStations() {
@@ -8,6 +9,6 @@ export default function useStations() {
 
   return useQuery({
     queryKey: [staticDataService.getStations.key, lang],
-    queryFn: () => staticDataService.getStations.fn(lang),
+    queryFn: () => staticDataService.getStations.fn(lang as AvailableLanguage),
   });
 }

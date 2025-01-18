@@ -78,6 +78,8 @@ const csTranlation = {
   "Choose language": "Vyberte jazyk",
   "Cut Off Time": "Časový limit pro nákup jízdenky",
   "full price from": "plná cena od",
+  "First select a route to see available seat classes":
+    "Nejprve vyberte trasu, abyste viděli dostupné třídy sedadel",
 } as const;
 
 export default csTranlation;

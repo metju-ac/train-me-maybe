@@ -1,4 +1,5 @@
 import config from "@/config";
+import { AvailableLanguage } from "@/i18n";
 import { Station } from "@models/Station";
 import client from "./axiosClient";
 import seatClasses from "./data/seatClasses.json";
@@ -53,9 +54,22 @@ function transformStationsFromRaw(): Station[] {
 const staticDataService = {
   getSeatClasses: {
     key: "getSeatClasses",
-    fn: async (): Promise<SeatClass[]> => {
-      console.log("getSeatClasses: Getting all seat classes");
-      return seatClasses;
+    fn: async (params: {
+      fromStationId: number;
+      toStationId: number;
+      routeId: string;
+    }): Promise<SeatClass[]> => {
+      console.log("getSeatClasses: Getting all seat classes for route", params);
+      const response = await client.get<{
+        seatClasses: SeatClass["key"][];
+      }>("/auth/seatClass", {
+        params,
+      });
+      const availableClasses = response.data.seatClasses;
+
+      return seatClasses.filter((seatClass) =>
+        availableClasses.includes(seatClass.key)
+      );
     },
   },
 
@@ -69,16 +83,16 @@ const staticDataService = {
 
   getStations: {
     key: "getStations",
-    fn: async (lang: string = "en"): Promise<Station[]> => {
+    fn: async (lang: AvailableLanguage = "en"): Promise<Station[]> => {
       console.log("getStations: Getting all stations");
       if (config.useMocks) {
         return transformStationsFromRaw();
       }
       try {
         const response = await client.get<Station[]>("/auth/station", {
-            params: {
-                lang,
-            },
+          params: {
+            lang,
+          },
         });
         return response.data;
       } catch (error) {

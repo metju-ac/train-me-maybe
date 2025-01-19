@@ -29,6 +29,7 @@ const enTranlation = {
   Logout: "Logout",
   Login: "Login",
   Register: "Register",
+  RegisterButton: "Register",
   "Error while loading routes": "Error while loading routes",
   "Select route, seat classes and tariff":
     "Select route, seat classes and tariff",

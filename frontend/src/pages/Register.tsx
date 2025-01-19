@@ -59,7 +59,7 @@ export default function Register() {
         isValid={email !== "" && password !== ""}
         tooltipTitle={t("First fill out the form")}
       >
-        {t("Register")}
+        {t("RegisterButton")}
       </SubmitButton>
     </Box>
   );

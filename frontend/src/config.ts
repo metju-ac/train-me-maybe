@@ -1,6 +1,6 @@
-const baseUrl = import.meta.env.VITE_API_BASE_URL;
+let baseUrl = import.meta.env.VITE_API_BASE_URL;
 if (!baseUrl || baseUrl === "") {
-  throw new Error("VITE_API_BASE_URL is not set");
+  baseUrl = window.location.origin + "/api";
 }
 
 const useMocks = import.meta.env.VITE_USE_MOCKS === "true";

@@ -30,6 +30,7 @@ const csTranlation = {
   Logout: "Odhlásit se",
   Login: "Přihlášení",
   Register: "Registrace",
+  RegisterButton: "Registrovat",
   "Error while loading routes": "Chyba při načítání tras",
   "Select route, seat classes and tariff":
     "Vyberte trasu, třídy sedadel a tarif",

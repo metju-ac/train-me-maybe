@@ -1,6 +1,12 @@
 # train-me-maybe
 
-This project watches for free seats on Regiojet trains.
+Train Me Maybe watches occupied RegioJet trains and buses for you. Simply tell it which routes it should watch, and you will get notified once a free seat is found. Even better, it can purchase the ticket for you!
+
+The app is currently in beta version. Only routes without transfers are supported. In case something is not working, definitely let us know at prosim@vyhul.me.
+
+The app was created as a student open-source project during the course PB173 at FI MUNI (Brno, Czech Republic).
+
+Try now at [vyhul.me](https://vyhul.me)!
 
 ## Features
 
@@ -29,7 +35,7 @@ Incrementally, we will add these features:
 
 ### Multi-tenancy features
 
-- [ ] deploy the application to a server
+- ✅ deploy the application to a server
 - ✅ allow the user to configure the application via a web interface
 - ✅ allow multiple users to use the deployed application
 

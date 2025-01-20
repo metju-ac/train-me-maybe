@@ -2,19 +2,28 @@ package config
 
 import (
 	"errors"
+	"fmt"
 	"os"
 	"strconv"
 )
 
-type SmtpConfig struct {
-	Server    string
-	Port      int
-	Username  string
-	Password  string
-	Recipient string
+var (
+	ErrSMTPServerNotSet    = errors.New("SMTP server not set")
+	ErrSMTPPortNotSet      = errors.New("SMTP port not set")
+	ErrSMTPUsernameNotSet  = errors.New("SMTP username not set")
+	ErrSMTPPasswordNotSet  = errors.New("SMTP password not set")
+	ErrSMTPRecipientNotSet = errors.New("SMTP recipient not set")
+)
+
+type SMTPConfig struct {
+	Server    string `toml:"smtp_server"`
+	Port      int    `toml:"smtp_port"`
+	Username  string `toml:"smtp_username"`
+	Password  string `toml:"smtp_password"`
+	Recipient string `toml:"smtp_recipient"`
 }
 
-func mergeSmtpConfigs(config *SmtpConfig) error {
+func mergeSMTPConfigs(config *SMTPConfig) error {
 	if server := os.Getenv("REGIOJET_SMTP_SERVER"); server != "" {
 		config.Server = server
 	}
@@ -22,7 +31,7 @@ func mergeSmtpConfigs(config *SmtpConfig) error {
 	if port := os.Getenv("REGIOJET_SMTP_PORT"); port != "" {
 		portInt, err := strconv.Atoi(port)
 		if err != nil {
-			return err
+			return fmt.Errorf("failed to parse the SMTP port: %w", err)
 		}
 		config.Port = portInt
 	}
@@ -42,25 +51,25 @@ func mergeSmtpConfigs(config *SmtpConfig) error {
 	return nil
 }
 
-func validateSmtpConfig(config *Config) error {
-	if config.Smtp.Server == "" {
-		return errors.New("SMTP server not set")
+func validateSMTPConfig(config *Config) error {
+	if config.SMTP.Server == "" {
+		return fmt.Errorf("%w", ErrSMTPServerNotSet)
 	}
 
-	if config.Smtp.Port == 0 {
-		return errors.New("SMTP port not set")
+	if config.SMTP.Port == 0 {
+		return fmt.Errorf("%w", ErrSMTPPortNotSet)
 	}
 
-	if config.Smtp.Username == "" {
-		return errors.New("SMTP username not set")
+	if config.SMTP.Username == "" {
+		return fmt.Errorf("%w", ErrSMTPUsernameNotSet)
 	}
 
-	if config.Smtp.Password == "" {
-		return errors.New("SMTP password not set")
+	if config.SMTP.Password == "" {
+		return fmt.Errorf("%w", ErrSMTPPasswordNotSet)
 	}
 
-	if config.General.SingleUserMode && config.Smtp.Recipient == "" {
-		return errors.New("SMTP recipient not set")
+	if config.General.SingleUserMode && config.SMTP.Recipient == "" {
+		return fmt.Errorf("%w", ErrSMTPRecipientNotSet)
 	}
 
 	return nil

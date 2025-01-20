@@ -11,8 +11,8 @@ import (
 )
 
 type UserCredentials struct {
-	Email    string `json:"email" binding:"required"`
-	Password string `json:"password" binding:"required"`
+	Email    string `binding:"required" json:"email"`
+	Password string `binding:"required" json:"password"`
 }
 
 func (h *Handler) Login(c *gin.Context) {

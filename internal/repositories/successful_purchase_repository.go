@@ -1,6 +1,8 @@
 package repositories
 
 import (
+	"fmt"
+
 	"github.com/metju-ac/train-me-maybe/internal/dbmodels"
 	"gorm.io/gorm"
 )
@@ -22,7 +24,9 @@ func (r *successfulPurchaseRepository) Create(successfulPurchase *dbmodels.Succe
 	return r.db.Create(successfulPurchase).Error
 }
 
-func (r *successfulPurchaseRepository) CreateWithBeerUpdate(successfulPurchase *dbmodels.SuccessfulPurchase, beerIncrement float32) (float32, error) {
+func (r *successfulPurchaseRepository) CreateWithBeerUpdate(
+	successfulPurchase *dbmodels.SuccessfulPurchase, beerIncrement float32,
+) (float32, error) {
 	var newBeersOwed float32
 
 	err := r.db.Transaction(func(tx *gorm.DB) error {
@@ -42,6 +46,9 @@ func (r *successfulPurchaseRepository) CreateWithBeerUpdate(successfulPurchase *
 
 		return nil
 	})
+	if err != nil {
+		return 0, fmt.Errorf("failed to create successful purchase with beer update: %w", err)
+	}
 
-	return newBeersOwed, err
+	return newBeersOwed, nil
 }

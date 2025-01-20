@@ -1,11 +1,14 @@
 package cli
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/metju-ac/train-me-maybe/openapi"
 )
+
+var ErrTariffNotFound = errors.New("tariff not found")
 
 func formatTariff(tariff *openapi.Tariff) string {
 	return fmt.Sprintf("%s (%s)", *tariff.Value, *tariff.Key)
@@ -26,7 +29,7 @@ func SelectTariff(tariffs []openapi.Tariff) (*openapi.Tariff, error) {
 	}
 	err := survey.AskOne(selectPrompt, &selectedTariff)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to select tariff: %w", err)
 	}
 
 	for _, tariff := range tariffs {
@@ -36,5 +39,5 @@ func SelectTariff(tariffs []openapi.Tariff) (*openapi.Tariff, error) {
 		}
 	}
 
-	return nil, fmt.Errorf("tariff not found")
+	return nil, fmt.Errorf("%w", ErrTariffNotFound)
 }

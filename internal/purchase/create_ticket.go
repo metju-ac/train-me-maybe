@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"log/slog"
 	"net/http"
 
@@ -14,14 +15,26 @@ import (
 	openapiclient "github.com/metju-ac/train-me-maybe/openapi"
 )
 
+var (
+	ErrFailedToCreateTicket             = errors.New("failed to create ticket")
+	ErrUnexpectedNumberOfTicketsCreated = errors.New("unexpected number of tickets created")
+)
+
 type CreateRegisteredTicketRequest struct {
 	TicketRequests []openapiclient.CreateTicketRequest `json:"ticketRequests"`
 }
 
-func createTicket(ctx context.Context, config *config.Config, input *models.UserInput, seats *handlers.CheckFreeSeatsResponse, user *openapiclient.User, authToken string) (*openapiclient.Ticket, error) {
+func createTicket(
+	ctx context.Context,
+	config *config.Config,
+	input *models.UserInput,
+	seats *handlers.CheckFreeSeatsResponse,
+	user *openapiclient.User,
+	authToken string,
+) (*openapiclient.Ticket, error) {
 	payload := openapiclient.CreateTicketRequest{
 		Route: openapiclient.CreateTicketRouteRequest{
-			RouteId:     input.SelectedRouteIds,
+			RouteId:     input.SelectedRouteIDs,
 			SeatClass:   seats.SeatClass,
 			PriceSource: input.RouteDetail.PriceClasses[0].PriceSource,
 			ActionPrice: nil,
@@ -54,18 +67,18 @@ func createTicket(ctx context.Context, config *config.Config, input *models.User
 		TicketRequests: []openapiclient.CreateTicketRequest{payload},
 	}
 
-	bodyJson, err := json.Marshal(body)
+	bodyJSON, err := json.Marshal(body)
 	if err != nil {
 		slog.Error("Failed to marshal ticket creation request", "error", err)
-		return nil, err
+		return nil, fmt.Errorf("failed to marshal ticket creation request: %w", err)
 	}
 
-	buffer := bytes.NewBuffer(bodyJson)
+	buffer := bytes.NewBuffer(bodyJSON)
 
-	request, err := http.NewRequestWithContext(ctx, http.MethodPost, config.General.ApiBaseUrl+"/tickets/create/registered", buffer)
+	request, err := http.NewRequestWithContext(ctx, http.MethodPost, config.General.APIBaseURL+"/tickets/create/registered", buffer)
 	if err != nil {
 		slog.Error("Failed to create ticket creation request", "error", err)
-		return nil, err
+		return nil, fmt.Errorf("failed to create ticket creation request: %w", err)
 	}
 
 	// Headers to be sent with the request (copied from firefox dev tools)
@@ -161,7 +174,7 @@ func createTicket(ctx context.Context, config *config.Config, input *models.User
 	request.Header.Set("Accept-Language", "en-US,en;q=0.5")
 	request.Header.Set("Accept-Encoding", "gzip, deflate, br, zstd")
 	request.Header.Set("X-Lang", "cs")
-	request.Header.Set("X-Currency", "CZK") // TODO: get currency from the user, and fallback to CZK
+	request.Header.Set("X-Currency", "CZK")
 	request.Header.Set("Content-Type", "application/1.2.0+json")
 	request.Header.Set("Cache-Control", "no-cache")
 	request.Header.Set("X-Application-Origin", "WEB")
@@ -182,32 +195,17 @@ func createTicket(ctx context.Context, config *config.Config, input *models.User
 
 	slog.Info("Sending ticket creation request", "url", request.URL.String())
 
-	// dump body to file ticket-creation.json
-	// os.WriteFile("ticket-creation.json", bodyJson, 0644)
-
-	// dump, err := httputil.DumpRequestOut(request, true)
-	// if err != nil {
-	// 	return nil, err
-	// }
-	// os.WriteFile("ticket-creation-request.txt", dump, 0644)
-
 	resp, err := http.DefaultClient.Do(request)
 	if err != nil {
 		slog.Error("Failed to send ticket creation request", "error", err)
-		return nil, err
+		return nil, fmt.Errorf("failed to send ticket creation request: %w", err)
 	}
-
-	// dump, err = httputil.DumpResponse(resp, true)
-	// if err != nil {
-	// 	return nil, err
-	// }
-	// os.WriteFile("ticket-creation-response.txt", dump, 0644)
 
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
 		slog.Error("Failed to create ticket", "status", resp.Status)
-		return nil, errors.New("Failed to create ticket")
+		return nil, fmt.Errorf("%w", ErrFailedToCreateTicket)
 	}
 
 	var response struct {
@@ -217,12 +215,12 @@ func createTicket(ctx context.Context, config *config.Config, input *models.User
 	err = json.NewDecoder(resp.Body).Decode(&response)
 	if err != nil {
 		slog.Error("Failed to decode ticket creation response", "error", err)
-		return nil, err
+		return nil, fmt.Errorf("failed to decode ticket creation response: %w", err)
 	}
 
 	if len(response.Tickets) != 1 {
 		slog.Error("Unexpected number of tickets created", "count", len(response.Tickets))
-		return nil, errors.New("Unexpected number of tickets created")
+		return nil, fmt.Errorf("%w", ErrUnexpectedNumberOfTicketsCreated)
 	}
 
 	return &response.Tickets[0], nil

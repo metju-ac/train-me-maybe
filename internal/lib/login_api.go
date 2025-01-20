@@ -5,37 +5,42 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"log/slog"
 	"net/http"
 	"time"
 )
+
+var ErrFailedToLogin = errors.New("failed to login")
+
+const contextTimeout = 30 * time.Second
 
 type LoginRequest struct {
 	AccountCode string `json:"accountCode"`
 	Password    string `json:"password"`
 }
 
-func LoginWithCreditTicket(baseUrl string, username string, password string) (string, error) {
+func LoginWithCreditTicket(baseURL string, username string, password string) (string, error) {
 	body := LoginRequest{
 		AccountCode: username,
 		Password:    password,
 	}
 
-	bodyJson, err := json.Marshal(body)
+	bodyJSON, err := json.Marshal(body)
 	if err != nil {
 		slog.Error("Failed to marshal login request", "error", err)
-		return "", err
+		return "", fmt.Errorf("failed to marshal login request: %w", err)
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), contextTimeout)
 	defer cancel()
 
-	buffer := bytes.NewBuffer(bodyJson)
+	buffer := bytes.NewBuffer(bodyJSON)
 
-	request, err := http.NewRequestWithContext(ctx, http.MethodPost, baseUrl+"/users/login/registeredAccount", buffer)
+	request, err := http.NewRequestWithContext(ctx, http.MethodPost, baseURL+"/users/login/registeredAccount", buffer)
 	if err != nil {
 		slog.Error("Failed to create login request", "error", err)
-		return "", err
+		return "", fmt.Errorf("failed to create login request: %w", err)
 	}
 
 	request.Header.Set("Content-Type", "application/json")
@@ -44,14 +49,14 @@ func LoginWithCreditTicket(baseUrl string, username string, password string) (st
 	resp, err := http.DefaultClient.Do(request)
 	if err != nil {
 		slog.Error("Failed to send login request", "error", err)
-		return "", err
+		return "", fmt.Errorf("failed to send login request: %w", err)
 	}
 
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
 		slog.Error("Failed to login", "status", resp.Status)
-		return "", errors.New("Failed to login")
+		return "", fmt.Errorf("%w: status %s", ErrFailedToLogin, resp.Status)
 	}
 
 	var response struct {
@@ -61,7 +66,7 @@ func LoginWithCreditTicket(baseUrl string, username string, password string) (st
 	err = json.NewDecoder(resp.Body).Decode(&response)
 	if err != nil {
 		slog.Error("Failed to decode login response", "error", err)
-		return "", err
+		return "", fmt.Errorf("failed to decode login response: %w", err)
 	}
 
 	return response.Token, nil

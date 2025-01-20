@@ -1,6 +1,6 @@
 [smtp]
-server = "smtp.gmail.com"
-port = 587
+smtp_server = "smtp.gmail.com"
+smtp_port = 587
 
 [general]
 poll_interval = 120

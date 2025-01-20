@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"errors"
 	"fmt"
 	"log/slog"
 	"os"
@@ -9,7 +10,13 @@ import (
 	"github.com/golang-jwt/jwt"
 )
 
-var secretKey []byte
+const hoursInDay = 24
+
+var (
+	secretKey               []byte
+	ErrInvalidSigningMethod = errors.New("invalid signing method")
+	ErrInvalidToken         = errors.New("invalid token")
+)
 
 func init() {
 	secretKey = []byte(os.Getenv("REGIOJET_JWT_SECRET_KEY"))
@@ -22,13 +29,13 @@ func init() {
 func GenerateToken(email string) (string, error) {
 	claims := jwt.MapClaims{}
 	claims["email"] = email
-	claims["exp"] = time.Now().Add(time.Hour * 24).Unix()
+	claims["exp"] = time.Now().Add(time.Hour * hoursInDay).Unix()
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	signedToken, err := token.SignedString(secretKey)
 	if err != nil {
 		slog.Error("Error signing token", "error", err)
-		return "", err
+		return "", fmt.Errorf("failed to sign token: %w", err)
 	}
 
 	slog.Info("Token generated successfully", "email", email)
@@ -38,13 +45,13 @@ func GenerateToken(email string) (string, error) {
 func VerifyToken(tokenString string) (jwt.MapClaims, error) {
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("Invalid signing method")
+			return nil, fmt.Errorf("%w", ErrInvalidSigningMethod)
 		}
 		return secretKey, nil
 	})
 	if err != nil {
 		slog.Error("Error parsing token", "error", err)
-		return nil, err
+		return nil, fmt.Errorf("failed to parse token: %w", err)
 	}
 
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
@@ -53,5 +60,5 @@ func VerifyToken(tokenString string) (jwt.MapClaims, error) {
 	}
 
 	slog.Warn("Invalid token")
-	return nil, fmt.Errorf("Invalid token")
+	return nil, fmt.Errorf("%w", ErrInvalidToken)
 }

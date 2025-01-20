@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"log/slog"
 	"os"
 	"time"
 
@@ -18,41 +19,47 @@ import (
 	openapiclient "github.com/metju-ac/train-me-maybe/openapi"
 )
 
+const (
+	maxAge         = 12 * time.Hour
+	contextTimeout = 30 * time.Second
+)
+
 func fetchStations(apiClient *openapiclient.APIClient, languages []string) map[string][]models.StationModel {
 	stationsMap := make(map[string][]models.StationModel)
 
-	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
-	defer cancel()
+	ctx, cancel := context.WithTimeout(context.Background(), contextTimeout)
 
 	for _, lang := range languages {
 		stations, err := handlers.FetchStations(ctx, apiClient, lang)
 		if err != nil {
-			fmt.Println("Error fetching stations for language", lang, ":", err)
+			slog.Error("Error fetching stations for language", "language", lang, "error", err)
+			cancel()
 			os.Exit(1)
 		}
 
 		stationsMap[lang] = stations
 	}
 
+	cancel()
 	return stationsMap
 }
 
 func main() {
 	config, err := config.LoadConfig()
 	if err != nil {
-		fmt.Println("Error:", err)
+		slog.Error("Error loading configuration", "error", err)
 		os.Exit(1)
 	}
 
-	db, err := database.ConnectAndMigrate(config.Db)
+	db, err := database.ConnectAndMigrate(config.DB)
 	if err != nil {
-		fmt.Println("Error:", err)
+		slog.Error("Error connecting to database and applying migrations", "error", err)
 		os.Exit(1)
 	}
 
-	fmt.Println("Connected to database and migrations applied", db)
+	slog.Info("Connected to database and migrations applied", "database", db)
 
-	apiConfiguration := openapiclient.NewConfiguration(config.General.ApiBaseUrl)
+	apiConfiguration := openapiclient.NewConfiguration(config.General.APIBaseURL)
 	apiClient := openapiclient.NewAPIClient(apiConfiguration)
 
 	userRepo := repositories.NewUserRepository(db, []byte(config.General.EncryptionKey))
@@ -67,7 +74,7 @@ func main() {
 		UserRepo:               userRepo,
 		WatchedRouteRepo:       watchedRouteRepo,
 		SuccessfulPurchaseRepo: successfullPurchaseRepo,
-		ApiClient:              apiClient,
+		APIClient:              apiClient,
 		GoroutineContexts:      make(map[uint]context.CancelFunc),
 		Config:                 *config,
 	}
@@ -81,7 +88,7 @@ func main() {
 
 	err = handler.RestartWatchedRoutes()
 	if err != nil {
-		fmt.Println("Error:", err)
+		slog.Error("Error restarting watched routes", "error", err)
 		os.Exit(1)
 	}
 
@@ -92,7 +99,7 @@ func main() {
 		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
-		MaxAge:           12 * time.Hour,
+		MaxAge:           maxAge,
 	}))
 
 	// Protected routes (require authentication)
@@ -124,5 +131,9 @@ func main() {
 		c.File("./static/index.html")
 	})
 
-	router.Run(fmt.Sprintf(":%d", config.General.ServerPort))
+	err = router.Run(fmt.Sprintf(":%d", config.General.ServerPort))
+	if err != nil {
+		slog.Error("Error starting the server", "error", err)
+		os.Exit(1)
+	}
 }

@@ -1,6 +1,8 @@
 package repositories
 
 import (
+	"fmt"
+
 	"github.com/metju-ac/train-me-maybe/internal/dbmodels"
 	"github.com/metju-ac/train-me-maybe/internal/utils"
 	"gorm.io/gorm"
@@ -26,7 +28,7 @@ func (r *userRepository) Create(user *dbmodels.User) error {
 	if user.CreditUserPassword != nil {
 		encryptedPassword, err := utils.Encrypt(*user.CreditUserPassword, r.key)
 		if err != nil {
-			return err
+			return fmt.Errorf("failed to encrypt password: %w", err)
 		}
 		user.CreditUserPassword = &encryptedPassword
 	}
@@ -44,7 +46,7 @@ func (r *userRepository) FindByEmail(email string) (*dbmodels.User, error) {
 	if user.CreditUserPassword != nil {
 		decryptedPassword, err := utils.Decrypt(*user.CreditUserPassword, r.key)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("failed to decrypt password: %w", err)
 		}
 		user.CreditUserPassword = &decryptedPassword
 	}
@@ -56,7 +58,7 @@ func (r *userRepository) Update(user *dbmodels.User) error {
 	if user.CreditUserPassword != nil {
 		encryptedPassword, err := utils.Encrypt(*user.CreditUserPassword, r.key)
 		if err != nil {
-			return err
+			return fmt.Errorf("failed to encrypt password: %w", err)
 		}
 		user.CreditUserPassword = &encryptedPassword
 	}

@@ -58,7 +58,7 @@ func (h *Handler) UpdateUser(c *gin.Context) {
 	}
 
 	if req.CreditUser != nil && (*req.CreditUser) != "" && req.CreditPassword != nil && (*req.CreditPassword) != "" {
-		_, err := lib.LoginWithCreditTicket(h.Config.General.ApiBaseUrl, *req.CreditUser, *req.CreditPassword)
+		_, err := lib.LoginWithCreditTicket(h.Config.General.APIBaseURL, *req.CreditUser, *req.CreditPassword)
 		if err != nil {
 			slog.Error("Failed to login with credit ticket", "error", err)
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to login with credit ticket"})

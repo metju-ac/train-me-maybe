@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"log/slog"
 	"os"
 
@@ -9,10 +10,10 @@ import (
 )
 
 type Config struct {
-	Smtp    SmtpConfig
-	General GeneralConfig
-	Auth    AuthConfig
-	Db      DbConfig
+	SMTP    SMTPConfig    `toml:"smtp"`
+	General GeneralConfig `toml:"general"`
+	Auth    AuthConfig    `toml:"auth"`
+	DB      DBConfig      `toml:"db"`
 }
 
 func LoadConfig() (*Config, error) {
@@ -23,7 +24,7 @@ func LoadConfig() (*Config, error) {
 
 	if _, err := toml.DecodeFile("config.toml", &config); err != nil {
 		slog.Error("Failed to load TOML config file", "error", err)
-		return nil, err
+		return nil, fmt.Errorf("failed to load TOML config file: %w", err)
 	}
 
 	// Check if .env file exists and load it if present
@@ -31,7 +32,7 @@ func LoadConfig() (*Config, error) {
 		err := godotenv.Load()
 		if err != nil {
 			slog.Error("Failed to load .env file", "error", err)
-			return nil, err
+			return nil, fmt.Errorf("failed to load .env file: %w", err)
 		}
 		slog.Info("Loaded .env file")
 	} else {
@@ -39,7 +40,7 @@ func LoadConfig() (*Config, error) {
 	}
 
 	// then, if something is in the environment variables, overwrite the config
-	if err := mergeSmtpConfigs(&config.Smtp); err != nil {
+	if err := mergeSMTPConfigs(&config.SMTP); err != nil {
 		slog.Error("Failed to merge SMTP configs", "error", err)
 		return nil, err
 	}
@@ -54,7 +55,7 @@ func LoadConfig() (*Config, error) {
 		return nil, err
 	}
 
-	if err := mergeDbConfigs(&config.Db); err != nil {
+	if err := mergeDBConfigs(&config.DB); err != nil {
 		slog.Error("Failed to merge db configs", "error", err)
 		return nil, err
 	}
@@ -62,7 +63,7 @@ func LoadConfig() (*Config, error) {
 	// more sections will go here
 
 	// validate the configs
-	if err := validateSmtpConfig(&config); err != nil {
+	if err := validateSMTPConfig(&config); err != nil {
 		slog.Error("Failed to validate SMTP config", "error", err)
 		return nil, err
 	}
@@ -77,7 +78,7 @@ func LoadConfig() (*Config, error) {
 		return nil, err
 	}
 
-	if err := validateDbConfig(&config); err != nil {
+	if err := validateDBConfig(&config); err != nil {
 		slog.Error("Failed to validate db config", "error", err)
 		return nil, err
 	}

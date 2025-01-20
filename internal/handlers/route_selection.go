@@ -12,6 +12,8 @@ import (
 	openapiclient "github.com/metju-ac/train-me-maybe/openapi"
 )
 
+const contextTimeout = 30 * time.Second
+
 func FetchStations(ctx context.Context, apiClient *openapiclient.APIClient, lang string) ([]models.StationModel, error) {
 	slog.Info("Fetching locations")
 	data, httpRes, err := apiClient.ConstsAPI.GetLocations(ctx).XLang(lang).Execute()
@@ -19,6 +21,7 @@ func FetchStations(ctx context.Context, apiClient *openapiclient.APIClient, lang
 		slog.Error("Failed to fetch station data", "error", err)
 		return nil, fmt.Errorf("failed to fetch station data: %w", err)
 	}
+	defer httpRes.Body.Close()
 
 	slog.Info("Successfully fetched locations", "statusCode", httpRes.StatusCode)
 	return parser.TransformStations(data), nil
@@ -69,10 +72,14 @@ func selectDepartureDate() (string, error) {
 	return departureDate, nil
 }
 
-func FetchRoutes(apiClient *openapiclient.APIClient, departingStation, arrivingStation int64, departureDate string) ([]openapiclient.SimpleRoute, error) {
+func FetchRoutes(
+	apiClient *openapiclient.APIClient,
+	departingStation, arrivingStation int64,
+	departureDate string,
+) ([]openapiclient.SimpleRoute, error) {
 	slog.Info("Fetching routes", "departingStation", departingStation, "arrivingStation", arrivingStation, "departureDate", departureDate)
 
-	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), contextTimeout)
 	defer cancel()
 
 	routes, httpRes, err := apiClient.RoutesAPI.SimpleSearchRoutes(ctx).
@@ -86,6 +93,7 @@ func FetchRoutes(apiClient *openapiclient.APIClient, departingStation, arrivingS
 		slog.Error("Failed to fetch routes", "error", err)
 		return nil, fmt.Errorf("failed to fetch routes: %w", err)
 	}
+	defer httpRes.Body.Close()
 
 	slog.Info("Successfully fetched routes", "statusCode", httpRes.StatusCode)
 	return routes.Routes, nil
@@ -114,7 +122,7 @@ type HandleRouteSelectionResponse struct {
 
 func HandleRouteSelection(apiClient *openapiclient.APIClient) (*HandleRouteSelectionResponse, error) {
 	slog.Info("Handling route selection")
-	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), contextTimeout)
 	defer cancel()
 
 	locations, err := FetchStations(ctx, apiClient, "en")

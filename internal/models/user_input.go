@@ -5,7 +5,7 @@ import openapiclient "github.com/metju-ac/train-me-maybe/openapi"
 type UserInput struct {
 	DepartingStation   *StationModel
 	ArrivingStation    *StationModel
-	SelectedRouteIds   string
+	SelectedRouteIDs   string
 	RouteDetail        *openapiclient.Route
 	SeatClasses        []string
 	TariffKey          string

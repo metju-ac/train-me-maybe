@@ -5,24 +5,23 @@ import (
 	"os"
 	"time"
 
-	"github.com/metju-ac/train-me-maybe/internal/purchase"
-
 	"github.com/metju-ac/train-me-maybe/internal/config"
 	"github.com/metju-ac/train-me-maybe/internal/handlers"
 	"github.com/metju-ac/train-me-maybe/internal/lib"
 	"github.com/metju-ac/train-me-maybe/internal/models"
 	"github.com/metju-ac/train-me-maybe/internal/notification"
+	"github.com/metju-ac/train-me-maybe/internal/purchase"
 	openapiclient "github.com/metju-ac/train-me-maybe/openapi"
 )
 
 func main() {
-	config, err := config.LoadConfig()
+	configuration, err := config.LoadConfig()
 	if err != nil {
 		fmt.Println("Error:", err)
 		os.Exit(1)
 	}
 
-	apiConfiguration := openapiclient.NewConfiguration(config.General.ApiBaseUrl)
+	apiConfiguration := openapiclient.NewConfiguration(configuration.General.APIBaseURL)
 	apiClient := openapiclient.NewAPIClient(apiConfiguration)
 
 	route, err := handlers.HandleRouteSelection(apiClient)
@@ -38,7 +37,7 @@ func main() {
 	}
 
 	tariff := handlers.DefaultTariff()
-	if config.Auth.CreditEnabled {
+	if configuration.Auth.CreditEnabled {
 		tariff, err = handlers.HandleTariffSelection(apiClient)
 		if err != nil {
 			fmt.Println("Error:", err)
@@ -49,14 +48,14 @@ func main() {
 	userInput := &models.UserInput{
 		DepartingStation:   route.DepartingStation,
 		ArrivingStation:    route.ArrivingStation,
-		SelectedRouteIds:   route.SelectedRoute.Id,
+		SelectedRouteIDs:   route.SelectedRoute.Id,
 		SeatClasses:        seatClasses,
 		TariffKey:          *tariff.Key,
 		Section:            nil,
 		RouteDetail:        nil,
-		CreditUserNumber:   config.Auth.CreditUser,
-		CreditUserPassword: config.Auth.CreditPassword,
-		UserEmail:          config.Smtp.Recipient,
+		CreditUserNumber:   configuration.Auth.CreditUser,
+		CreditUserPassword: configuration.Auth.CreditPassword,
+		UserEmail:          configuration.SMTP.Recipient,
 	}
 
 	routeDetail, err := handlers.FetchRouteDetail(apiClient, userInput)
@@ -73,7 +72,7 @@ func main() {
 	}
 	userInput.Section = section
 
-	purchaseCutoffDuration := time.Duration(config.General.PurchaseCutoffMinutes) * time.Minute
+	purchaseCutoffDuration := time.Duration(configuration.General.PurchaseCutoffMinutes) * time.Minute
 
 	for {
 		if time.Now().After(userInput.RouteDetail.DepartureTime) {
@@ -88,30 +87,30 @@ func main() {
 		}
 
 		if freeSeatsResp == nil || !freeSeatsResp.HasFreeSeats {
-			fmt.Printf("No free seats found, checking again in %d seconds...\n", config.General.PollInterval)
-			time.Sleep(time.Duration(config.General.PollInterval) * time.Second)
+			fmt.Printf("No free seats found, checking again in %d seconds...\n", configuration.General.PollInterval)
+			time.Sleep(time.Duration(configuration.General.PollInterval) * time.Second)
 			continue
 		}
 
 		fmt.Println("Free seats found!")
 
-		if config.Auth.CreditEnabled && time.Now().Add(purchaseCutoffDuration).Before(userInput.RouteDetail.DepartureTime) {
-			response, ticket, err := purchase.AutoPurchaseTicket(apiClient, config, userInput, freeSeatsResp)
+		if configuration.Auth.CreditEnabled && time.Now().Add(purchaseCutoffDuration).Before(userInput.RouteDetail.DepartureTime) {
+			response, ticket, err := purchase.AutoPurchaseTicket(apiClient, configuration, userInput, freeSeatsResp)
 			if err != nil {
 				fmt.Println("Error purchasing ticket:", err)
 				os.Exit(1)
 			}
 
-			notification.EmailNotificationTicketBought(&config.Smtp, userInput, ticket)
+			notification.EmailNotificationTicketBought(&configuration.SMTP, userInput, ticket)
 
-			if config.General.LowCreditThreshold.Value != nil && *config.General.LowCreditThreshold.Value >= int(response.Amount) {
-				notification.EmailNotificationLowCredit(&config.Smtp, userInput, response.Amount, response.Currency)
+			if configuration.General.LowCreditThreshold.Value != nil && *configuration.General.LowCreditThreshold.Value >= int(response.Amount) {
+				notification.EmailNotificationLowCredit(&configuration.SMTP, userInput, response.Amount, response.Currency)
 			}
 
 			break
 		}
 
-		notification.EmailNotificationFreeSeats(&config.Smtp, userInput)
+		notification.EmailNotificationFreeSeats(&configuration.SMTP, userInput)
 		break
 	}
 }

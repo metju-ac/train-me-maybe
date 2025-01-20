@@ -1,14 +1,22 @@
 package cli
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/AlecAivazis/survey/v2"
 	openapiclient "github.com/metju-ac/train-me-maybe/openapi"
 )
 
+var ErrRouteNotFound = errors.New("route not found")
+
 func formatRoute(route *openapiclient.SimpleRoute) string {
-	return fmt.Sprintf("%s - %s (Transfers: %d)", route.DepartureTime.Format("02.01. 15:04"), route.ArrivalTime.Format("02.01. 15:04"), route.GetTransfersCount())
+	return fmt.Sprintf(
+		"%s - %s (Transfers: %d)",
+		route.DepartureTime.Format("02.01. 15:04"),
+		route.ArrivalTime.Format("02.01. 15:04"),
+		route.GetTransfersCount(),
+	)
 }
 
 func SelectRoute(routes []openapiclient.SimpleRoute) (*openapiclient.SimpleRoute, error) {
@@ -25,7 +33,7 @@ func SelectRoute(routes []openapiclient.SimpleRoute) (*openapiclient.SimpleRoute
 	}
 	err := survey.AskOne(selectPrompt, &selectedRoute)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to ask for route selection: %w", err)
 	}
 
 	for _, route := range routes {
@@ -35,5 +43,5 @@ func SelectRoute(routes []openapiclient.SimpleRoute) (*openapiclient.SimpleRoute
 		}
 	}
 
-	return nil, fmt.Errorf("route not found")
+	return nil, fmt.Errorf("%w", ErrRouteNotFound)
 }

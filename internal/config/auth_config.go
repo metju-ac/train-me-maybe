@@ -2,11 +2,19 @@ package config
 
 import (
 	"errors"
+	"fmt"
 	"log/slog"
 	"os"
 
 	"github.com/google/uuid"
 	"github.com/metju-ac/train-me-maybe/internal/lib"
+)
+
+var (
+	ErrInvalidCreditEnabledValue = errors.New("invalid value for REGIOJET_AUTH_CREDIT_ENABLED")
+	ErrCreditUserNotSet          = errors.New("the Credit user must be set")
+	ErrCreditPasswordNotSet      = errors.New("the Credit password must be set")
+	ErrInvalidUUIDToken          = errors.New("the token is not a valid UUID")
 )
 
 type AuthConfig struct {
@@ -20,12 +28,13 @@ type AuthConfig struct {
 
 func mergeAuthConfigs(config *AuthConfig) error {
 	if enabled := os.Getenv("REGIOJET_AUTH_CREDIT_ENABLED"); enabled != "" {
-		if enabled == "true" {
+		switch enabled {
+		case "true":
 			config.CreditEnabled = true
-		} else if enabled == "false" {
+		case "false":
 			config.CreditEnabled = false
-		} else {
-			return errors.New("Invalid value for REGIOJET_AUTH_CREDIT_ENABLED")
+		default:
+			return fmt.Errorf("%w", ErrInvalidCreditEnabledValue)
 		}
 	}
 
@@ -46,22 +55,22 @@ func validateAuthConfig(config *Config) error {
 	}
 
 	if config.Auth.CreditUser == "" {
-		return errors.New("The Credit user must be set")
+		return fmt.Errorf("%w", ErrCreditUserNotSet)
 	}
 
 	if config.Auth.CreditPassword == "" {
-		return errors.New("The Credit password must be set")
+		return fmt.Errorf("%w", ErrCreditPasswordNotSet)
 	}
 
-	token, err := lib.LoginWithCreditTicket(config.General.ApiBaseUrl, config.Auth.CreditUser, config.Auth.CreditPassword)
+	token, err := lib.LoginWithCreditTicket(config.General.APIBaseURL, config.Auth.CreditUser, config.Auth.CreditPassword)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to login with credit ticket: %w", err)
 	}
 
 	_, err = uuid.Parse(token)
 	if err != nil {
 		slog.Error("The token is not a valid UUID", "error", err)
-		return errors.New("The token is not a valid UUID")
+		return fmt.Errorf("%w", ErrInvalidUUIDToken)
 	}
 
 	return nil

@@ -3,13 +3,14 @@ package http
 import (
 	"context"
 	"fmt"
-	"github.com/gin-gonic/gin"
-	"github.com/metju-ac/train-me-maybe/internal/dbmodels"
-	"github.com/metju-ac/train-me-maybe/internal/lib"
 	"log/slog"
 	"net/http"
 	"strconv"
 	"time"
+
+	"github.com/gin-gonic/gin"
+	"github.com/metju-ac/train-me-maybe/internal/dbmodels"
+	"github.com/metju-ac/train-me-maybe/internal/lib"
 )
 
 type CreateWatchedRouteRequest struct {

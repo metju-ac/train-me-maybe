@@ -1,11 +1,12 @@
 package middleware
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/metju-ac/train-me-maybe/internal/utils"
 	"log/slog"
 	"net/http"
 	"strings"
+
+	"github.com/gin-gonic/gin"
+	"github.com/metju-ac/train-me-maybe/internal/utils"
 )
 
 func AuthenticationMiddleware() gin.HandlerFunc {

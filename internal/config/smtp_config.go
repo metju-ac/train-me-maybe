@@ -15,7 +15,6 @@ type SmtpConfig struct {
 }
 
 func mergeSmtpConfigs(config *SmtpConfig) error {
-
 	if server := os.Getenv("REGIOJET_SMTP_SERVER"); server != "" {
 		config.Server = server
 	}

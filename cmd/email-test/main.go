@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/metju-ac/train-me-maybe/openapi"
 	"os"
 	"time"
+
+	"github.com/metju-ac/train-me-maybe/openapi"
 
 	"github.com/metju-ac/train-me-maybe/internal/config"
 	"github.com/metju-ac/train-me-maybe/internal/models"

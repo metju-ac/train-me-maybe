@@ -61,7 +61,6 @@ type CheckFreeSeatsResponse struct {
 func CheckFreeSeats(apiClient *openapiclient.APIClient, userInput *models.UserInput) (*CheckFreeSeatsResponse, error) {
 	for _, seatClass := range userInput.SeatClasses {
 		route, err := GetFreeSeatsOnRoute(apiClient, userInput, seatClass)
-
 		if err != nil {
 			slog.Error("Error getting free seats", "error", err)
 			return nil, fmt.Errorf("error getting free seats: %v", err)

@@ -42,7 +42,6 @@ func VerifyToken(tokenString string) (jwt.MapClaims, error) {
 		}
 		return secretKey, nil
 	})
-
 	if err != nil {
 		slog.Error("Error parsing token", "error", err)
 		return nil, err

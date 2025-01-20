@@ -2,10 +2,11 @@ package config
 
 import (
 	"errors"
-	"github.com/google/uuid"
-	"github.com/metju-ac/train-me-maybe/internal/lib"
 	"log/slog"
 	"os"
+
+	"github.com/google/uuid"
+	"github.com/metju-ac/train-me-maybe/internal/lib"
 )
 
 type AuthConfig struct {
@@ -18,7 +19,6 @@ type AuthConfig struct {
 }
 
 func mergeAuthConfigs(config *AuthConfig) error {
-
 	if enabled := os.Getenv("REGIOJET_AUTH_CREDIT_ENABLED"); enabled != "" {
 		if enabled == "true" {
 			config.CreditEnabled = true
@@ -41,7 +41,6 @@ func mergeAuthConfigs(config *AuthConfig) error {
 }
 
 func validateAuthConfig(config *Config) error {
-
 	if !config.Auth.CreditEnabled || !config.General.SingleUserMode {
 		return nil
 	}

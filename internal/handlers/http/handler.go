@@ -3,6 +3,10 @@ package http
 import (
 	"context"
 	"fmt"
+	"log/slog"
+	"sync"
+	"time"
+
 	"github.com/metju-ac/train-me-maybe/internal/config"
 	"github.com/metju-ac/train-me-maybe/internal/dbmodels"
 	"github.com/metju-ac/train-me-maybe/internal/handlers"
@@ -12,9 +16,6 @@ import (
 	"github.com/metju-ac/train-me-maybe/internal/purchase"
 	"github.com/metju-ac/train-me-maybe/internal/repositories"
 	openapiclient "github.com/metju-ac/train-me-maybe/openapi"
-	"log/slog"
-	"sync"
-	"time"
 )
 
 type Handler struct {

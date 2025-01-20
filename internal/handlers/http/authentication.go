@@ -1,12 +1,13 @@
 package http
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/metju-ac/train-me-maybe/internal/dbmodels"
-	"github.com/metju-ac/train-me-maybe/internal/utils"
 	"log/slog"
 	"net/http"
 	"strings"
+
+	"github.com/gin-gonic/gin"
+	"github.com/metju-ac/train-me-maybe/internal/dbmodels"
+	"github.com/metju-ac/train-me-maybe/internal/utils"
 )
 
 type UserCredentials struct {

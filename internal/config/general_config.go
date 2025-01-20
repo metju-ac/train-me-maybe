@@ -67,7 +67,6 @@ type GeneralConfig struct {
 }
 
 func mergeGeneralConfigs(config *GeneralConfig) error {
-
 	if interval := os.Getenv("REGIOJET_POLL_INTERVAL"); interval != "" {
 		intervalInt, err := strconv.Atoi(interval)
 		if err != nil {

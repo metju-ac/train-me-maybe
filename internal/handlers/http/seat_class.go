@@ -2,11 +2,12 @@ package http
 
 import (
 	"context"
-	"github.com/gin-gonic/gin"
 	"log/slog"
 	"net/http"
 	"strconv"
 	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
 func (h *Handler) GetSeatClasses(c *gin.Context) {

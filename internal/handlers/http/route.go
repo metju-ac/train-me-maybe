@@ -1,14 +1,15 @@
 package http
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/metju-ac/train-me-maybe/internal/handlers"
-	"github.com/metju-ac/train-me-maybe/internal/lib"
-	"github.com/metju-ac/train-me-maybe/openapi"
 	"log/slog"
 	"net/http"
 	"strconv"
 	"time"
+
+	"github.com/gin-gonic/gin"
+	"github.com/metju-ac/train-me-maybe/internal/handlers"
+	"github.com/metju-ac/train-me-maybe/internal/lib"
+	"github.com/metju-ac/train-me-maybe/openapi"
 )
 
 func (h *Handler) GetRoutes(c *gin.Context) {

@@ -1,9 +1,10 @@
 package parser
 
 import (
+	"log/slog"
+
 	"github.com/metju-ac/train-me-maybe/internal/models"
 	"github.com/metju-ac/train-me-maybe/openapi"
-	"log/slog"
 )
 
 func TransformStations(countries []openapi.Country) []models.StationModel {

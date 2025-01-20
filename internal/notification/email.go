@@ -2,8 +2,9 @@ package notification
 
 import (
 	"fmt"
-	openapiclient "github.com/metju-ac/train-me-maybe/openapi"
 	"log/slog"
+
+	openapiclient "github.com/metju-ac/train-me-maybe/openapi"
 
 	"github.com/metju-ac/train-me-maybe/internal/cli"
 	"github.com/metju-ac/train-me-maybe/internal/config"

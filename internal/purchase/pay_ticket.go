@@ -5,13 +5,14 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"github.com/metju-ac/train-me-maybe/internal/models"
-	"github.com/metju-ac/train-me-maybe/internal/notification"
 	"log/slog"
 	"net/http"
 	"net/http/httputil"
 	"os"
 	"time"
+
+	"github.com/metju-ac/train-me-maybe/internal/models"
+	"github.com/metju-ac/train-me-maybe/internal/notification"
 
 	"github.com/metju-ac/train-me-maybe/internal/config"
 	openapiclient "github.com/metju-ac/train-me-maybe/openapi"
@@ -208,13 +209,13 @@ func payTicket(ctx context.Context, config *config.Config, input *models.UserInp
 	slog.Info("Sending ticket payment request", "url", request.URL.String())
 
 	// dump body to file ticket-payment.json
-	os.WriteFile("ticket-payment.json", bodyJson, 0644)
+	os.WriteFile("ticket-payment.json", bodyJson, 0o644)
 
 	dump, err := httputil.DumpRequestOut(request, true)
 	if err != nil {
 		return nil, err
 	}
-	os.WriteFile("ticket-payment-request.txt", dump, 0644)
+	os.WriteFile("ticket-payment-request.txt", dump, 0o644)
 
 	resp, err := http.DefaultClient.Do(request)
 	if err != nil {
@@ -226,7 +227,7 @@ func payTicket(ctx context.Context, config *config.Config, input *models.UserInp
 	if err != nil {
 		return nil, err
 	}
-	os.WriteFile("ticket-payment-response.txt", dump, 0644)
+	os.WriteFile("ticket-payment-response.txt", dump, 0o644)
 
 	defer resp.Body.Close()
 

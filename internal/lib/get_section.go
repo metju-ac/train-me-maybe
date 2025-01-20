@@ -26,7 +26,6 @@ func getSectionIdsFromRoute(routeIds string) ([]int64, error) {
 }
 
 func GetSection(input *models.UserInput) (*openapiclient.SimpleSection, error) {
-
 	sectionIds, err := getSectionIdsFromRoute(input.SelectedRouteIds)
 	if err != nil {
 		slog.Error("Error getting section IDs", "error", err)

@@ -2,8 +2,9 @@ package cli
 
 import (
 	"fmt"
-	"github.com/AlecAivazis/survey/v2"
 	"time"
+
+	"github.com/AlecAivazis/survey/v2"
 )
 
 func SelectDate() (string, error) {

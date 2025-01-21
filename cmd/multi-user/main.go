@@ -104,7 +104,7 @@ func main() {
 
 	// Protected routes (require authentication)
 	protectedRoutes := router.Group("/api/auth")
-	protectedRoutes.Use(middleware.AuthenticationMiddleware())
+	protectedRoutes.Use(middleware.AuthenticationMiddleware([]byte(config.General.JwtSecretKey)))
 	{
 		protectedRoutes.GET("/user", handler.GetUser)
 		protectedRoutes.PUT("/user", handler.UpdateUser)

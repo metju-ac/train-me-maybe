@@ -39,7 +39,7 @@ func (h *Handler) Login(c *gin.Context) {
 		return
 	}
 
-	token, err := utils.GenerateToken(user.Email)
+	token, err := utils.GenerateToken([]byte(h.Config.General.JwtSecretKey), user.Email)
 	if err != nil {
 		slog.Error("Error generating token", "error", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error generating token"})
@@ -87,7 +87,7 @@ func (h *Handler) Register(c *gin.Context) {
 		return
 	}
 
-	token, err := utils.GenerateToken(user.Email)
+	token, err := utils.GenerateToken([]byte(h.Config.General.JwtSecretKey), user.Email)
 	if err != nil {
 		slog.Error("Error generating token", "error", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error generating token"})

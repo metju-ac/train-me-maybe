@@ -25,6 +25,7 @@ var (
 	ErrLanguagesNotSet              = errors.New("languages must be set")
 	ErrInvalidValueForNullableInt   = errors.New("invalid value for NullableInt")
 	ErrInvalidTypeForNullableInt    = errors.New("invalid type for NullableInt")
+	ErrJWTSecretKeyNotSet           = errors.New("JWT secret key must be set")
 )
 
 type NullableInt struct {
@@ -84,6 +85,9 @@ type GeneralConfig struct {
 
 	// Supported languages
 	Languages []string `toml:"languages"`
+
+	// JWT secret key
+	JwtSecretKey string `toml:"jwt_secret_key"`
 }
 
 func mergeGeneralConfigs(config *GeneralConfig) error {
@@ -151,6 +155,10 @@ func mergeGeneralConfigs(config *GeneralConfig) error {
 		config.Languages = strings.Split(langs, ",")
 	}
 
+	if jwtSecretKey := os.Getenv("REGIOJET_JWT_SECRET_KEY"); jwtSecretKey != "" {
+		config.JwtSecretKey = jwtSecretKey
+	}
+
 	return nil
 }
 
@@ -193,6 +201,10 @@ func validateGeneralConfig(config *GeneralConfig) error {
 
 	if len(config.Languages) == 0 {
 		return fmt.Errorf("%w", ErrLanguagesNotSet)
+	}
+
+	if len(config.JwtSecretKey) == 0 {
+		return fmt.Errorf("%w", ErrJWTSecretKeyNotSet)
 	}
 
 	return nil

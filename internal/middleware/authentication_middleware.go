@@ -9,7 +9,7 @@ import (
 	"github.com/metju-ac/train-me-maybe/internal/utils"
 )
 
-func AuthenticationMiddleware() gin.HandlerFunc {
+func AuthenticationMiddleware(secretKey []byte) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		tokenString := c.GetHeader("Authorization")
 		if tokenString == "" {
@@ -30,7 +30,7 @@ func AuthenticationMiddleware() gin.HandlerFunc {
 
 		tokenString = tokenParts[1]
 
-		claims, err := utils.VerifyToken(tokenString)
+		claims, err := utils.VerifyToken(secretKey, tokenString)
 		if err != nil {
 			slog.Warn("Invalid authentication token", "error", err)
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid authentication token"})

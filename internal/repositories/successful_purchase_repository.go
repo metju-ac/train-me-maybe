@@ -7,29 +7,20 @@ import (
 	"gorm.io/gorm"
 )
 
-type SuccessfulPurchaseRepository interface {
-	Create(successfulPurchase *dbmodels.SuccessfulPurchase) error
-	CreateWithBeerUpdate(successfulPurchase *dbmodels.SuccessfulPurchase, beerIncrement float32) (float32, error)
+type SuccessfulPurchaseRepository struct {
+	DB *gorm.DB
 }
 
-type successfulPurchaseRepository struct {
-	db *gorm.DB
+func (r *SuccessfulPurchaseRepository) Create(successfulPurchase *dbmodels.SuccessfulPurchase) error {
+	return r.DB.Create(successfulPurchase).Error
 }
 
-func NewSuccessfulPurchaseRepository(db *gorm.DB) SuccessfulPurchaseRepository {
-	return &successfulPurchaseRepository{db: db}
-}
-
-func (r *successfulPurchaseRepository) Create(successfulPurchase *dbmodels.SuccessfulPurchase) error {
-	return r.db.Create(successfulPurchase).Error
-}
-
-func (r *successfulPurchaseRepository) CreateWithBeerUpdate(
+func (r *SuccessfulPurchaseRepository) CreateWithBeerUpdate(
 	successfulPurchase *dbmodels.SuccessfulPurchase, beerIncrement float32,
 ) (float32, error) {
 	var newBeersOwed float32
 
-	err := r.db.Transaction(func(tx *gorm.DB) error {
+	err := r.DB.Transaction(func(tx *gorm.DB) error {
 		if err := tx.Create(successfulPurchase).Error; err != nil {
 			return err
 		}

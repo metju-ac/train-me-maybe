@@ -28,8 +28,8 @@ const routeService = {
 
         for (const route of routes.routes) {
           if (
-            route.departureStationId === params.fromStation.stationID &&
-            route.arrivalStationId === params.toStation.stationID &&
+            route.departureStationId === params.fromStation.stationId &&
+            route.arrivalStationId === params.toStation.stationId &&
             params.date === route.departureTime.substring(0, 10)
           ) {
             matchingRoutes.push(route);
@@ -45,8 +45,8 @@ const routeService = {
 
       const response = await client.get<Route[]>("/auth/route", {
         params: {
-          fromStationId: params.fromStation.stationID,
-          toStationId: params.toStation.stationID,
+          fromStationId: params.fromStation.stationId,
+          toStationId: params.toStation.stationId,
           date: params.date,
         },
       });

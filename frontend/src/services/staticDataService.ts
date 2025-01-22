@@ -31,7 +31,7 @@ function transformStationsFromRaw(): Station[] {
             "Station is neither a train station nor a bus station",
             "stationName",
             station.name,
-            "stationID",
+            "stationId",
             station.id
           );
         }
@@ -39,7 +39,7 @@ function transformStationsFromRaw(): Station[] {
         result.push({
           country: country.country,
           city: city.name,
-          stationID: station.id,
+          stationId: station.id,
           stationName: station.fullname,
           isTrainStation,
           isBusStation,

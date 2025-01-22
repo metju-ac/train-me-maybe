@@ -15,6 +15,7 @@ export type AvailableLanguage = (typeof availableLanguages)[number];
 export const languageToFlagUrl: Record<AvailableLanguage, string> = {
   cs: "https://flagcdn.com/w20/cz.png",
   en: "https://flagcdn.com/w20/us.png",
+  sk: "https://flagcdn.com/w20/sk.png",
 };
 
 export const initI18N = () => {

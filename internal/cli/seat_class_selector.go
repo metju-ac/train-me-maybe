@@ -2,6 +2,7 @@ package cli
 
 import (
 	"fmt"
+
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/metju-ac/train-me-maybe/openapi"
 )
@@ -27,10 +28,10 @@ func SelectSeatClasses(seatClasses []openapi.SeatClass) ([]string, error) {
 	}
 	err := survey.AskOne(selectPrompt, &selectedSeatClasses)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to ask for seat class selection: %w", err)
 	}
 
-	var selectedKeys []string
+	selectedKeys := make([]string, 0, len(selectedSeatClasses))
 	for _, selected := range selectedSeatClasses {
 		selectedKeys = append(selectedKeys, seatClassMap[selected])
 	}

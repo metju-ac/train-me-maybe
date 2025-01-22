@@ -2,17 +2,20 @@ package http
 
 import (
 	"context"
-	"github.com/gin-gonic/gin"
 	"log/slog"
 	"net/http"
 	"strconv"
 	"time"
+
+	"github.com/gin-gonic/gin"
 )
+
+const contextTimeout = 30 * time.Second
 
 func (h *Handler) GetSeatClasses(c *gin.Context) {
 	fromStationIDStr := c.Query("fromStationId")
 	toStationIDStr := c.Query("toStationId")
-	routeIdStr := c.Query("routeId")
+	routeIDStr := c.Query("routeId")
 
 	fromStationID, err := strconv.ParseInt(fromStationIDStr, 10, 64)
 	if err != nil {
@@ -21,26 +24,27 @@ func (h *Handler) GetSeatClasses(c *gin.Context) {
 		return
 	}
 
-	toStationId, err := strconv.ParseInt(toStationIDStr, 10, 64)
+	toStationID, err := strconv.ParseInt(toStationIDStr, 10, 64)
 	if err != nil {
-		slog.Error("Invalid toStationId", "error", err)
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid toStationId"})
+		slog.Error("Invalid toStationID", "error", err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid toStationID"})
 		return
 	}
 
-	slog.Info("Fetching route detail", "fromStationId", fromStationID, "toStationId", toStationId, "routeId", routeIdStr)
-	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	slog.Info("Fetching route detail", "fromStationId", fromStationID, "toStationID", toStationID, "routeId", routeIDStr)
+	ctx, cancel := context.WithTimeout(context.Background(), contextTimeout)
 	defer cancel()
 
-	routeDetail, httpRes, err := h.ApiClient.RoutesAPI.GetSimpleRouteDetail(ctx, routeIdStr).
+	routeDetail, httpRes, err := h.APIClient.RoutesAPI.GetSimpleRouteDetail(ctx, routeIDStr).
 		FromStationId(fromStationID).
-		ToStationId(toStationId).
+		ToStationId(toStationID).
 		Execute()
 	if err != nil {
 		slog.Error("Failed to fetch route detail", "error", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error fetching route detail"})
 		return
 	}
+	defer httpRes.Body.Close()
 	slog.Info("Successfully fetched route detail", "statusCode", httpRes.StatusCode)
 
 	if len(routeDetail.Sections) != 1 {

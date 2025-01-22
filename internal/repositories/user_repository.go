@@ -1,50 +1,41 @@
 package repositories
 
 import (
+	"fmt"
+
 	"github.com/metju-ac/train-me-maybe/internal/dbmodels"
 	"github.com/metju-ac/train-me-maybe/internal/utils"
 	"gorm.io/gorm"
 )
 
-type UserRepository interface {
-	Create(user *dbmodels.User) error
-	FindByEmail(email string) (*dbmodels.User, error)
-	Update(user *dbmodels.User) error
-	DeleteByEmail(email string) error
+type UserRepository struct {
+	DB  *gorm.DB
+	Key []byte
 }
 
-type userRepository struct {
-	db  *gorm.DB
-	key []byte
-}
-
-func NewUserRepository(db *gorm.DB, key []byte) UserRepository {
-	return &userRepository{db: db, key: key}
-}
-
-func (r *userRepository) Create(user *dbmodels.User) error {
+func (r *UserRepository) Create(user *dbmodels.User) error {
 	if user.CreditUserPassword != nil {
-		encryptedPassword, err := utils.Encrypt(*user.CreditUserPassword, r.key)
+		encryptedPassword, err := utils.Encrypt(*user.CreditUserPassword, r.Key)
 		if err != nil {
-			return err
+			return fmt.Errorf("failed to encrypt password: %w", err)
 		}
 		user.CreditUserPassword = &encryptedPassword
 	}
 
-	return r.db.Create(user).Error
+	return r.DB.Create(user).Error
 }
 
-func (r *userRepository) FindByEmail(email string) (*dbmodels.User, error) {
+func (r *UserRepository) FindByEmail(email string) (*dbmodels.User, error) {
 	var user dbmodels.User
-	err := r.db.Where("email = ?", email).First(&user).Error
+	err := r.DB.Where("email = ?", email).First(&user).Error
 	if err != nil {
 		return nil, err
 	}
 
 	if user.CreditUserPassword != nil {
-		decryptedPassword, err := utils.Decrypt(*user.CreditUserPassword, r.key)
+		decryptedPassword, err := utils.Decrypt(*user.CreditUserPassword, r.Key)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("failed to decrypt password: %w", err)
 		}
 		user.CreditUserPassword = &decryptedPassword
 	}
@@ -52,18 +43,18 @@ func (r *userRepository) FindByEmail(email string) (*dbmodels.User, error) {
 	return &user, nil
 }
 
-func (r *userRepository) Update(user *dbmodels.User) error {
+func (r *UserRepository) Update(user *dbmodels.User) error {
 	if user.CreditUserPassword != nil {
-		encryptedPassword, err := utils.Encrypt(*user.CreditUserPassword, r.key)
+		encryptedPassword, err := utils.Encrypt(*user.CreditUserPassword, r.Key)
 		if err != nil {
-			return err
+			return fmt.Errorf("failed to encrypt password: %w", err)
 		}
 		user.CreditUserPassword = &encryptedPassword
 	}
 
-	return r.db.Save(user).Error
+	return r.DB.Save(user).Error
 }
 
-func (r *userRepository) DeleteByEmail(email string) error {
-	return r.db.Where("email = ?", email).Delete(&dbmodels.User{}).Error
+func (r *UserRepository) DeleteByEmail(email string) error {
+	return r.DB.Where("email = ?", email).Delete(&dbmodels.User{}).Error
 }

@@ -1,51 +1,47 @@
 package utils
 
 import (
+	"errors"
 	"fmt"
 	"log/slog"
-	"os"
 	"time"
 
 	"github.com/golang-jwt/jwt"
 )
 
-var secretKey []byte
+const hoursInDay = 24
 
-func init() {
-	secretKey = []byte(os.Getenv("REGIOJET_JWT_SECRET_KEY"))
-	if len(secretKey) == 0 {
-		slog.Error("REGIOJET_JWT_SECRET_KEY environment variable is not set")
-		panic("REGIOJET_JWT_SECRET_KEY environment variable is not set")
-	}
-}
+var (
+	ErrInvalidSigningMethod = errors.New("invalid signing method")
+	ErrInvalidToken         = errors.New("invalid token")
+)
 
-func GenerateToken(email string) (string, error) {
+func GenerateToken(secretKey []byte, email string) (string, error) {
 	claims := jwt.MapClaims{}
 	claims["email"] = email
-	claims["exp"] = time.Now().Add(time.Hour * 24).Unix()
+	claims["exp"] = time.Now().Add(time.Hour * hoursInDay).Unix()
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	signedToken, err := token.SignedString(secretKey)
 	if err != nil {
 		slog.Error("Error signing token", "error", err)
-		return "", err
+		return "", fmt.Errorf("failed to sign token: %w", err)
 	}
 
 	slog.Info("Token generated successfully", "email", email)
 	return signedToken, nil
 }
 
-func VerifyToken(tokenString string) (jwt.MapClaims, error) {
+func VerifyToken(secretKey []byte, tokenString string) (jwt.MapClaims, error) {
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("Invalid signing method")
+			return nil, fmt.Errorf("%w", ErrInvalidSigningMethod)
 		}
 		return secretKey, nil
 	})
-
 	if err != nil {
 		slog.Error("Error parsing token", "error", err)
-		return nil, err
+		return nil, fmt.Errorf("failed to parse token: %w", err)
 	}
 
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
@@ -54,5 +50,5 @@ func VerifyToken(tokenString string) (jwt.MapClaims, error) {
 	}
 
 	slog.Warn("Invalid token")
-	return nil, fmt.Errorf("Invalid token")
+	return nil, fmt.Errorf("%w", ErrInvalidToken)
 }

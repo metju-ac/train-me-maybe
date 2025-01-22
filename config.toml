@@ -1,6 +1,6 @@
 [smtp]
-server = "smtp.gmail.com"
-port = 587
+smtp_server = "smtp.gmail.com"
+smtp_port = 587
 
 [general]
 poll_interval = 120
@@ -13,6 +13,7 @@ allowed_origins = ["http://localhost:5173", "http://localhost:5174", "http://loc
 server_port = 8080
 encryption_key = ""
 languages = ["en", "cs", "sk"]
+jwt_secret_key = ""
 
 [auth]
 credit_enabled = true

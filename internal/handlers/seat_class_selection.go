@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
-	"time"
 
 	"github.com/metju-ac/train-me-maybe/internal/cli"
 	openapiclient "github.com/metju-ac/train-me-maybe/openapi"
@@ -17,6 +16,7 @@ func fetchSeatClasses(ctx context.Context, apiClient *openapiclient.APIClient) (
 		slog.Error("Failed to fetch seat classes", "error", err)
 		return nil, fmt.Errorf("failed to fetch seat classes: %w", err)
 	}
+	defer httpRes.Body.Close()
 
 	slog.Info("Successfully fetched seat classes", "statusCode", httpRes.StatusCode)
 	return seatClasses, nil
@@ -37,7 +37,7 @@ func selectSeatClasses(seatClasses []openapiclient.SeatClass) ([]string, error) 
 
 func HandleSeatClassSelection(apiClient *openapiclient.APIClient) ([]string, error) {
 	slog.Info("Handling seat class selection")
-	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), contextTimeout)
 	defer cancel()
 
 	seatClasses, err := fetchSeatClasses(ctx, apiClient)

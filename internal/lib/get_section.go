@@ -1,6 +1,7 @@
 package lib
 
 import (
+	"errors"
 	"fmt"
 	"log/slog"
 	"strconv"
@@ -10,34 +11,38 @@ import (
 	openapiclient "github.com/metju-ac/train-me-maybe/openapi"
 )
 
-func getSectionIdsFromRoute(routeIds string) ([]int64, error) {
-	intIds := make([]int64, 0)
+var (
+	ErrInvalidRouteID        = errors.New("invalid route ID")
+	ErrInvalidSectionIDCount = errors.New("expected one section ID")
+)
 
-	ids := strings.Split(routeIds, ",")
+func getSectionIDsFromRoute(routeIDs string) ([]int64, error) {
+	intIDs := make([]int64, 0)
+
+	ids := strings.Split(routeIDs, ",")
 	for _, idStr := range ids {
 		id, err := strconv.ParseInt(idStr, 10, 64)
 		if err != nil {
-			return nil, fmt.Errorf("invalid route ID: %s", idStr)
+			return nil, fmt.Errorf("%w: %s", ErrInvalidRouteID, idStr)
 		}
-		intIds = append(intIds, id)
+		intIDs = append(intIDs, id)
 	}
 
-	return intIds, nil
+	return intIDs, nil
 }
 
 func GetSection(input *models.UserInput) (*openapiclient.SimpleSection, error) {
-
-	sectionIds, err := getSectionIdsFromRoute(input.SelectedRouteIds)
+	sectionIDs, err := getSectionIDsFromRoute(input.SelectedRouteIDs)
 	if err != nil {
 		slog.Error("Error getting section IDs", "error", err)
-		return nil, fmt.Errorf("error getting section IDs: %v", err)
+		return nil, fmt.Errorf("error getting section IDs: %w", err)
 	}
 
 	// For now, we only support exactly one section of the given route
-	if len(sectionIds) != 1 {
-		slog.Error("Expected one section ID, got", "sectionIds", sectionIds)
-		return nil, fmt.Errorf("expected one section ID, got %v", sectionIds)
+	if len(sectionIDs) != 1 {
+		slog.Error("Expected one section ID, got", "sectionIDs", sectionIDs)
+		return nil, fmt.Errorf("%w: %v", ErrInvalidSectionIDCount, sectionIDs)
 	}
 
-	return openapiclient.NewSimpleSection(sectionIds[0], input.DepartingStation.StationID, input.ArrivingStation.StationID), nil
+	return openapiclient.NewSimpleSection(sectionIDs[0], input.DepartingStation.StationID, input.ArrivingStation.StationID), nil
 }

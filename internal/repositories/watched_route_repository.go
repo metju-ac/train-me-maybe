@@ -5,37 +5,26 @@ import (
 	"gorm.io/gorm"
 )
 
-type WatchedRouteRepository interface {
-	Create(watchedRoute *dbmodels.WatchedRoute) error
-	Delete(id uint) error
-	GetAllForEmail(email string) ([]dbmodels.WatchedRoute, error)
-	GetAll() ([]dbmodels.WatchedRoute, error)
+type WatchedRouteRepository struct {
+	DB *gorm.DB
 }
 
-type watchedRouteRepository struct {
-	db *gorm.DB
+func (r *WatchedRouteRepository) Create(watchedRoute *dbmodels.WatchedRoute) error {
+	return r.DB.Create(watchedRoute).Error
 }
 
-func NewWatchedRouteRepository(db *gorm.DB) WatchedRouteRepository {
-	return &watchedRouteRepository{db: db}
+func (r *WatchedRouteRepository) Delete(id uint) error {
+	return r.DB.Delete(&dbmodels.WatchedRoute{}, id).Error
 }
 
-func (r *watchedRouteRepository) Create(watchedRoute *dbmodels.WatchedRoute) error {
-	return r.db.Create(watchedRoute).Error
-}
-
-func (r *watchedRouteRepository) Delete(id uint) error {
-	return r.db.Delete(&dbmodels.WatchedRoute{}, id).Error
-}
-
-func (r *watchedRouteRepository) GetAllForEmail(email string) ([]dbmodels.WatchedRoute, error) {
+func (r *WatchedRouteRepository) GetAllForEmail(email string) ([]dbmodels.WatchedRoute, error) {
 	var watchedRoutes []dbmodels.WatchedRoute
-	err := r.db.Where("user_email = ?", email).Find(&watchedRoutes).Error
+	err := r.DB.Where("user_email = ?", email).Find(&watchedRoutes).Error
 	return watchedRoutes, err
 }
 
-func (r *watchedRouteRepository) GetAll() ([]dbmodels.WatchedRoute, error) {
+func (r *WatchedRouteRepository) GetAll() ([]dbmodels.WatchedRoute, error) {
 	var watchedRoutes []dbmodels.WatchedRoute
-	err := r.db.Find(&watchedRoutes).Error
+	err := r.DB.Find(&watchedRoutes).Error
 	return watchedRoutes, err
 }

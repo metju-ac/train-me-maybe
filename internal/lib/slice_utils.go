@@ -25,7 +25,7 @@ func FilterFunc[T any](slice []T, filterFunc func(T) bool) []T {
 func ToSet[T comparable](slice []T) map[T]bool {
 	set := make(map[T]bool, len(slice))
 
-	for i := 0; i < len(slice); i++ {
+	for i := range slice {
 		set[slice[i]] = true
 	}
 
@@ -33,7 +33,7 @@ func ToSet[T comparable](slice []T) map[T]bool {
 }
 
 func Contains[T comparable](slice []T, value T) bool {
-	for i := 0; i < len(slice); i++ {
+	for i := range slice {
 		if slice[i] == value {
 			return true
 		}

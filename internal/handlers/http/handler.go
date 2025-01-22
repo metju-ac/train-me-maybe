@@ -2,7 +2,12 @@ package http
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"log/slog"
+	"sync"
+	"time"
+
 	"github.com/metju-ac/train-me-maybe/internal/config"
 	"github.com/metju-ac/train-me-maybe/internal/dbmodels"
 	"github.com/metju-ac/train-me-maybe/internal/handlers"
@@ -12,10 +17,9 @@ import (
 	"github.com/metju-ac/train-me-maybe/internal/purchase"
 	"github.com/metju-ac/train-me-maybe/internal/repositories"
 	openapiclient "github.com/metju-ac/train-me-maybe/openapi"
-	"log/slog"
-	"sync"
-	"time"
 )
+
+var ErrStationNotFound = errors.New("station not found")
 
 type Handler struct {
 	Stations               map[int64]models.StationModel
@@ -23,7 +27,7 @@ type Handler struct {
 	UserRepo               repositories.UserRepository
 	WatchedRouteRepo       repositories.WatchedRouteRepository
 	SuccessfulPurchaseRepo repositories.SuccessfulPurchaseRepository
-	ApiClient              *openapiclient.APIClient
+	APIClient              *openapiclient.APIClient
 	GoroutineContexts      map[uint]context.CancelFunc
 	mu                     sync.Mutex
 	Config                 config.Config
@@ -40,7 +44,7 @@ func (h *Handler) cancelWatchedRoute(id uint) error {
 	err := h.WatchedRouteRepo.Delete(id)
 	if err != nil {
 		slog.Error("Error deleting watched route", "id", id, "error", err)
-		return err
+		return fmt.Errorf("error deleting watched route: %w", err)
 	}
 
 	return nil
@@ -50,19 +54,19 @@ func (h *Handler) getUserInput(watchedRoute *dbmodels.WatchedRoute) (*models.Use
 	departingStation, exist := h.Stations[watchedRoute.FromStationID]
 	if !exist {
 		slog.Error("Departing station not found", "id", watchedRoute.FromStationID)
-		return nil, fmt.Errorf("Departing station not found")
+		return nil, fmt.Errorf("%w: departing station", ErrStationNotFound)
 	}
 
 	arrivingStation, exist := h.Stations[watchedRoute.ToStationID]
 	if !exist {
 		slog.Error("Arriving station not found", "id", watchedRoute.ToStationID)
-		return nil, fmt.Errorf("Arriving station not found")
+		return nil, fmt.Errorf("%w: arriving station", ErrStationNotFound)
 	}
 
 	userInput := &models.UserInput{
 		DepartingStation:   &departingStation,
 		ArrivingStation:    &arrivingStation,
-		SelectedRouteIds:   watchedRoute.RouteID,
+		SelectedRouteIDs:   watchedRoute.RouteID,
 		SeatClasses:        watchedRoute.SelectedSeatClasses,
 		TariffKey:          watchedRoute.TariffClass,
 		Section:            nil,
@@ -72,17 +76,17 @@ func (h *Handler) getUserInput(watchedRoute *dbmodels.WatchedRoute) (*models.Use
 		UserEmail:          watchedRoute.UserEmail,
 	}
 
-	routeDetail, err := handlers.FetchRouteDetail(h.ApiClient, userInput)
+	routeDetail, err := handlers.FetchRouteDetail(h.APIClient, userInput)
 	if err != nil {
 		slog.Error("Error fetching route detail", "error", err)
-		return nil, fmt.Errorf("Error fetching route detail: %w", err)
+		return nil, fmt.Errorf("error fetching route detail: %w", err)
 	}
 	userInput.RouteDetail = routeDetail
 
 	section, err := lib.GetSection(userInput)
 	if err != nil {
 		slog.Error("Error getting section", "error", err)
-		return nil, fmt.Errorf("Error getting section: %w", err)
+		return nil, fmt.Errorf("error getting section: %w", err)
 	}
 	userInput.Section = section
 
@@ -97,7 +101,7 @@ func (h *Handler) watchRoute(userInput *models.UserInput, watchedRoute *dbmodels
 		return
 	}
 
-	checkFreeSeatsResponse, err := handlers.CheckFreeSeats(h.ApiClient, userInput)
+	checkFreeSeatsResponse, err := handlers.CheckFreeSeats(h.APIClient, userInput)
 	if err != nil {
 		slog.Error("Error checking free seats", "error", err)
 		return
@@ -116,13 +120,13 @@ func (h *Handler) watchRoute(userInput *models.UserInput, watchedRoute *dbmodels
 
 	if !watchedRoute.AutoPurchase || !time.Now().Add(cutOffTimeDuration).Before(userInput.RouteDetail.DepartureTime) {
 		slog.Info("Auto purchase disabled or cut off time passed", "watchedRouteID", watchedRoute.RouteID)
-		notification.EmailNotificationFreeSeats(&h.Config.Smtp, userInput)
+		notification.EmailNotificationFreeSeats(&h.Config.SMTP, userInput)
 		_ = h.cancelWatchedRoute(watchedRoute.ID)
 		return
 	}
 
 	slog.Info("Purchasing ticket", "watchedRouteID", watchedRoute.RouteID)
-	response, ticket, err := purchase.AutoPurchaseTicket(h.ApiClient, &h.Config, userInput, checkFreeSeatsResponse)
+	response, ticket, err := purchase.AutoPurchaseTicket(h.APIClient, &h.Config, userInput, checkFreeSeatsResponse)
 	if err != nil {
 		slog.Error("Error purchasing ticket", "error", err)
 		_ = h.cancelWatchedRoute(watchedRoute.ID)
@@ -133,7 +137,7 @@ func (h *Handler) watchRoute(userInput *models.UserInput, watchedRoute *dbmodels
 
 	if watchedRoute.MinimalCredit != nil && *watchedRoute.MinimalCredit >= int(response.Amount) {
 		slog.Info("Low credit", "watchedRouteID", watchedRoute.RouteID)
-		notification.EmailNotificationLowCredit(&h.Config.Smtp, userInput, response.Amount, response.Currency)
+		notification.EmailNotificationLowCredit(&h.Config.SMTP, userInput, response.Amount, response.Currency)
 	}
 
 	successfulPurchase := &dbmodels.SuccessfulPurchase{
@@ -154,7 +158,7 @@ func (h *Handler) watchRoute(userInput *models.UserInput, watchedRoute *dbmodels
 		slog.Error("Error creating successful purchase", "error", err)
 	}
 
-	notification.EmailNotificationTicketBoughtWithBeers(&h.Config.Smtp, userInput, ticket, beersOwed)
+	notification.EmailNotificationTicketBoughtWithBeers(&h.Config.SMTP, userInput, ticket, beersOwed)
 	_ = h.cancelWatchedRoute(watchedRoute.ID)
 }
 
@@ -183,7 +187,7 @@ func (h *Handler) RestartWatchedRoutes() error {
 	routes, err := h.WatchedRouteRepo.GetAll()
 	if err != nil {
 		slog.Error("Error retrieving watched routes", "error", err)
-		return err
+		return fmt.Errorf("error retrieving watched routes: %w", err)
 	}
 
 	for _, watchedRoute := range routes {

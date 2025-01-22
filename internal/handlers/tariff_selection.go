@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
-	"time"
 
 	"github.com/metju-ac/train-me-maybe/internal/cli"
 	openapiclient "github.com/metju-ac/train-me-maybe/openapi"
@@ -17,6 +16,7 @@ func fetchTariffs(ctx context.Context, apiClient *openapiclient.APIClient) ([]op
 		slog.Error("Failed to fetch tariffs", "error", err)
 		return nil, fmt.Errorf("failed to fetch tariffs: %w", err)
 	}
+	defer httpRes.Body.Close()
 
 	slog.Info("Successfully fetched tariffs", "statusCode", httpRes.StatusCode)
 	return tariffs, nil
@@ -46,7 +46,7 @@ func DefaultTariff() *openapiclient.Tariff {
 
 func HandleTariffSelection(apiClient *openapiclient.APIClient) (*openapiclient.Tariff, error) {
 	slog.Info("Handling tariff selection")
-	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), contextTimeout)
 	defer cancel()
 
 	tariffs, err := fetchTariffs(ctx, apiClient)

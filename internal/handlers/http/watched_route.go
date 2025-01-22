@@ -3,27 +3,28 @@ package http
 import (
 	"context"
 	"fmt"
-	"github.com/gin-gonic/gin"
-	"github.com/metju-ac/train-me-maybe/internal/dbmodels"
-	"github.com/metju-ac/train-me-maybe/internal/lib"
 	"log/slog"
 	"net/http"
 	"strconv"
 	"time"
+
+	"github.com/gin-gonic/gin"
+	"github.com/metju-ac/train-me-maybe/internal/dbmodels"
+	"github.com/metju-ac/train-me-maybe/internal/lib"
 )
 
 type CreateWatchedRouteRequest struct {
-	FromStationID       int64    `json:"fromStationId" binding:"required"`
-	ToStationID         int64    `json:"toStationId" binding:"required"`
-	RouteID             string   `json:"routeId" binding:"required"`
-	SelectedSeatClasses []string `json:"selectedSeatClasses" binding:"required"`
+	FromStationID       int64    `binding:"required"    json:"fromStationId"`
+	ToStationID         int64    `binding:"required"    json:"toStationId"`
+	RouteID             string   `binding:"required"    json:"routeId"`
+	SelectedSeatClasses []string `binding:"required"    json:"selectedSeatClasses"`
 	AutoPurchase        bool     `json:"autoPurchase"`
 	TariffClass         string   `json:"tariffClass"`
 	CreditUserNumber    string   `json:"creditUser"`
 	CreditUserPassword  string   `json:"creditPassword"`
 	CutOffTime          *int     `json:"cutOffTime"`
 	MinimalCredit       *int     `json:"minimalCredit"`
-	DepartureDateTime   string   `json:"departureDateTime" binding:"required"`
+	DepartureDateTime   string   `binding:"required"    json:"departureDateTime"`
 }
 
 func (h *Handler) CreateWatchedRoute(c *gin.Context) {
@@ -48,8 +49,15 @@ func (h *Handler) CreateWatchedRoute(c *gin.Context) {
 		return
 	}
 
+	emailStr, ok := email.(string)
+	if !ok {
+		slog.Error("Email type assertion failed")
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error"})
+		return
+	}
+
 	if req.AutoPurchase {
-		_, err := lib.LoginWithCreditTicket(h.Config.General.ApiBaseUrl, req.CreditUserNumber, req.CreditUserPassword)
+		_, err := lib.LoginWithCreditTicket(h.Config.General.APIBaseURL, req.CreditUserNumber, req.CreditUserPassword)
 		if err != nil {
 			slog.Error("Failed to login with credit ticket", "error", err)
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to login with credit ticket"})
@@ -65,7 +73,7 @@ func (h *Handler) CreateWatchedRoute(c *gin.Context) {
 	}
 
 	watchedRoute := &dbmodels.WatchedRoute{
-		UserEmail:           email.(string),
+		UserEmail:           emailStr,
 		FromStationID:       req.FromStationID,
 		ToStationID:         req.ToStationID,
 		RouteID:             req.RouteID,

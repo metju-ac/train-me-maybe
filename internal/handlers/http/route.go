@@ -1,15 +1,18 @@
 package http
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/metju-ac/train-me-maybe/internal/handlers"
-	"github.com/metju-ac/train-me-maybe/internal/lib"
-	"github.com/metju-ac/train-me-maybe/openapi"
 	"log/slog"
 	"net/http"
 	"strconv"
 	"time"
+
+	"github.com/gin-gonic/gin"
+	"github.com/metju-ac/train-me-maybe/internal/handlers"
+	"github.com/metju-ac/train-me-maybe/internal/lib"
+	"github.com/metju-ac/train-me-maybe/openapi"
 )
+
+const HoursInDay = 24
 
 func (h *Handler) GetRoutes(c *gin.Context) {
 	fromStationIDStr := c.Query("fromStationId")
@@ -37,16 +40,16 @@ func (h *Handler) GetRoutes(c *gin.Context) {
 		return
 	}
 
-	if parsedDate.Before(time.Now().Truncate(24 * time.Hour)) {
+	if parsedDate.Before(time.Now().Truncate(HoursInDay * time.Hour)) {
 		slog.Error("Date is in the past", "date", date)
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Date cannot be in the past"})
 		return
 	}
 
-	routes, err := handlers.FetchRoutes(h.ApiClient, fromStationID, toStationID, date)
+	routes, err := handlers.FetchRoutes(h.APIClient, fromStationID, toStationID, date)
 	if err != nil {
 		slog.Error("Failed to fetch routes", "error", err)
-		c.JSON(500, gin.H{"error": "Failed to fetch routes"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch routes"})
 		return
 	}
 

@@ -1,13 +1,16 @@
 package parser
 
 import (
+	"log/slog"
+
 	"github.com/metju-ac/train-me-maybe/internal/models"
 	"github.com/metju-ac/train-me-maybe/openapi"
-	"log/slog"
 )
 
+const stationsMaximum = 300
+
 func TransformStations(countries []openapi.Country) []models.StationModel {
-	result := make([]models.StationModel, 0, 300)
+	result := make([]models.StationModel, 0, stationsMaximum)
 
 	for _, country := range countries {
 		for _, city := range country.Cities {

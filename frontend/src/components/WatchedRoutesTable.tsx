@@ -60,7 +60,7 @@ interface HeadCell {
 }
 
 const renderStation = (id: number, stations: Station[]) => {
-  const station = stations.find((station) => station.stationID === id);
+  const station = stations.find((station) => station.stationId === id);
   return station ? formatStation(station) : id;
 };
 

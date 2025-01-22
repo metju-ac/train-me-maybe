@@ -7,8 +7,8 @@ export default function useRoutes(
   return useQuery({
     queryKey: [
       routeService.getRoutes.key,
-      props.fromStation.stationID,
-      props.toStation.stationID,
+      props.fromStation.stationId,
+      props.toStation.stationId,
       props.date,
     ],
     queryFn: () => routeService.getRoutes.fn(props),

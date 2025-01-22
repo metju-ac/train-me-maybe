@@ -2,11 +2,20 @@ package config
 
 import (
 	"errors"
+	"fmt"
 	"os"
 	"strconv"
 )
 
-type DbConfig struct {
+var (
+	ErrDBHostNotSet     = errors.New("the database host must be set")
+	ErrDBPortNotSet     = errors.New("the database port must be set")
+	ErrDBNameNotSet     = errors.New("the database name must be set")
+	ErrDBUserNotSet     = errors.New("the database user must be set")
+	ErrDBPasswordNotSet = errors.New("the database password must be set")
+)
+
+type DBConfig struct {
 	// The database host
 	Host string `toml:"db_host"`
 	// The database port
@@ -19,17 +28,17 @@ type DbConfig struct {
 	Password string `toml:"db_password"`
 }
 
-func mergeDbConfigs(config *DbConfig) error {
+func mergeDBConfigs(config *DBConfig) error {
 	if host := os.Getenv("REGIOJET_DB_HOST"); host != "" {
 		config.Host = host
 	}
 
 	if port := os.Getenv("REGIOJET_DB_PORT"); port != "" {
-		if portInt, err := strconv.Atoi(port); err != nil {
-			return err
-		} else {
-			config.Port = portInt
+		portInt, err := strconv.Atoi(port)
+		if err != nil {
+			return fmt.Errorf("failed to parse the database port: %w", err)
 		}
+		config.Port = portInt
 	}
 
 	if name := os.Getenv("REGIOJET_DB_NAME"); name != "" {
@@ -47,25 +56,25 @@ func mergeDbConfigs(config *DbConfig) error {
 	return nil
 }
 
-func validateDbConfig(config *Config) error {
-	if config.Db.Host == "" {
-		return errors.New("The database host must be set")
+func validateDBConfig(config *Config) error {
+	if config.DB.Host == "" {
+		return fmt.Errorf("%w", ErrDBHostNotSet)
 	}
 
-	if config.Db.Port == 0 {
-		return errors.New("The database port must be set")
+	if config.DB.Port == 0 {
+		return fmt.Errorf("%w", ErrDBPortNotSet)
 	}
 
-	if config.Db.Name == "" {
-		return errors.New("The database name must be set")
+	if config.DB.Name == "" {
+		return fmt.Errorf("%w", ErrDBNameNotSet)
 	}
 
-	if config.Db.User == "" {
-		return errors.New("The database user must be set")
+	if config.DB.User == "" {
+		return fmt.Errorf("%w", ErrDBUserNotSet)
 	}
 
-	if config.Db.Password == "" {
-		return errors.New("The database password must be set")
+	if config.DB.Password == "" {
+		return fmt.Errorf("%w", ErrDBPasswordNotSet)
 	}
 
 	return nil

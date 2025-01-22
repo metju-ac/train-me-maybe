@@ -1,11 +1,14 @@
 package cli
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/metju-ac/train-me-maybe/internal/models"
 )
+
+var ErrStationNotFound = errors.New("station not found")
 
 func FormatStation(station *models.StationModel) string {
 	return fmt.Sprintf("%s - %s (%s)", station.City, station.StationName, station.Country)
@@ -25,7 +28,7 @@ func SelectStation(stations []models.StationModel) (*models.StationModel, error)
 	}
 	err := survey.AskOne(selectPrompt, &selectedStation)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to select station: %w", err)
 	}
 
 	for _, station := range stations {
@@ -35,5 +38,5 @@ func SelectStation(stations []models.StationModel) (*models.StationModel, error)
 		}
 	}
 
-	return nil, fmt.Errorf("station not found")
+	return nil, fmt.Errorf("%w", ErrStationNotFound)
 }

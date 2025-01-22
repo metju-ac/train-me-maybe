@@ -1,17 +1,18 @@
 package http
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/metju-ac/train-me-maybe/internal/dbmodels"
-	"github.com/metju-ac/train-me-maybe/internal/utils"
 	"log/slog"
 	"net/http"
 	"strings"
+
+	"github.com/gin-gonic/gin"
+	"github.com/metju-ac/train-me-maybe/internal/dbmodels"
+	"github.com/metju-ac/train-me-maybe/internal/utils"
 )
 
 type UserCredentials struct {
-	Email    string `json:"email" binding:"required"`
-	Password string `json:"password" binding:"required"`
+	Email    string `binding:"required" json:"email"`
+	Password string `binding:"required" json:"password"`
 }
 
 func (h *Handler) Login(c *gin.Context) {
@@ -38,7 +39,7 @@ func (h *Handler) Login(c *gin.Context) {
 		return
 	}
 
-	token, err := utils.GenerateToken(user.Email)
+	token, err := utils.GenerateToken([]byte(h.Config.General.JwtSecretKey), user.Email)
 	if err != nil {
 		slog.Error("Error generating token", "error", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error generating token"})
@@ -86,7 +87,7 @@ func (h *Handler) Register(c *gin.Context) {
 		return
 	}
 
-	token, err := utils.GenerateToken(user.Email)
+	token, err := utils.GenerateToken([]byte(h.Config.General.JwtSecretKey), user.Email)
 	if err != nil {
 		slog.Error("Error generating token", "error", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error generating token"})

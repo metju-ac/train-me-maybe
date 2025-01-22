@@ -62,8 +62,8 @@ export default function RouteAndSeatSelection(
     isLoading: isLoadingSeatClasses,
     isError: isErrorSeatClasses,
   } = useSeatClasses({
-    fromStationId: props.fromStation.stationID,
-    toStationId: props.toStation.stationID,
+    fromStationId: props.fromStation.stationId,
+    toStationId: props.toStation.stationId,
     routeId: props.selectedRoute?.id,
   });
 

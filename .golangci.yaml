@@ -1,0 +1,55 @@
+run:
+  timeout: 3m
+  tests: false
+
+linters:
+  enable-all: true
+  disable:
+    # restrictive
+    - exhaustruct
+    - varnamelen
+    - nlreturn
+    - funlen
+    - nonamedreturns
+    - gochecknoglobals
+    - wsl
+    - nakedret
+    # deprecated
+    - execinquery
+    - gomnd
+    - exportloopref
+
+linters-settings:
+  lll:
+    line-length: 140
+  cyclop:
+    max-complexity: 20
+  forbidigo:
+    forbid:
+      - ^print(ln)?$
+  depguard:
+    rules:
+      main:
+        list-mode: strict
+        files:
+          - $all
+        allow:
+          - $gostd
+          - github.com/metju-ac/train-me-maybe
+          - github.com/gin-contrib/cors
+          - github.com/gin-gonic/gin
+          - github.com/AlecAivazis/survey
+          - github.com/google/uuid
+          - github.com/golang-migrate/migrate
+          - github.com/lib/pq
+          - github.com/BurntSushi/toml
+          - github.com/joho/godotenv
+          - github.com/golang-jwt/jwt
+
+output:
+  sort-results: true
+  formats:
+    - format: colored-line-number
+      path: stdout
+    - format: tab
+      path: golangci-lint.out

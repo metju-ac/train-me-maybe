@@ -1,24 +1,24 @@
 package main
 
 import (
-	"fmt"
-	"github.com/metju-ac/train-me-maybe/openapi"
+	"log/slog"
 	"os"
 	"time"
 
 	"github.com/metju-ac/train-me-maybe/internal/config"
 	"github.com/metju-ac/train-me-maybe/internal/models"
 	"github.com/metju-ac/train-me-maybe/internal/notification"
+	"github.com/metju-ac/train-me-maybe/openapi"
 )
 
 func main() {
-	config, err := config.LoadConfig()
+	configuration, err := config.LoadConfig()
 	if err != nil {
-		fmt.Println("Error:", err)
+		slog.Error("Error loading configuration", "error", err)
 		os.Exit(1)
 	}
 
-	test_station := &models.StationModel{
+	testStation := &models.StationModel{
 		Country:        "COUNTRY",
 		City:           "CITY",
 		StationID:      1,
@@ -31,14 +31,14 @@ func main() {
 		DepartureTime: time.Date(2023, time.November, 10, 15, 0, 0, 0, time.UTC),
 	}
 
-	notification.EmailNotificationFreeSeats(&config.Smtp, &models.UserInput{
-		DepartingStation: test_station,
-		ArrivingStation:  test_station,
-		SelectedRouteIds: "123",
+	notification.EmailNotificationFreeSeats(&configuration.SMTP, &models.UserInput{
+		DepartingStation: testStation,
+		ArrivingStation:  testStation,
+		SelectedRouteIDs: "123",
 		SeatClasses:      []string{"SEAT_CLASS"},
 		TariffKey:        "TARIFF_KEY",
 		Section:          nil,
 		RouteDetail:      &testRoute,
-		UserEmail:        config.Smtp.Recipient,
+		UserEmail:        configuration.SMTP.Recipient,
 	})
 }

@@ -5,9 +5,15 @@ import (
 	"errors"
 	"fmt"
 	"log/slog"
+	"net/http"
 
 	"github.com/metju-ac/train-me-maybe/internal/models"
 	openapiclient "github.com/metju-ac/train-me-maybe/openapi"
+)
+
+var (
+	ErrMalformedResponse = errors.New("malformed response from GetRouteFreeSeats")
+	ErrNoFreeSeats       = errors.New("no free seats found")
 )
 
 func freeSeats(res *openapiclient.RouteSeatsResponse) bool {
@@ -21,8 +27,17 @@ func freeSeats(res *openapiclient.RouteSeatsResponse) bool {
 	return false
 }
 
-func GetFreeSeatsOnRoute(apiClient *openapiclient.APIClient, userInput *models.UserInput, seatClass string) (*openapiclient.RouteSeatsResponse, error) {
-	slog.Info("Checking for free seats", "departingStation", userInput.DepartingStation.StationID, "arrivingStation", userInput.ArrivingStation.StationID, "selectedRoutes", userInput.SelectedRouteIds, "seatClasses", userInput.SeatClasses)
+func GetFreeSeatsOnRoute(
+	apiClient *openapiclient.APIClient,
+	userInput *models.UserInput,
+	seatClass string,
+) (*openapiclient.RouteSeatsResponse, error) {
+	slog.Info("Checking for free seats",
+		"departingStation", userInput.DepartingStation.StationID,
+		"arrivingStation", userInput.ArrivingStation.StationID,
+		"selectedRoutes", userInput.SelectedRouteIDs,
+		"seatClasses", userInput.SeatClasses,
+	)
 
 	sections := []openapiclient.SimpleSection{*userInput.Section}
 
@@ -36,17 +51,18 @@ func GetFreeSeatsOnRoute(apiClient *openapiclient.APIClient, userInput *models.U
 
 	route, httpResponse, err := apiClient.RoutesAPI.GetRouteFreeSeats(context.Background()).Request(*routeSeatsRequest).Execute()
 	if err != nil {
-		if httpResponse != nil && httpResponse.StatusCode == 400 {
+		if httpResponse != nil && httpResponse.StatusCode == http.StatusBadRequest {
 			slog.Info("No free seats found (400 response)")
-			return nil, nil
+			return nil, ErrNoFreeSeats
 		}
 
 		slog.Error("Error calling GetRouteFreeSeats", "error", err)
-		return nil, fmt.Errorf("error calling GetRouteFreeSeats: %v", err)
+		return nil, fmt.Errorf("error calling GetRouteFreeSeats: %w", err)
 	}
+	defer httpResponse.Body.Close()
 
-	if route == nil || len(*route) <= 0 {
-		return nil, errors.New("Malformed response from GetRouteFreeSeats")
+	if route == nil || len(*route) == 0 {
+		return nil, fmt.Errorf("%w", ErrMalformedResponse)
 	}
 
 	return &((*route)[0]), nil
@@ -61,10 +77,12 @@ type CheckFreeSeatsResponse struct {
 func CheckFreeSeats(apiClient *openapiclient.APIClient, userInput *models.UserInput) (*CheckFreeSeatsResponse, error) {
 	for _, seatClass := range userInput.SeatClasses {
 		route, err := GetFreeSeatsOnRoute(apiClient, userInput, seatClass)
-
 		if err != nil {
+			if errors.Is(err, ErrNoFreeSeats) {
+				continue
+			}
 			slog.Error("Error getting free seats", "error", err)
-			return nil, fmt.Errorf("error getting free seats: %v", err)
+			return nil, fmt.Errorf("error getting free seats: %w", err)
 		}
 
 		if route == nil {
@@ -82,5 +100,7 @@ func CheckFreeSeats(apiClient *openapiclient.APIClient, userInput *models.UserIn
 	}
 
 	slog.Info("No free seats found")
-	return nil, nil
+	return &CheckFreeSeatsResponse{
+		HasFreeSeats: false,
+	}, nil
 }

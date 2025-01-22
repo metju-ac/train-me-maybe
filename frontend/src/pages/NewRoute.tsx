@@ -36,13 +36,13 @@ function NewRouteForm({ stations }: { stations: Station[] }) {
   // we will mimick the regiojet mobile app search
   const [fromStation, setFromStation] = useState<Station | null>(() => {
     if (config.useMocks) {
-      return stations.find((station) => station.stationID === 10204002) ?? null;
+      return stations.find((station) => station.stationId === 10204002) ?? null;
     }
     return null;
   });
   const [toStation, setToStation] = useState<Station | null>(() => {
     if (config.useMocks) {
-      return stations.find((station) => station.stationID === 10204003) ?? null;
+      return stations.find((station) => station.stationId === 10204003) ?? null;
     }
     return null;
   });
@@ -75,8 +75,8 @@ function NewRouteForm({ stations }: { stations: Station[] }) {
 
       mutation.mutate({
         autoPurchase: true,
-        fromStationId: fromStation!.stationID,
-        toStationId: toStation!.stationID,
+        fromStationId: fromStation!.stationId,
+        toStationId: toStation!.stationId,
         routeId: selectedRoute!.id,
         selectedSeatClasses: selectedSeatClasses.map(
           (seatClass) => seatClass.key
@@ -100,8 +100,8 @@ function NewRouteForm({ stations }: { stations: Station[] }) {
 
     mutation.mutate({
       autoPurchase: false,
-      fromStationId: fromStation!.stationID,
-      toStationId: toStation!.stationID,
+      fromStationId: fromStation!.stationId,
+      toStationId: toStation!.stationId,
       routeId: selectedRoute!.id,
       selectedSeatClasses: selectedSeatClasses.map(
         (seatClass) => seatClass.key

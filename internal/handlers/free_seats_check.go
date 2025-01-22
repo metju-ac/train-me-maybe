@@ -11,7 +11,10 @@ import (
 	openapiclient "github.com/metju-ac/train-me-maybe/openapi"
 )
 
-var ErrMalformedResponse = errors.New("malformed response from GetRouteFreeSeats")
+var (
+	ErrMalformedResponse = errors.New("malformed response from GetRouteFreeSeats")
+	ErrNoFreeSeats       = errors.New("no free seats found")
+)
 
 func freeSeats(res *openapiclient.RouteSeatsResponse) bool {
 	for _, vehicle := range res.Vehicles {
@@ -50,7 +53,7 @@ func GetFreeSeatsOnRoute(
 	if err != nil {
 		if httpResponse != nil && httpResponse.StatusCode == http.StatusBadRequest {
 			slog.Info("No free seats found (400 response)")
-			return nil, nil
+			return nil, ErrNoFreeSeats
 		}
 
 		slog.Error("Error calling GetRouteFreeSeats", "error", err)
@@ -75,6 +78,9 @@ func CheckFreeSeats(apiClient *openapiclient.APIClient, userInput *models.UserIn
 	for _, seatClass := range userInput.SeatClasses {
 		route, err := GetFreeSeatsOnRoute(apiClient, userInput, seatClass)
 		if err != nil {
+			if errors.Is(err, ErrNoFreeSeats) {
+				continue
+			}
 			slog.Error("Error getting free seats", "error", err)
 			return nil, fmt.Errorf("error getting free seats: %w", err)
 		}
@@ -94,5 +100,7 @@ func CheckFreeSeats(apiClient *openapiclient.APIClient, userInput *models.UserIn
 	}
 
 	slog.Info("No free seats found")
-	return nil, nil
+	return &CheckFreeSeatsResponse{
+		HasFreeSeats: false,
+	}, nil
 }

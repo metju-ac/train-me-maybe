@@ -6,6 +6,7 @@ const theme = createTheme({
       defaultProps: {
         arrow: true,
         enterTouchDelay: 0,
+        leaveTouchDelay: 5000,
       },
     },
   },

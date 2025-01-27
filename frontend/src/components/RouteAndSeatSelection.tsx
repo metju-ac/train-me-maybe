@@ -263,7 +263,6 @@ function RouteAndSeatSelectionForm({
           }
           label={
             <Tooltip
-              arrow
               title={t(
                 "If checked, we will try to purchase the ticket for you. You will need to provide Regiojet credentials, and you need to have sufficient credit."
               )}

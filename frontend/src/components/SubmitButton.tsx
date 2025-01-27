@@ -10,7 +10,7 @@ export default function SubmitButton({
   tooltipTitle?: string;
 }>) {
   return (
-    <Tooltip arrow title={isValid ? "" : tooltipTitle}>
+    <Tooltip title={isValid ? "" : tooltipTitle}>
       <span>
         <Button
           type="submit"

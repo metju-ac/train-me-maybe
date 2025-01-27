@@ -30,7 +30,6 @@ export default function CutOffTime({
           endAdornment: (
             <InputAdornment position="end">
               <Tooltip
-                arrow
                 title={t(
                   "Time in minutes before the train departure when the last autopurchase can be made. E.g. 120 means that watched routes will be purchased no less than 2 hours before the train departure."
                 )}

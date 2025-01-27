@@ -44,7 +44,7 @@ export default function CreditPassword({
         input: {
           endAdornment: (
             <InputAdornment position="end">
-              <Tooltip arrow title={t("Toggle password visibility")}>
+              <Tooltip title={t("Toggle password visibility")}>
                 <IconButton
                   aria-label={t("Toggle password visibility")}
                   onClick={handleClickShowPassword}

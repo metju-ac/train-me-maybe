@@ -30,7 +30,6 @@ export default function CreditNumber({
           endAdornment: (
             <InputAdornment position="end">
               <Tooltip
-                arrow
                 title={t(
                   "The Regiojet number of your credit ticket (e.g. 123456789). A.k.a. 'číslo kreditové jizdenky'"
                 )}

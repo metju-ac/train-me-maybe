@@ -208,7 +208,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         </Typography>
       )}
       {numSelected > 0 ? (
-        <Tooltip arrow title={t("Delete")}>
+        <Tooltip title={t("Delete")}>
           <IconButton onClick={onDelete}>
             <DeleteIcon />
           </IconButton>
@@ -368,11 +368,11 @@ export default function EnhancedTable() {
                     </TableCell>
                     <TableCell>
                       {row.autoPurchase ? (
-                        <Tooltip arrow title={t("Autopurchase ticket")}>
+                        <Tooltip title={t("Autopurchase ticket")}>
                           <ShoppingCartIcon />
                         </Tooltip>
                       ) : (
-                        <Tooltip arrow title={t("Notify only")}>
+                        <Tooltip title={t("Notify only")}>
                           <NotificationsActiveIcon />
                         </Tooltip>
                       )}

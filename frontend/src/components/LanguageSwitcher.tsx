@@ -25,6 +25,14 @@ export const LanguageSwitcher = (
       onChange={(_, value) => {
         void i18next.changeLanguage(value ?? undefined);
       }}
+      sx={{
+        "& .MuiOutlinedInput-notchedOutline": {
+          borderColor: "rgba(255, 255, 255, 0.23)",
+        },
+        "& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline": {
+          borderColor: "rgba(255, 255, 255, 0.87)",
+        },
+      }}
       renderInput={(params) => (
         <TextField
           {...params}

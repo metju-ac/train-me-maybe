@@ -9,7 +9,10 @@ import (
 	"github.com/golang-jwt/jwt"
 )
 
-const hoursInDay = 24
+const (
+	hoursInDay = 24
+	daysInWeek = 7
+)
 
 var (
 	ErrInvalidSigningMethod = errors.New("invalid signing method")
@@ -19,7 +22,7 @@ var (
 func GenerateToken(secretKey []byte, email string) (string, error) {
 	claims := jwt.MapClaims{}
 	claims["email"] = email
-	claims["exp"] = time.Now().Add(time.Hour * hoursInDay).Unix()
+	claims["exp"] = time.Now().Add(time.Hour * hoursInDay * daysInWeek).Unix()
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	signedToken, err := token.SignedString(secretKey)

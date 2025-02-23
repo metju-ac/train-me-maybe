@@ -24,7 +24,7 @@ client.interceptors.response.use(
                 window.location.href = "/login";
             }
         }
-        return Promise.reject
+        return Promise.reject(error);
     }
 );
 

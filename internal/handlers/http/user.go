@@ -24,9 +24,16 @@ func (h *Handler) GetUser(c *gin.Context) {
 		return
 	}
 
-	user, err := h.UserRepo.FindByEmail(email.(string))
+	emailStr, ok := email.(string)
+	if !ok {
+		slog.Error("Email is not a string", "email", email)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error"})
+		return
+	}
+
+	user, err := h.UserRepo.FindByEmail(emailStr)
 	if err != nil {
-		slog.Error("Error retrieving user", "email", email, "error", err)
+		slog.Error("Error retrieving user", "email", emailStr, "error", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error retrieving user"})
 		return
 	}
@@ -50,9 +57,16 @@ func (h *Handler) UpdateUser(c *gin.Context) {
 		return
 	}
 
-	user, err := h.UserRepo.FindByEmail(email.(string))
+	emailStr, ok := email.(string)
+	if !ok {
+		slog.Error("Email is not a string", "email", email)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error"})
+		return
+	}
+
+	user, err := h.UserRepo.FindByEmail(emailStr)
 	if err != nil {
-		slog.Error("Error retrieving user", "email", email, "error", err)
+		slog.Error("Error retrieving user", "email", emailStr, "error", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error retrieving user"})
 		return
 	}

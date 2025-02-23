@@ -1,5 +1,5 @@
 import config from "@/config";
-import { getAuthToken } from "@utils/authToken";
+import { getAuthToken, removeAuthToken } from "@utils/authToken";
 import axios from "axios";
 
 const client = axios.create({
@@ -14,5 +14,18 @@ client.interceptors.request.use((config) => {
   }
   return config;
 });
+
+client.interceptors.response.use(
+    response => response,
+    error => {
+        if (error.response && error.response.status === 401) {
+            removeAuthToken();
+            if (typeof window !== "undefined") {
+                window.location.href = "/login";
+            }
+        }
+        return Promise.reject
+    }
+);
 
 export default client;

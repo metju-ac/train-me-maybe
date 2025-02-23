@@ -65,6 +65,7 @@ func main() {
 	userRepo := repositories.UserRepository{DB: db, Key: []byte(config.General.EncryptionKey)}
 	watchedRouteRepo := repositories.WatchedRouteRepository{DB: db}
 	successfullPurchaseRepo := repositories.SuccessfulPurchaseRepository{DB: db}
+	notificationRepo := repositories.NotificationRepository{DB: db}
 
 	stations := fetchStations(apiClient, config.General.Languages)
 
@@ -74,6 +75,7 @@ func main() {
 		UserRepo:               userRepo,
 		WatchedRouteRepo:       watchedRouteRepo,
 		SuccessfulPurchaseRepo: successfullPurchaseRepo,
+		NotificationRepo:       notificationRepo,
 		APIClient:              apiClient,
 		GoroutineContexts:      make(map[uint]context.CancelFunc),
 		Config:                 *config,

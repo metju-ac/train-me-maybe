@@ -27,6 +27,7 @@ type Handler struct {
 	UserRepo               repositories.UserRepository
 	WatchedRouteRepo       repositories.WatchedRouteRepository
 	SuccessfulPurchaseRepo repositories.SuccessfulPurchaseRepository
+	NotificationRepo       repositories.NotificationRepository
 	APIClient              *openapiclient.APIClient
 	GoroutineContexts      map[uint]context.CancelFunc
 	mu                     sync.Mutex
@@ -122,6 +123,22 @@ func (h *Handler) watchRoute(userInput *models.UserInput, watchedRoute *dbmodels
 		slog.Info("Auto purchase disabled or cut off time passed", "watchedRouteID", watchedRoute.RouteID)
 		notification.EmailNotificationFreeSeats(&h.Config.SMTP, userInput)
 		_ = h.cancelWatchedRoute(watchedRoute.ID)
+
+		notif := &dbmodels.Notification{
+			UserEmail:           watchedRoute.UserEmail,
+			FromStationID:       watchedRoute.FromStationID,
+			ToStationID:         watchedRoute.ToStationID,
+			RouteID:             watchedRoute.RouteID,
+			SelectedSeatClasses: watchedRoute.SelectedSeatClasses,
+			NotificationTime:    time.Now(),
+			SeatClass:           checkFreeSeatsResponse.SeatClass,
+		}
+
+		err := h.NotificationRepo.Create(notif)
+		if err != nil {
+			slog.Error("Error saving notification to db", "error", err)
+		}
+
 		return
 	}
 

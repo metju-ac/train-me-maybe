@@ -24,5 +24,5 @@ credit_password = ""
 db_host = "localhost"
 db_port = 5432
 db_name = "postgres"
-db_uset = "user"
+db_user = "user"
 db_password = "password"

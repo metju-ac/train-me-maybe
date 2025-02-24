@@ -112,9 +112,16 @@ func (h *Handler) GetWatchedRoutes(c *gin.Context) {
 		return
 	}
 
-	routes, err := h.WatchedRouteRepo.GetAllForEmail(mail.(string))
+	emailStr, ok := mail.(string)
+	if !ok {
+		slog.Error("Email type assertion failed")
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error"})
+		return
+	}
+
+	routes, err := h.WatchedRouteRepo.GetAllForEmail(emailStr)
 	if err != nil {
-		slog.Error("Error retrieving watched routes", "email", mail, "error", err)
+		slog.Error("Error retrieving watched routes", "email", emailStr, "error", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error retrieving watched routes"})
 		return
 	}

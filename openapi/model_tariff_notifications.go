@@ -166,7 +166,7 @@ func (o *TariffNotifications) UnmarshalJSON(data []byte) (err error) {
 	varTariffNotifications := _TariffNotifications{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varTariffNotifications)
 
 	if err != nil {

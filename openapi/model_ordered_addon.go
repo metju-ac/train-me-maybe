@@ -350,7 +350,7 @@ func (o *OrderedAddon) UnmarshalJSON(data []byte) (err error) {
 	varOrderedAddon := _OrderedAddon{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varOrderedAddon)
 
 	if err != nil {

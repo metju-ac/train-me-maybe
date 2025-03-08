@@ -138,7 +138,7 @@ func (o *PassengersDataResponse) UnmarshalJSON(data []byte) (err error) {
 	varPassengersDataResponse := _PassengersDataResponse{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varPassengersDataResponse)
 
 	if err != nil {

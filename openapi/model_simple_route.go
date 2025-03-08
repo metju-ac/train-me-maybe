@@ -791,7 +791,7 @@ func (o *SimpleRoute) UnmarshalJSON(data []byte) (err error) {
 	varSimpleRoute := _SimpleRoute{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varSimpleRoute)
 
 	if err != nil {

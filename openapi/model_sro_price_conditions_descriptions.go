@@ -164,7 +164,7 @@ func (o *SroPriceConditionsDescriptions) UnmarshalJSON(data []byte) (err error) 
 	varSroPriceConditionsDescriptions := _SroPriceConditionsDescriptions{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varSroPriceConditionsDescriptions)
 
 	if err != nil {

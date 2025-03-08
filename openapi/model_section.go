@@ -887,7 +887,7 @@ func (o *Section) UnmarshalJSON(data []byte) (err error) {
 	varSection := _Section{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varSection)
 
 	if err != nil {

@@ -145,7 +145,7 @@ func (o *ForbiddenResponse) UnmarshalJSON(data []byte) (err error) {
 	varForbiddenResponse := _ForbiddenResponse{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varForbiddenResponse)
 
 	if err != nil {

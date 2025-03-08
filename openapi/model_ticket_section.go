@@ -201,7 +201,7 @@ func (o *TicketSection) UnmarshalJSON(data []byte) (err error) {
 	varTicketSection := _TicketSection{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varTicketSection)
 
 	if err != nil {

@@ -441,7 +441,7 @@ func (o *CustomerActions) UnmarshalJSON(data []byte) (err error) {
 	varCustomerActions := _CustomerActions{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varCustomerActions)
 
 	if err != nil {

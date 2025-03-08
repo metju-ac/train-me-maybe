@@ -223,7 +223,7 @@ func (o *CancelCharge) UnmarshalJSON(data []byte) (err error) {
 	varCancelCharge := _CancelCharge{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varCancelCharge)
 
 	if err != nil {

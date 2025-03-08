@@ -145,7 +145,7 @@ func (o *InlineResponse4003) UnmarshalJSON(data []byte) (err error) {
 	varInlineResponse4003 := _InlineResponse4003{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varInlineResponse4003)
 
 	if err != nil {

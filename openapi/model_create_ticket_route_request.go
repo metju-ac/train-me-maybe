@@ -230,7 +230,7 @@ func (o *CreateTicketRouteRequest) UnmarshalJSON(data []byte) (err error) {
 	varCreateTicketRouteRequest := _CreateTicketRouteRequest{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varCreateTicketRouteRequest)
 
 	if err != nil {

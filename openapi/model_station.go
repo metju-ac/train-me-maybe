@@ -568,7 +568,7 @@ func (o *Station) UnmarshalJSON(data []byte) (err error) {
 	varStation := _Station{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varStation)
 
 	if err != nil {

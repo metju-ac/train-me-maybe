@@ -166,7 +166,7 @@ func (o *Country) UnmarshalJSON(data []byte) (err error) {
 	varCountry := _Country{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varCountry)
 
 	if err != nil {

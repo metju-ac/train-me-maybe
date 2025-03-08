@@ -360,7 +360,7 @@ func (o *SroTicketPassenger) UnmarshalJSON(data []byte) (err error) {
 	varSroTicketPassenger := _SroTicketPassenger{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varSroTicketPassenger)
 
 	if err != nil {

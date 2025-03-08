@@ -164,7 +164,7 @@ func (o *RouteSeatsRequest) UnmarshalJSON(data []byte) (err error) {
 	varRouteSeatsRequest := _RouteSeatsRequest{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varRouteSeatsRequest)
 
 	if err != nil {

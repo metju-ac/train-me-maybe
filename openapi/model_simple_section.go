@@ -166,7 +166,7 @@ func (o *SimpleSection) UnmarshalJSON(data []byte) (err error) {
 	varSimpleSection := _SimpleSection{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varSimpleSection)
 
 	if err != nil {

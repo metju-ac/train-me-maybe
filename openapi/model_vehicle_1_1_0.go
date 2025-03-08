@@ -443,7 +443,7 @@ func (o *Vehicle110) UnmarshalJSON(data []byte) (err error) {
 	varVehicle110 := _Vehicle110{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varVehicle110)
 
 	if err != nil {

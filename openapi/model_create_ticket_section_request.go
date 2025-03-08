@@ -144,7 +144,7 @@ func (o *CreateTicketSectionRequest) UnmarshalJSON(data []byte) (err error) {
 	varCreateTicketSectionRequest := _CreateTicketSectionRequest{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varCreateTicketSectionRequest)
 
 	if err != nil {

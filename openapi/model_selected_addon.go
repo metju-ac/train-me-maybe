@@ -223,7 +223,7 @@ func (o *SelectedAddon) UnmarshalJSON(data []byte) (err error) {
 	varSelectedAddon := _SelectedAddon{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varSelectedAddon)
 
 	if err != nil {

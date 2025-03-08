@@ -262,7 +262,7 @@ func (o *ActionPrice) UnmarshalJSON(data []byte) (err error) {
 	varActionPrice := _ActionPrice{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varActionPrice)
 
 	if err != nil {

@@ -209,7 +209,7 @@ func (o *RouteSeatsResponse110) UnmarshalJSON(data []byte) (err error) {
 	varRouteSeatsResponse110 := _RouteSeatsResponse110{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varRouteSeatsResponse110)
 
 	if err != nil {

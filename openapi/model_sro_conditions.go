@@ -197,7 +197,7 @@ func (o *SroConditions) UnmarshalJSON(data []byte) (err error) {
 	varSroConditions := _SroConditions{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varSroConditions)
 
 	if err != nil {

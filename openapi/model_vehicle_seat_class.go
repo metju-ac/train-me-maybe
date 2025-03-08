@@ -136,7 +136,7 @@ func (o *VehicleSeatClass) UnmarshalJSON(data []byte) (err error) {
 	varVehicleSeatClass := _VehicleSeatClass{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varVehicleSeatClass)
 
 	if err != nil {

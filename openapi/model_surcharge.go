@@ -138,7 +138,7 @@ func (o *Surcharge) UnmarshalJSON(data []byte) (err error) {
 	varSurcharge := _Surcharge{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varSurcharge)
 
 	if err != nil {

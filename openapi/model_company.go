@@ -200,7 +200,7 @@ func (o *Company) UnmarshalJSON(data []byte) (err error) {
 	varCompany := _Company{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varCompany)
 
 	if err != nil {

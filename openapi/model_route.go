@@ -980,7 +980,7 @@ func (o *Route) UnmarshalJSON(data []byte) (err error) {
 	varRoute := _Route{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varRoute)
 
 	if err != nil {

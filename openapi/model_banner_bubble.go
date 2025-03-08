@@ -203,7 +203,7 @@ func (o *BannerBubble) UnmarshalJSON(data []byte) (err error) {
 	varBannerBubble := _BannerBubble{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varBannerBubble)
 
 	if err != nil {

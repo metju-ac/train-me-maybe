@@ -173,7 +173,7 @@ func (o *TicketBill) UnmarshalJSON(data []byte) (err error) {
 	varTicketBill := _TicketBill{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varTicketBill)
 
 	if err != nil {

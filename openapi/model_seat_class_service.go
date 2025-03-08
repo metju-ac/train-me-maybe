@@ -164,7 +164,7 @@ func (o *SeatClassService) UnmarshalJSON(data []byte) (err error) {
 	varSeatClassService := _SeatClassService{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varSeatClassService)
 
 	if err != nil {

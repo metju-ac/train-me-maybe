@@ -437,7 +437,7 @@ func (o *PriceClass) UnmarshalJSON(data []byte) (err error) {
 	varPriceClass := _PriceClass{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varPriceClass)
 
 	if err != nil {

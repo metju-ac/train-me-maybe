@@ -192,7 +192,7 @@ func (o *SroCancelCharge) UnmarshalJSON(data []byte) (err error) {
 	varSroCancelCharge := _SroCancelCharge{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varSroCancelCharge)
 
 	if err != nil {

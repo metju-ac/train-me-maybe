@@ -630,7 +630,7 @@ func (o *SroRoute) UnmarshalJSON(data []byte) (err error) {
 	varSroRoute := _SroRoute{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varSroRoute)
 
 	if err != nil {

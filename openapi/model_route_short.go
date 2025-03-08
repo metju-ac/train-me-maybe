@@ -937,7 +937,7 @@ func (o *RouteShort) UnmarshalJSON(data []byte) (err error) {
 	varRouteShort := _RouteShort{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varRouteShort)
 
 	if err != nil {

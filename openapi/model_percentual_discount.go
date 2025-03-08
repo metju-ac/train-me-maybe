@@ -342,7 +342,7 @@ func (o *PercentualDiscount) UnmarshalJSON(data []byte) (err error) {
 	varPercentualDiscount := _PercentualDiscount{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varPercentualDiscount)
 
 	if err != nil {

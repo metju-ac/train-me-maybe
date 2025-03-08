@@ -279,7 +279,7 @@ func (o *Line) UnmarshalJSON(data []byte) (err error) {
 	varLine := _Line{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varLine)
 
 	if err != nil {

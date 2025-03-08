@@ -220,7 +220,7 @@ func (o *SroTicketRequest) UnmarshalJSON(data []byte) (err error) {
 	varSroTicketRequest := _SroTicketRequest{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varSroTicketRequest)
 
 	if err != nil {

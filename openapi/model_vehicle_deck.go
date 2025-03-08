@@ -264,7 +264,7 @@ func (o *VehicleDeck) UnmarshalJSON(data []byte) (err error) {
 	varVehicleDeck := _VehicleDeck{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varVehicleDeck)
 
 	if err != nil {

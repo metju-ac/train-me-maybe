@@ -167,7 +167,7 @@ func (o *CodeDiscount) UnmarshalJSON(data []byte) (err error) {
 	varCodeDiscount := _CodeDiscount{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varCodeDiscount)
 
 	if err != nil {

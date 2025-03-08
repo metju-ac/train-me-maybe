@@ -164,7 +164,7 @@ func (o *SelectedSeat100) UnmarshalJSON(data []byte) (err error) {
 	varSelectedSeat100 := _SelectedSeat100{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varSelectedSeat100)
 
 	if err != nil {

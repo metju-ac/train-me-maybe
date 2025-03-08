@@ -247,7 +247,7 @@ func (o *PriceConditions) UnmarshalJSON(data []byte) (err error) {
 	varPriceConditions := _PriceConditions{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varPriceConditions)
 
 	if err != nil {

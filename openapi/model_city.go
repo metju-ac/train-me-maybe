@@ -240,7 +240,7 @@ func (o *City) UnmarshalJSON(data []byte) (err error) {
 	varCity := _City{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varCity)
 
 	if err != nil {

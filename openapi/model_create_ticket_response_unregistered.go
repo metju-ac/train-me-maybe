@@ -137,7 +137,7 @@ func (o *CreateTicketResponseUnregistered) UnmarshalJSON(data []byte) (err error
 	varCreateTicketResponseUnregistered := _CreateTicketResponseUnregistered{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varCreateTicketResponseUnregistered)
 
 	if err != nil {

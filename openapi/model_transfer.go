@@ -267,7 +267,7 @@ func (o *Transfer) UnmarshalJSON(data []byte) (err error) {
 	varTransfer := _Transfer{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varTransfer)
 
 	if err != nil {

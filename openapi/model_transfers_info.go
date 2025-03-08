@@ -137,7 +137,7 @@ func (o *TransfersInfo) UnmarshalJSON(data []byte) (err error) {
 	varTransfersInfo := _TransfersInfo{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varTransfersInfo)
 
 	if err != nil {

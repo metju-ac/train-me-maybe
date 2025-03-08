@@ -262,7 +262,7 @@ func (o *VehicleStandard) UnmarshalJSON(data []byte) (err error) {
 	varVehicleStandard := _VehicleStandard{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	// decoder.DisallowUnknownFields()
 	err = decoder.Decode(&varVehicleStandard)
 
 	if err != nil {

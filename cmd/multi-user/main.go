@@ -127,12 +127,6 @@ func main() {
 		publicRoutes.POST("/register", handler.Register)
 	}
 
-	router.Static("assets", "./static/assets")
-	router.Static("img", "./static/img")
-	router.NoRoute(func(c *gin.Context) {
-		c.File("./static/index.html")
-	})
-
 	err = router.Run(fmt.Sprintf(":%d", config.General.ServerPort))
 	if err != nil {
 		slog.Error("Error starting the server", "error", err)

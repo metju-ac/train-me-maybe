@@ -1,5 +1,6 @@
 import { NavLink } from "react-router";
 
+import config from "@/config";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -27,23 +28,31 @@ export default function ButtonAppBar() {
             }}
           >
             <Box sx={{ display: "flex", gap: "1rem" }}>
-              <NavLink to="/" end>
+              <NavLink to={`/${config.urlPrefix}`} end>
                 {t("Home")}
               </NavLink>
-              <NavLink to="/about">{t("About")}</NavLink>
+              <NavLink to={`/${config.urlPrefix}/about`}>{t("About")}</NavLink>
             </Box>
             <Box sx={{ display: "flex", gap: "1rem", alignItems: "center" }}>
               {isLoggedIn ? (
                 <>
                   {width > 500 ? <LanguageSwitcher /> : null}
-                  <NavLink to="/account">{t("Account")}</NavLink>
-                  <NavLink to="/logout">{t("Logout")}</NavLink>
+                  <NavLink to={`/${config.urlPrefix}/account`}>
+                    {t("Account")}
+                  </NavLink>
+                  <NavLink to={`/${config.urlPrefix}/logout`}>
+                    {t("Logout")}
+                  </NavLink>
                 </>
               ) : (
                 <>
                   {width > 500 ? <LanguageSwitcher /> : null}
-                  <NavLink to="/login">{t("Login")}</NavLink>
-                  <NavLink to="/register">{t("Register")}</NavLink>
+                  <NavLink to={`/${config.urlPrefix}/login`}>
+                    {t("Login")}
+                  </NavLink>
+                  <NavLink to={`/${config.urlPrefix}/register`}>
+                    {t("Register")}
+                  </NavLink>
                 </>
               )}
             </Box>

@@ -3,7 +3,7 @@ name: Build and Push Docker Image
 on:
   push:
     branches:
-      - master
+      - pa200-matej
 
 jobs:
   build:
@@ -27,4 +27,4 @@ jobs:
       with:
         context: .
         push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}/train-me-maybe:latest
+        tags: ${{ secrets.DOCKER_USERNAME }}/train-me-maybe:matej

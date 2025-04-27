@@ -16,6 +16,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router";
+import config from "./config";
 import { initI18N } from "./i18n";
 import "./index.css";
 import theme from "./MuiTheme";
@@ -37,7 +38,7 @@ initI18N()
             <ToastBarProvider>
               <BrowserRouter>
                 <Routes>
-                  <Route path="/" element={<Root />}>
+                  <Route path={`/${config.urlPrefix}`} element={<Root />}>
                     <Route index element={home} />
                     <Route path="routes/new" element={newRoute} />
                     <Route path="about" element={<LazyAbout />} />

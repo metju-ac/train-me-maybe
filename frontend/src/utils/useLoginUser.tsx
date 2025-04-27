@@ -1,3 +1,4 @@
+import config from "@/config";
 import ToastBarContext from "@components/ToastBarContext";
 import userService from "@services/userService";
 import { useMutation } from "@tanstack/react-query";
@@ -18,7 +19,7 @@ export default function useLoginUser() {
     onSuccess: (data) => {
       console.log("User logged in successfully", data);
       setToast(t("Successfully logged in"), "success");
-      void navigate("/");
+      void navigate(`/${config.urlPrefix}`);
     },
     onError: (error) => {
       console.error("Error logging in", error);

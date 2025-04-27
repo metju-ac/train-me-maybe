@@ -1,3 +1,4 @@
+import config from "@/config";
 import ToastBarContext from "@components/ToastBarContext";
 import watchedRouteService from "@services/watchedRouteService";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -21,7 +22,7 @@ export default function useCreateWatchedRoute() {
         queryKey: [watchedRouteService.getWatchedRoutes.key],
       });
       setToast(t("Route created successfully!"), "success");
-      void navigate("/");
+      void navigate(`/${config.urlPrefix}`);
     },
     onError: (err) => {
       printError(setToast, err, t("Failed to create route"));

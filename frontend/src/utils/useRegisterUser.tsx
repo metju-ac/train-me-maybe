@@ -1,3 +1,4 @@
+import config from "@/config";
 import ToastBarContext from "@components/ToastBarContext";
 import userService from "@services/userService";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -24,7 +25,7 @@ export default function useRegisterUser() {
       });
       console.log("User registered successfully", data);
       setToast(t("Successfully registered user"), "success");
-      void navigate("/routes/new");
+      void navigate(`/${config.urlPrefix}/routes/new`);
     },
     onError: (error) => {
       console.error("Error registering user", error);

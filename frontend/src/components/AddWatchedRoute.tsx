@@ -1,3 +1,4 @@
+import config from "@/config";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { IconButton, Stack, Tooltip } from "@mui/material";
 import { useTranslation } from "react-i18next";
@@ -10,7 +11,9 @@ export default function AddWatchedRoute() {
   return (
     <Stack direction="row" justifyContent="flex-end">
       <Tooltip title={t("Add a new watched route")}>
-        <IconButton onClick={() => void navigate("/routes/new")}>
+        <IconButton
+          onClick={() => void navigate(`/${config.urlPrefix}/routes/new`)}
+        >
           <AddCircleIcon color="primary" sx={{ fontSize: "3rem" }} />
         </IconButton>
       </Tooltip>

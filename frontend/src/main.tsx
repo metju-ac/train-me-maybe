@@ -40,6 +40,7 @@ initI18N()
                 <Routes>
                   <Route path={`/${config.urlPrefix}`} element={<Root />}>
                     <Route index element={home} />
+                    <Route path="index.html" element={home} />
                     <Route path="routes/new" element={newRoute} />
                     <Route path="about" element={<LazyAbout />} />
                     <Route path="account" element={account} />

@@ -26,7 +26,7 @@ export default function About() {
         </Link>
       </p>
       <img
-        src="/img/regiojet-large.jpg"
+        src={`/${config.urlPrefix}/img/regiojet-large.jpg`}
         alt="RegioJet"
         title={t("Our app finds free seats with flying colors!")}
         style={{

@@ -95,6 +95,18 @@ func main() {
 	}
 
 	router := gin.Default()
+
+	router.Use(func(c *gin.Context) {
+		slog.Info("BEFORE Request Method:", c.Request.Method)
+		slog.Info("BEFORE Request URL:", c.Request.URL)
+		c.Next()
+	})
+
+	router.Use(func(c *gin.Context) {
+		c.Next()
+		slog.Info("AFTER Request", slog.String("method", c.Request.Method), slog.String("url", c.Request.URL.String()), slog.Int("status", c.Writer.Status()))
+	})
+
 	router.Use(cors.New(cors.Config{
 		AllowOrigins:     config.General.AllowedOrigins,
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},

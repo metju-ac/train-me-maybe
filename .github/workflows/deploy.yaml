@@ -22,9 +22,16 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Build and push Docker image
+    - name: Build and push backend image
       uses: docker/build-push-action@v6
       with:
         context: .
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/train-me-maybe:matej
+
+    - name: Build and push Nginx ingress image
+      uses: docker/build-push-action@v6
+      with:
+        context: ./nginx
+        push: true
+        tags: ${{ secrets.DOCKER_USERNAME }}/train-me-maybe-ingress:matej

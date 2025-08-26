@@ -45,6 +45,10 @@ linters-settings:
           - github.com/BurntSushi/toml
           - github.com/joho/godotenv
           - github.com/golang-jwt/jwt
+          - gorm.io/gorm
+          - gorm.io/driver/postgres
+          - gopkg.in/mail.v2
+          - golang.org/x/crypto
 
 output:
   sort-results: true

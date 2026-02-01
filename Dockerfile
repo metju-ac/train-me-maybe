@@ -1,4 +1,4 @@
-ARG GOLANG_VERSION="1.23.4-alpine"
+ARG GOLANG_VERSION="1.25.6-alpine"
 ARG NODE_VERSION="22-alpine"
 
 # Step 1: Build the Backend

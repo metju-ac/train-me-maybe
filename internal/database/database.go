@@ -18,7 +18,7 @@ import (
 )
 
 func ConnectAndMigrate(config config.DBConfig) (*gorm.DB, error) {
-	dsn := fmt.Sprintf("host=%s port=%d user=%s dbname=%s password=%s",
+	dsn := fmt.Sprintf("host=%s port=%d user=%s dbname=%s password=%s TimeZone=UTC",
 		config.Host, config.Port, config.User, config.Name, config.Password)
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {

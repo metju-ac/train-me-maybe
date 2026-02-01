@@ -24,9 +24,12 @@ import useDeleteWatchedRoute from "@utils/useDeleteWatchedRoute";
 import useStations from "@utils/useStations";
 import useWatchedRoutes from "@utils/useWatchedRoutes";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
 import { TFunction } from "i18next";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
+
+dayjs.extend(utc);
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -364,7 +367,7 @@ export default function EnhancedTable() {
                       {renderStation(row.toStationId, stations!)}
                     </TableCell>
                     <TableCell>
-                      {dayjs(row.departureDateTime).format("D. M. H:mm")}
+                      {dayjs.utc(row.departureDateTime).format("D. M. H:mm")}
                     </TableCell>
                     <TableCell>
                       {row.autoPurchase ? (
